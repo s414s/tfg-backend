@@ -1,6 +1,9 @@
 using Application.Contracts;
 using Application.Implementations;
-using Microsoft.Extensions.Hosting;
+using Domain.Contracts;
+using Infrastructure.Persistence.Context;
+using Infrastructure.Persistence.Implementations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -66,7 +69,20 @@ builder.Services.AddSwaggerGen();
 // Add services
 builder.Services.AddScoped<IAuthServices, AuthServices>();
 
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+
+builder.Services.AddDbContext<DatabaseContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("LocalWebApiDatabase")));
+
 var app = builder.Build();
+
+// Apply migrations
+using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+{
+    var dbContext = serviceScope.ServiceProvider.GetService<DatabaseContext>();
+    if (dbContext is null) Console.WriteLine("Unable to establish connection to db");
+    dbContext?.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -75,6 +91,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("allOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
 
