@@ -32,7 +32,7 @@ public class AuthServices : IAuthServices
             Name = "pepito",
             Username = "pepitoUsername",
             Email = "email",
-            Role = "miRole",
+            //Role = "miRole",
         };
 
         var privateKey = Encoding.UTF8.GetBytes(_privateKey);
@@ -58,7 +58,7 @@ public class AuthServices : IAuthServices
         ci.AddClaim(new Claim(ClaimTypes.Name, user.Username));
         ci.AddClaim(new Claim(ClaimTypes.GivenName, user.Name));
         ci.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-        ci.AddClaim(new Claim(ClaimTypes.Role, user.Role));
+        //ci.AddClaim(new Claim(ClaimTypes.Role, user.Role));
 
         //foreach (var role in user.Roles)
         //    ci.AddClaim(new Claim(ClaimTypes.Role, role));
