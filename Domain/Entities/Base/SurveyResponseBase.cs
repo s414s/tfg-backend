@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.Base;
 
-public class SurveyResponseBase
+public class SurveyResponseBase : EntityBase
 {
-    public Guid QuestionId { get; set; }
+    public long QuestionId { get; set; }
 }

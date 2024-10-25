@@ -1,9 +1,11 @@
-﻿namespace Domain.Entities.Base;
+﻿using Domain.Enums;
 
-public class SurveyQuestionBase
+namespace Domain.Entities.Base;
+
+public class SurveyQuestionBase : EntityBase
 {
     public Guid Guid { get; set; }
-    public string QuestionText { get; set; }
+    public long QuestionId { get; set; }
     public bool IsRequired { get; set; }
     public QuestionType Type { get; set; }
 }
