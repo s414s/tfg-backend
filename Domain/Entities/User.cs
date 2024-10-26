@@ -8,8 +8,7 @@ public class User : EntityBase
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }
-    public string HashedPassword { get; set; }
+    public string Password { get; set; }
     public UserRoles Role { get; set; }
     public DateOnly BirthDay { get; set; } = new DateOnly();
-    public DateTime CreatedAT { get; set; }
 }

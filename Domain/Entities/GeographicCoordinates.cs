@@ -1,12 +1,21 @@
 ﻿namespace Domain.Entities;
 
-public class GeographicCoordinates
+public readonly struct GeographicCoordinates
 {
-    public decimal Lat { get; init; }
-    public decimal Lon { get; init; }
+    public double Lat { get; init; }
+    public double Lon { get; init; }
     public CartesianCoordinates ConvertToCartesianCoordinates()
     {
-        // TODO
-        return new CartesianCoordinates { X = Lat, Y = Lon };
+        // Convert latitude and longitude from degrees to radians
+        double latRadians = Lat * Math.PI / 180;
+        double lonRadians = Lon * Math.PI / 180;
+
+        const double earthRadius = 6371000; // Earth radius in meters
+
+        return new CartesianCoordinates
+        {
+            X = earthRadius * Math.Cos(latRadians) * Math.Cos(lonRadians),
+            Y = earthRadius * Math.Cos(latRadians) * Math.Sin(lonRadians),
+        };
     }
 }

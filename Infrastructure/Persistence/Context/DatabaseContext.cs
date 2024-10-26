@@ -34,8 +34,8 @@ public class DatabaseContext : DbContext
 
         // TODO hashear contraseñas
         modelBuilder.Entity<User>().HasData([
-            new User{ Id = 1, Name = "alberto", Username = "salas", Password = "root", Email = "alberto@gmail.com" },
-            new User{ Id = 2, Name = "ana", Username = "sanz", Password = "root", Email = "ana@gmail.com" },
+            new User{ Id = 1, Name = "alberto", Password = "root", Email = "alberto@gmail.com" },
+            new User{ Id = 2, Name = "ana", Password = "root", Email = "ana@gmail.com" },
             ]);
 
         //base.OnModelCreating(modelBuilder);

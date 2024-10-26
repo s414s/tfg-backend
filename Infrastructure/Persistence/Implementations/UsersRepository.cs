@@ -39,10 +39,10 @@ public class UsersRepository : IUsersRepository
         return await _context.Users.ToListAsync();
     }
 
-    public async Task<User?> GetByCredentials(string username, string password)
+    public async Task<User?> GetByCredentials(string email, string password)
     {
         return await _context.Users
-            .SingleOrDefaultAsync(x => x.Name + x.Username == username && x.Password == password);
+            .SingleOrDefaultAsync(x => x.Email == email && x.Password == password);
     }
 
     public async Task<User> GetByID(long entityId)

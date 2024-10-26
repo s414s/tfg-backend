@@ -4,8 +4,8 @@ namespace Domain.Entities;
 
 public class WareHouse
 {
-    public decimal Lat { get; set; }
-    public decimal Len { get; set; }
+    public double Lat { get; set; }
+    public double Lon { get; set; }
     public string Name { get; set; } = "";
     public TimeSpan UnloadTime { get; set; }
 
