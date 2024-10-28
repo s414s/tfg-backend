@@ -1,8 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using Domain.Entities.Base;
+using System.Collections.ObjectModel;
 
 namespace Domain.Entities;
 
-public class City
+public class City : EntityBase
 {
     public double Lat { get; init; }
     public double Lon { get; init; }
@@ -10,4 +11,8 @@ public class City
     public string Code { get; set; } = "";
 
     public virtual Collection<WareHouse> WareHouses { get; set; }
+    public virtual Collection<Route> RouteOrigins { get; set; }
+    public virtual Collection<Route> RouteDestinations { get; set; }
+    public virtual Collection<Pallet> PalletOrigins { get; set; }
+    public virtual Collection<Pallet> PalletDestinations { get; set; }
 }

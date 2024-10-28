@@ -1,11 +1,11 @@
-﻿using Domain.Entities;
-using System.Security.Claims;
-using System.Text;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using Application.Contracts;
+﻿using Application.Contracts;
 using Application.DTO;
 using Domain.Contracts;
+using Domain.Entities;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Application.Implementations;
 
@@ -21,7 +21,6 @@ public class AuthServices : IAuthServices
     {
         if (!password.Equals(passwordRepeat))
             throw new Exception("passwords are not the same");
-
     }
 
     public LoginResponseDTO Login(string email, string password)
@@ -30,7 +29,6 @@ public class AuthServices : IAuthServices
         {
             Id = 2,
             Name = "pepito",
-            Username = "pepitoUsername",
             Email = "email",
             //Role = "miRole",
         };
@@ -55,7 +53,7 @@ public class AuthServices : IAuthServices
         var ci = new ClaimsIdentity();
 
         ci.AddClaim(new Claim("id", user.Id.ToString()));
-        ci.AddClaim(new Claim(ClaimTypes.Name, user.Username));
+        ci.AddClaim(new Claim(ClaimTypes.Name, user.Name));
         ci.AddClaim(new Claim(ClaimTypes.GivenName, user.Name));
         ci.AddClaim(new Claim(ClaimTypes.Email, user.Email));
         //ci.AddClaim(new Claim(ClaimTypes.Role, user.Role));

@@ -10,6 +10,12 @@ public class Pallet : EntityBase
     public decimal Weight { get; private set; }
     public Guid Code { get; init; }
     public PalletType Type { get; set; }
+    public DateTime DueDate { get; set; }
+    public long OriginId { get; set; }
+    public long DestinationId { get; set; }
+
+    public virtual City Origin { get; set; }
+    public virtual City Destination { get; set; }
 
     public decimal Length { get => Type == PalletType.European ? 1200 : 1200; }
     public decimal Width { get => Type == PalletType.European ? 800 : 1000; }

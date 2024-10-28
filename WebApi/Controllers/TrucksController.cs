@@ -8,23 +8,28 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class TrucksController : ControllerBase
 {
-    private readonly IAuthServices _authServices;
-    public TrucksController(IAuthServices authServices)
+    [HttpGet("")]
+    public ActionResult<IEnumerable<TruckDTO>> GetAll()
     {
-        _authServices = authServices;
+        List<TruckDTO> mock = [
+            new TruckDTO { Id = 1, Plate="XXILN" },
+            new TruckDTO { Id = 2, Plate="XXLLL" }
+            ];
+        return Ok(mock);
     }
 
     [HttpGet("{truckId}")]
     public ActionResult GetTruckById(long truckId)
     {
-        return Ok();
+        var mock = new TruckDTO();
+        return Ok(mock);
     }
 
     [HttpPost("")]
-    public ActionResult<TruckInformationDTO> CreateNewTruck([FromBody] LoginRequestDTO request)
+    public ActionResult<TruckDTO> CreateNewTruck([FromBody] LoginRequestDTO request)
     {
-        var result = _authServices.Login(request.Username, request.Password);
-        return Ok(result);
+        var mock = new TruckDTO();
+        return Ok(mock);
     }
 
     [HttpDelete("")]

@@ -18,10 +18,10 @@ public class PathFinderService
 
     public class PathResult
     {
-        public List<Route> Routes { get; set; } = new();
+        public List<Route> Routes { get; set; } = [];
         public decimal TotalDistance { get; set; }
         public TimeSpan EstimatedDuration { get; set; }
-        public List<City> Cities { get; set; } = new();
+        public List<City> Cities { get; set; } = [];
     }
 
     private class NodeInfo

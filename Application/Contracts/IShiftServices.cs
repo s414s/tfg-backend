@@ -1,10 +1,9 @@
-﻿using Application.DTO;
-
-namespace Application.Contracts;
+﻿namespace Application.Contracts;
 
 public interface IShiftServices
 {
-    Task Create(RouteDTO route);
+    Task Create(IEnumerable<long> routeIds);
+    Task Preview(IEnumerable<long> routeIds);
     Task Detele(long shiftId);
     Task Update(long shiftId);
 }

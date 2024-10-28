@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public ActionResult<LoginResponseDTO> Login([FromBody] LoginRequestDTO request)
     {
-        var result = _authServices.Login(request.Username, request.Password);
+        var result = _authServices.Login(request.Email, request.Password);
         return Ok(result);
     }
 

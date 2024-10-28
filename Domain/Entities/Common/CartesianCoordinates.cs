@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities;
+﻿namespace Domain.Entities.Common;
 
 public readonly struct CartesianCoordinates
 {

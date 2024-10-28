@@ -8,6 +8,8 @@ public class Truck : EntityBase
     public decimal Mileage { get; set; }
     public decimal MaxWeight { get; set; }
     public decimal Consumption { get; set; } // l/km
-    public decimal ExtraConsumptionPerKg { get; set; } // l/kg
-    public int NumberAxles { get; set; } // l/kg
+    public DateTime ManufacturingDate { get; set; }
+    public DateTime LastMaintenance { get; set; }
+
+    public TimeSpan Age { get => DateTime.UtcNow - ManufacturingDate; }
 }

@@ -50,6 +50,11 @@ public class UsersRepository : IUsersRepository
         return await _context.Users.SingleAsync(x => x.Id == entityId);
     }
 
+    public Task<User?> GetUserByEmail(string email)
+    {
+        throw new NotImplementedException();
+    }
+
     public User? GetUserByUsername(string username)
     {
         throw new NotImplementedException();

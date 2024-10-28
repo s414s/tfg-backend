@@ -4,5 +4,5 @@ namespace Application.Contracts;
 
 public interface IRouteServices
 {
-    Task<IEnumerable<RouteDTO>> GetAll();
+    Task<IEnumerable<RouteDTO>> GetAll(string? origin, string? destination);
 }

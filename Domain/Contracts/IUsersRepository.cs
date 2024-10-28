@@ -4,6 +4,6 @@ namespace Domain.Contracts;
 
 public interface IUsersRepository
 {
-    User? GetUserByUsername(string username);
-    Task<User?> GetByCredentials(string username, string password);
+    Task<User?> GetUserByEmail(string email);
+    Task<User?> GetByCredentials(string email, string password);
 }

@@ -68,6 +68,7 @@ builder.Services.AddSwaggerGen();
 
 // Add services
 builder.Services.AddScoped<IAuthServices, AuthServices>();
+builder.Services.AddScoped<IAuthServices, AuthServices>();
 
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
@@ -77,12 +78,12 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 var app = builder.Build();
 
 // Apply migrations
-using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
-{
-    var dbContext = serviceScope.ServiceProvider.GetService<DatabaseContext>();
-    if (dbContext is null) Console.WriteLine("Unable to establish connection to db");
-    dbContext?.Database.Migrate();
-}
+//using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+//{
+//    var dbContext = serviceScope.ServiceProvider.GetService<DatabaseContext>();
+//    if (dbContext is null) Console.WriteLine("Unable to establish connection to db");
+//    dbContext?.Database.Migrate();
+//}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
