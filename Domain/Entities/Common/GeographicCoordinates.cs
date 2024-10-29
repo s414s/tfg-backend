@@ -1,9 +1,9 @@
 ﻿namespace Domain.Entities.Common;
 
-public readonly struct GeographicCoordinates
+public class GeographicCoordinates
 {
-    public double Lat { get; init; }
-    public double Lon { get; init; }
+    public double Lat { get; set; }
+    public double Lon { get; set; }
     public CartesianCoordinates ConvertToCartesianCoordinates()
     {
         // Convert latitude and longitude from degrees to radians

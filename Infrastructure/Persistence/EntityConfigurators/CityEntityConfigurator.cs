@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,6 +10,8 @@ public class CityEntityConfigurator
     public void Configure(EntityTypeBuilder<City> builder)
     {
         builder.HasKey(c => c.Id);
+
+        builder.OwnsOne(c => c.Location);
 
         builder.Property(c => c.Name)
             .IsRequired()

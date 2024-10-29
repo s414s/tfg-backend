@@ -1,6 +1,7 @@
 ﻿using Application.Contracts;
 using Application.DTO;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace WebApi.Controllers;
 
@@ -9,6 +10,10 @@ namespace WebApi.Controllers;
 public class TrucksController : ControllerBase
 {
     [HttpGet("")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public ActionResult<IEnumerable<TruckDTO>> GetAll()
     {
         List<TruckDTO> mock = [
@@ -19,6 +24,10 @@ public class TrucksController : ControllerBase
     }
 
     [HttpGet("{truckId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public ActionResult GetTruckById(long truckId)
     {
         var mock = new TruckDTO();
@@ -26,6 +35,10 @@ public class TrucksController : ControllerBase
     }
 
     [HttpPost("")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public ActionResult<TruckDTO> CreateNewTruck([FromBody] LoginRequestDTO request)
     {
         var mock = new TruckDTO();
@@ -33,6 +46,11 @@ public class TrucksController : ControllerBase
     }
 
     [HttpDelete("")]
+    //[ProducesResponseType(typeof(TruckDTO), 200)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public ActionResult DeleteTruck()
     {
         return Ok();

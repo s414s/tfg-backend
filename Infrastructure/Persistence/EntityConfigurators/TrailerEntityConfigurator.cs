@@ -8,9 +8,5 @@ public class TrailerEntityConfigurator
     public void Configure(EntityTypeBuilder<Trailer> builder)
     {
         builder.HasKey(t => t.Id);
-
-        builder.Property(t => t.Plate)
-            .IsRequired()
-            .HasMaxLength(10);
     }
 }

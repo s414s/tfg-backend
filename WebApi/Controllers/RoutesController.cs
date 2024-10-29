@@ -1,4 +1,5 @@
 ﻿using Application.Contracts;
+using Application.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -13,7 +14,12 @@ public class RoutesController : ControllerBase
         _authServices = authServices;
     }
 
+    /// <summary>
+    /// Gets all routes
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult GetAllRoutes()
     {
         return Ok();
