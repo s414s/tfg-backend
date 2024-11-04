@@ -1,9 +1,10 @@
 ﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.EntityConfigurators;
 
-public class RouteEntityConfigurator
+public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
 {
     public void Configure(EntityTypeBuilder<Route> builder)
     {

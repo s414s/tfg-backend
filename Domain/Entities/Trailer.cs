@@ -9,8 +9,7 @@ public class Trailer : EntityBase
     public decimal Width { get; set; }
     public decimal Height { get; set; }
 
-    public virtual Collection<Pallet>? Load { get; set; }
-    public decimal GetTotalWeight() => Load?.Sum(x => x.DynamicLoad) ?? 0;
+    public virtual Collection<Shift>? Shifts { get; set; }
     public void LoadPallet()
     {
         // TODO - check maxWeight

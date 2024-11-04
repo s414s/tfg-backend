@@ -7,15 +7,10 @@ namespace Domain.Entities;
 public class Pallet : EntityBase
 {
     public decimal Height { get; set; }
-    public decimal Weight { get; private set; }
-    public Guid Code { get; init; }
+    public decimal Weight { get; set; }
     public PalletType Type { get; set; }
-    public DateTime DueDate { get; set; }
-    public long OriginId { get; set; }
-    public long DestinationId { get; set; }
-
-    public virtual City Origin { get; set; }
-    public virtual City Destination { get; set; }
+    public long ShiftId { get; set; }
+    public virtual Shift Shift { get; set; }
 
     public decimal Length { get => Type == PalletType.European ? 1200 : 1200; }
     public decimal Width { get => Type == PalletType.European ? 800 : 1000; }
@@ -24,7 +19,7 @@ public class Pallet : EntityBase
     public decimal MaxHeight { get => Type == PalletType.European ? 2600 : 2500; }
     public static Pallet New(PalletType Type)
     {
-        return new Pallet { Type = Type, Code = Guid.NewGuid() };
+        return new Pallet { Type = Type };
     }
 
     public void SetWeight(decimal Weight)

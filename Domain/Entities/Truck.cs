@@ -10,6 +10,10 @@ public class Truck : EntityBase
     public decimal Consumption { get; set; } // l/km
     public DateTime ManufacturingDate { get; set; }
     public DateTime LastMaintenance { get; set; }
+    public long DriverId { get; set; }
 
-    public TimeSpan Age { get => DateTime.UtcNow - ManufacturingDate; }
+    public User Driver { get; set; }
+    public virtual ICollection<Shift>? Shifts { get; set; }
+
+    public TimeSpan Age { get => DateTime.Now - ManufacturingDate; }
 }

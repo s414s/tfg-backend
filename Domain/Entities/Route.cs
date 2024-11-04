@@ -1,13 +1,12 @@
 ﻿using Domain.Entities.Base;
-using System.Collections.ObjectModel;
 using System.Text.Json;
 
 namespace Domain.Entities;
 
 public class Route : EntityBase
 {
-    public decimal Distance { get; set; } // update on route change
-    public decimal AvgSpeed { get; set; } // retro feeding
+    public double Distance { get; set; } // update on route change
+    public double AvgSpeed { get; set; } // retro feeding
     public long OriginId { get; set; }
     public long DestinationId { get; set; }
     /// <summary>
@@ -18,7 +17,7 @@ public class Route : EntityBase
     public virtual City Origin { get; set; }
     public virtual City Destination { get; set; }
 
-    public virtual Collection<Shift> Shifts { get; set; }
+    public virtual ICollection<RouteShift>? RouteShifts { get; set; }
 
-    public TimeSpan GetDuration() => TimeSpan.FromHours(1 / ((double)AvgSpeed / (double)Distance));
+    public TimeSpan GetDuration() => TimeSpan.FromHours(1 / (AvgSpeed / Distance));
 }

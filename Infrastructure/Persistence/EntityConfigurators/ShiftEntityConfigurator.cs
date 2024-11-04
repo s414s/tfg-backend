@@ -1,27 +1,41 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.EntityConfigurators;
 
-public class ShiftEntityConfigurator
+public class ShiftEntityConfigurator : IEntityTypeConfiguration<Shift>
 {
     public void Configure(EntityTypeBuilder<Shift> builder)
     {
         builder.HasKey(s => s.Id);
+        builder.Property(x => x.StartDate)
+            .HasColumnType("timestamp without time zone")
+            .IsRequired();
 
-        // One-to-many relationship configuration
-        builder
-            .HasOne(s => s.Driver)
-            .WithMany(d => d.Shifts)
-            .HasForeignKey(s => s.DriverId)
-            .OnDelete(DeleteBehavior.Cascade)
-            ;
+        builder.Property(x => x.Status)
+            .IsRequired()
+            .HasDefaultValue(ShiftStatus.Scheduled);
 
-        // many-to-many relationship configuration
         builder
-            .HasMany(s => s.Routes)
-            .WithMany(r => r.Shifts)
-            ;
+            .HasOne(s => s.Truck)
+            .WithMany(t => t.Shifts)
+            .HasForeignKey(s => s.TruckId);
+
+        builder
+            .HasOne(s => s.Trailer)
+            .WithMany(t => t.Shifts)
+            .HasForeignKey(s => s.TrailerId);
+
+        builder
+            .HasMany(s => s.Pallets)
+            .WithOne(p => p.Shift)
+            .HasForeignKey(p => p.ShiftId);
+
+        builder
+            .HasMany(s => s.RouteShifts)
+            .WithOne(p => p.Shift)
+            .HasForeignKey(p => p.ShiftId);
     }
 }

@@ -1,25 +1,22 @@
 ﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.EntityConfigurators;
 
-public class PalletEntityConfigurator
+public class PalletEntityConfigurator : IEntityTypeConfiguration<Pallet>
 {
     public void Configure(EntityTypeBuilder<Pallet> builder)
     {
         builder.HasKey(p => p.Id);
 
-        builder
-            .HasOne(p => p.Origin)
-            .WithMany(d => d.PalletOrigins)
-            .HasForeignKey(p => p.OriginId)
-            ;
+        builder.Property(x => x.Height).IsRequired();
+        builder.Property(x => x.Weight).IsRequired();
 
         builder
-            .HasOne(p => p.Destination)
-            .WithMany(d => d.PalletDestinations)
-            .HasForeignKey(p => p.DestinationId)
-            ;
+            .HasOne(p => p.Shift)
+            .WithMany(s => s.Pallets)
+            .HasForeignKey(p => p.ShiftId);
     }
 }
 

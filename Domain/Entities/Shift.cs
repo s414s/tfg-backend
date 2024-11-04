@@ -1,27 +1,31 @@
 ﻿using Domain.Entities.Base;
 using Domain.Enums;
-using System.Collections.ObjectModel;
 
 namespace Domain.Entities;
 
 public class Shift : EntityBase
 {
-    public DateTime StartDate { get; init; }
-    public ShiftStatus Status { get; init; }
-    public long? DriverId { get; init; }
+    public DateTime StartDate { get; set; }
+    public ShiftStatus Status { get; set; }
+    public long? TruckId { get; set; }
+    public long? TrailerId { get; set; }
 
-    public virtual User? Driver { get; init; }
-    public virtual Collection<Route> Routes { get; init; }
+    public virtual Truck? Truck { get; set; }
+    public virtual Trailer? Trailer { get; set; }
+    public virtual ICollection<Pallet>? Pallets { get; set; }
+    public virtual ICollection<RouteShift>? RouteShifts { get; set; }
 
-    public decimal GetTotalDistance() => Routes.Sum(x => x.Distance);
 
-    public TimeSpan GetEstimatedDuration()
-    {
-        var totalDuration = TimeSpan.Zero;
-        foreach (var route in Routes)
-        {
-            totalDuration.Add(route.GetDuration());
-        }
-        return totalDuration;
-    }
+    //public decimal GetTotalWeight() => Load?.Sum(x => x.DynamicLoad) ?? 0;
+    //public decimal GetTotalDistance() => Routes?.Sum(x => x.Distance) ?? 0;
+    //public TimeSpan GetEstimatedDuration()
+    //{
+    //    var totalDuration = TimeSpan.Zero;
+    //    foreach (var route in Routes)
+    //    {
+    //        totalDuration.Add(route.GetDuration());
+    //    }
+    //    return totalDuration;
+    //}
+
 }

@@ -1,9 +1,6 @@
 ﻿using Domain.Entities;
 using Infrastructure.Persistence.EntityConfigurators;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System.Data;
 
 namespace Infrastructure.Persistence.Context;
 
@@ -11,33 +8,24 @@ public class DatabaseContext : DbContext
 {
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-    //    se inyecta la configuración para poder leer el connection string desde ella
-    //    protected readonly IConfiguration Configuration;
-    //    public DatabaseContext(IConfiguration configuration)
-    //    {
-    //        Configuration = configuration;
-    //    }
-
-    //    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    //    {
-    //        // connect to postgres with connection string from app settings
-    //        options.UseNpgsql(Configuration.GetConnectionString("WebApiDatabase"));
-
-    //        //base.OnConfiguring(options);
-    //    }
-
     public DbSet<User> Users { get; set; }
+    public DbSet<Trailer> Trailers { get; set; }
+    public DbSet<Truck> Trucks { get; set; }
+    public DbSet<Route> Routes { get; set; }
+    public DbSet<Pallet> Pallets { get; set; }
+    public DbSet<City> Cities { get; set; }
+    public DbSet<Shift> Shifts { get; set; }
+    public DbSet<RouteShift> RouteShifts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserEntityConfigurator());
-
-        // TODO hashear contraseñas
-        modelBuilder.Entity<User>().HasData([
-            new User{ Id = 1, Name = "alberto", Password = "root", Email = "alberto@gmail.com" },
-            new User{ Id = 2, Name = "ana", Password = "root", Email = "ana@gmail.com" },
-            ]);
-
-        //base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfiguration(new TrailerEntityConfigurator());
+        modelBuilder.ApplyConfiguration(new TruckEntityConfigurator());
+        modelBuilder.ApplyConfiguration(new RouteEntityConfigurator());
+        modelBuilder.ApplyConfiguration(new PalletEntityConfigurator());
+        modelBuilder.ApplyConfiguration(new CityEntityConfigurator());
+        modelBuilder.ApplyConfiguration(new ShiftEntityConfigurator());
+        modelBuilder.ApplyConfiguration(new RouteShiftConfigurator());
     }
 }
