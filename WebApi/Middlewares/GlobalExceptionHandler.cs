@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Application.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Net;
-using System.Net.Mime;
-using System.Text.Json;
 
 namespace WebApi.Middlewares;
 
@@ -16,10 +14,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         _logger = logger;
     }
 
-    public async ValueTask<bool> TryHandleAsync(
-        HttpContext httpContext,
-        Exception exception,
-        CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         var (statusCode, title) = MapException(exception);
         var traceId = Activity.Current?.Id ?? httpContext.TraceIdentifier;
@@ -27,34 +22,24 @@ public class GlobalExceptionHandler : IExceptionHandler
         var details = new ProblemDetails()
         {
             Title = title,
-            Detail = "API Error",
-            Instance = $"API {httpContext.GetEndpoint}",
             Status = statusCode,
-            Type = "",
+            Detail = "API Error",
+            Instance = $"API {httpContext.Request.Path}",
+            Type = MapType(statusCode),
+            Extensions = MapExtensions(exception, traceId)
         };
 
-        _logger.LogError(
-            exception,
-            "Could not process a request on machine {MachineName}. TraceId: {TraceId}. Msg: {Ex}",
-            Environment.MachineName,
-            traceId,
-            exception.Message);
+        if (statusCode == StatusCodes.Status500InternalServerError)
+        {
+            _logger.LogError(
+                exception,
+                    "Exception on machine {MachineName}. TraceId: {TraceId}. Msg: {Ex}",
+                    Environment.MachineName,
+                    traceId,
+                    exception.Message);
+        }
 
-        await Results.Problem(
-            title: title,
-            statusCode: statusCode,
-            extensions: new Dictionary<string, object?>
-            {
-                {"traceId", traceId }
-            }).ExecuteAsync(httpContext);
-
-        //var response = JsonSerializer.Serialize(details);
-        //await httpContext.Response.WriteAsync(response, cancellationToken);
-        //httpContext.Response.ContentType = "application/json";
-
-        httpContext.Response.ContentType = MediaTypeNames.Application.Json;
         await httpContext.Response.WriteAsJsonAsync(details, cancellationToken);
-
         return true;
     }
 
@@ -62,9 +47,38 @@ public class GlobalExceptionHandler : IExceptionHandler
     {
         return exception switch
         {
-            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Not Authorized"),
+            EntityNotFoundException => (StatusCodes.Status400BadRequest, exception.Message),
+            NotImplementedException => (StatusCodes.Status400BadRequest, "Not Implemented"),
+            FluentValidation.ValidationException => (StatusCodes.Status400BadRequest, "One or more validation errors occurred"),
             ArgumentOutOfRangeException => (StatusCodes.Status400BadRequest, exception.Message),
             _ => (StatusCodes.Status500InternalServerError, "Internal server error")
+        };
+    }
+
+    private static Dictionary<string, object?> MapExtensions(Exception exception, string? traceId)
+    {
+        Dictionary<string, object?> result = [];
+
+        if (traceId is string tId)
+        {
+            result.Add("traceId", tId);
+        }
+
+        if (exception is FluentValidation.ValidationException fluentException)
+        {
+            result.Add("errors", fluentException.Errors.Select(x => x.ErrorMessage).ToList());
+        }
+
+        return result;
+    }
+
+    private static string MapType(int statusCode)
+    {
+        return statusCode switch
+        {
+            StatusCodes.Status400BadRequest => "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            StatusCodes.Status500InternalServerError => "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+            _ => "https://tools.ietf.org/html/rfc7231#section-6.6.1"
         };
     }
 }

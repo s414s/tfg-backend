@@ -1,6 +1,5 @@
 ﻿using Application.Contracts;
 using Application.DTO;
-using Domain.Contracts;
 using Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

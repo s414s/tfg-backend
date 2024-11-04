@@ -1,5 +1,4 @@
 ﻿using Application.Contracts;
-using Application.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;

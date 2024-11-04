@@ -1,7 +1,7 @@
-﻿using Application.Contracts;
-using Application.DTO;
+﻿using Application.DTO;
+using Application.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace WebApi.Controllers;
 
@@ -9,12 +9,19 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class TrucksController : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public TrucksController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
     [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public ActionResult<IEnumerable<TruckDTO>> GetAll()
+    public async Task<ActionResult<PagedResults<TruckDTO>>> GetAll([FromQuery] long queryParams)
     {
         List<TruckDTO> mock = [
             new TruckDTO { Id = 1, Plate="XXILN" },

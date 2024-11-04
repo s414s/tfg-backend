@@ -1,6 +1,8 @@
+using Application;
 using Application.Contracts;
 using Application.Implementations;
 using Domain.Contracts;
+using Infrastructure;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Implementations;
 using Microsoft.EntityFrameworkCore;
@@ -66,6 +68,8 @@ builder.Services.AddAuthorization(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddApplication();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -75,8 +79,16 @@ builder.Services.AddScoped<IAuthServices, AuthServices>();
 
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
-builder.Services.AddDbContext<DatabaseContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetConnectionString("LocalWebApiDatabase")));
+//builder.Services.AddDbContext<DatabaseContext>(options =>
+//        options.UseNpgsql(builder.Configuration.GetConnectionString("LocalWebApiDatabase")));
+
+var connString = builder.Configuration.GetConnectionString("LocalWebApiDatabase");
+if (bool.TryParse(Environment.GetEnvironmentVariable("IS_DOCKER"), out bool isDocker) && isDocker)
+{
+    connString = builder.Configuration.GetConnectionString("WebApiDatabase");
+}
+
+builder.Services.AddInfrastructure(connString);
 
 var app = builder.Build();
 
@@ -91,9 +103,11 @@ using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>(
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Console.WriteLine("DEVELOPMENT ENVIRONMENT");
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors("allOrigins");
 app.UseAuthentication();

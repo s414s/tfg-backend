@@ -1,3 +1,11 @@
-﻿namespace Application.DTO;
+﻿using Domain.Enums;
 
-public record ShiftDTO(RouteDTO[] Routes, UserDTO Pilot, UserDTO Copilot);
+namespace Application.DTO;
+
+public record ShiftDTO
+{
+    public long Id { get; init; }
+    public ShiftStatus Status { get; init; }
+    public TruckDTO Truck { get; init; }
+    public UserDTO Driver { get; init; }
+};
