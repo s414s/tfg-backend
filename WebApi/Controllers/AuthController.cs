@@ -1,5 +1,6 @@
-﻿using Application.Contracts;
-using Application.DTO;
+﻿using Application.DTO;
+using Application.Handlers.Users.Query;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -8,10 +9,11 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthServices _authServices;
-    public AuthController(IAuthServices authServices)
+    private readonly IMediator _mediator;
+
+    public AuthController(IMediator mediator)
     {
-        _authServices = authServices;
+        _mediator = mediator;
     }
 
     [HttpGet("me")]
@@ -21,15 +23,6 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public ActionResult<LoginResponseDTO> Login([FromBody] LoginRequestDTO request)
-    {
-        var result = _authServices.Login(request.Email, request.Password);
-        return Ok(result);
-    }
-
-    [HttpPost("signup")]
-    public ActionResult Signup()
-    {
-        return Ok();
-    }
+    public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] CreateUserTokenRequest request)
+        => await _mediator.Send(request);
 }

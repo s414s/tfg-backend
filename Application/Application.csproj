@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\Trucks\Query\" />
+    <Folder Include="Handlers\Pallets\Query\" />
   </ItemGroup>
 
 </Project>

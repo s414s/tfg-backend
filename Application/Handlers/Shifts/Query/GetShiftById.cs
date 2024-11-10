@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.Exceptions;
 using Domain.Contracts;
 using Domain.Entities;
 using FluentValidation;
@@ -51,6 +52,6 @@ internal sealed class GetShiftByIdQueryHandler : IRequestHandler<GetShiftByIdReq
                 }
             })
             .FirstOrDefaultAsync(cancellationToken)
-            ?? throw new Exception();
+            ?? throw new EntityNotFoundException($"Shift with id {request.ShiftId} could not be found");
     }
 }

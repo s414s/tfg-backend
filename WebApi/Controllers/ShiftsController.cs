@@ -1,5 +1,6 @@
 ﻿using Application.DTO;
 using Application.Extensions;
+using Application.Handlers.Shifts.Commands;
 using Application.Handlers.Shifts.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -32,4 +33,20 @@ public class ShiftsController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ShiftDTO>> GetShiftById(long shiftId)
         => await _mediator.Send(new GetShiftByIdRequest(shiftId));
+
+    [HttpPost("")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task CreateShift([FromBody] CreateShiftRequest body)
+        => await _mediator.Send(body);
+
+    [HttpPut("{shiftId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task UpdateShift(long shiftId, [FromBody] UpdateShiftRequest body)
+        => await _mediator.Send(body with { ShiftId = shiftId });
 }

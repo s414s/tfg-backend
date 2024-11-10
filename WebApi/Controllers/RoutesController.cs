@@ -1,4 +1,6 @@
-﻿using Application.Contracts;
+﻿using Application.DTO;
+using Application.Handlers.Routes.Query;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -7,32 +9,18 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class RoutesController : ControllerBase
 {
-    private readonly IAuthServices _authServices;
-    public RoutesController(IAuthServices authServices)
+    private readonly IMediator _mediator;
+
+    public RoutesController(IMediator mediator)
     {
-        _authServices = authServices;
+        _mediator = mediator;
     }
 
-    /// <summary>
-    /// Gets all routes
-    /// </summary>
-    /// <returns></returns>
     [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult GetAllRoutes()
-    {
-        return Ok();
-    }
-
-    [HttpPost("{cityName}")]
-    public ActionResult<string> GetRoutesFrom(string cityName)
-    {
-        return Ok(cityName);
-    }
-
-    [HttpDelete("{routeId}")]
-    public ActionResult DeleteRoute(long routeId)
-    {
-        return Ok();
-    }
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<IEnumerable<RouteDTO>>> GetFilteredRoutes([FromQuery] GetFilteredRoutesRequest queryParams)
+        => Ok(await _mediator.Send(queryParams));
 }

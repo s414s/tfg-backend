@@ -6,6 +6,12 @@ namespace Domain.Entities;
 public class Shift : EntityBase
 {
     public DateTime StartDate { get; set; }
+    public DateTime ETA
+    {
+        get => StartDate
+            .AddHours(RouteShifts?.Sum(x => x.Route.Duration.TotalHours) ?? 0);
+    }
+
     public ShiftStatus Status { get; set; }
     public long? TruckId { get; set; }
     public long? TrailerId { get; set; }

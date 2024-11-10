@@ -44,6 +44,42 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Email = "ana@gmail.com",
                 Role = UserRoles.Driver,
             },
+            new User
+            {
+                Id = 3,
+                Name = "maria",
+                Surname = "hernandez",
+                Password = "root",
+                Email = "maria@gmail.com",
+                Role = UserRoles.Driver,
+            },
+            new User
+            {
+                Id = 4,
+                Name = "violeta",
+                Surname = "salas",
+                Password = "root",
+                Email = "violeta@gmail.com",
+                Role = UserRoles.Driver,
+            },
+            new User
+            {
+                Id = 5,
+                Name = "gimena",
+                Surname = "salas",
+                Password = "root",
+                Email = "gimena@gmail.com",
+                Role = UserRoles.Driver,
+            },
+            new User
+            {
+                Id = 6,
+                Name = "sara",
+                Surname = "salas",
+                Password = "root",
+                Email = "sara@gmail.com",
+                Role = UserRoles.Driver,
+            },
             ]);
     }
 }

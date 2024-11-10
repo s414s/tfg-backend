@@ -17,9 +17,9 @@ public class Pallet : EntityBase
     public decimal StaticLoad { get => Type == PalletType.European ? 5500 : 4500; }
     public decimal DynamicLoad { get => Type == PalletType.European ? 1500 : 1500; }
     public decimal MaxHeight { get => Type == PalletType.European ? 2600 : 2500; }
-    public static Pallet New(PalletType Type)
+    public static Pallet New(PalletType Type, long shiftId)
     {
-        return new Pallet { Type = Type };
+        return new Pallet { Type = Type, ShiftId = shiftId };
     }
 
     public void SetWeight(decimal Weight)
