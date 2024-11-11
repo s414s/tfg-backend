@@ -12,6 +12,9 @@ using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure JWT settings - prueba
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();

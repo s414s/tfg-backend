@@ -1,9 +1,11 @@
 ﻿using Application.Contracts;
 using Application.DTO;
 using Domain.Enums;
+using Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,12 +15,14 @@ namespace Application.Implementations;
 
 public class AuthServices : IAuthServices
 {
-    private readonly string _privateKey;
+    private readonly string _privateKey = "todo-sacaralappconfigyasegurarmedequesealosuficientementesegura";
     private readonly IHttpContextAccessor _httpContext;
-    public AuthServices(IHttpContextAccessor httpContext)
+    private readonly JwtSettings _jwtSettings;
+
+    public AuthServices(IHttpContextAccessor httpContext, IOptions<JwtSettings> jwtSettings)
     {
-        _privateKey = "todo-sacaralappconfigyasegurarmedequesealosuficientementesegura";
         _httpContext = httpContext;
+        _jwtSettings = jwtSettings.Value;
     }
 
     public void SignUp(string email, string password, string passwordRepeat)
@@ -29,14 +33,20 @@ public class AuthServices : IAuthServices
 
     public string GenerateJWT(UserDTO userInfo)
     {
-        var privateKey = Encoding.UTF8.GetBytes(_privateKey);
+        //var privateKey = Encoding.UTF8.GetBytes(_privateKey);
+        var privateKey = Encoding.UTF8.GetBytes(_jwtSettings.Key);
+
         var credentials = new SigningCredentials(new SymmetricSecurityKey(privateKey), SecurityAlgorithms.HmacSha256);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             SigningCredentials = credentials,
             Expires = DateTime.UtcNow.AddHours(1),
-            Subject = GenerateClaims(userInfo)
+            Subject = GenerateClaims(userInfo),
+
+            // testing
+            Issuer = _jwtSettings.Issuer,
+            Audience = _jwtSettings.Audience
         };
 
         var handler = new JwtSecurityTokenHandler();
