@@ -4,6 +4,7 @@ namespace Application.Contracts;
 
 public interface IAuthServices
 {
-    LoginResponseDTO Login(string email, string password);
+    string GenerateJWT(UserDTO userInf0);
     void SignUp(string email, string password, string passwordRepeat);
+    UserDTO GetUserInfo();
 }

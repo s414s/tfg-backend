@@ -1,10 +1,10 @@
 using Application;
 using Application.Contracts;
 using Application.Implementations;
-using Domain.Contracts;
+using Domain.Enums;
 using Infrastructure;
 using Infrastructure.Persistence.Context;
-using Infrastructure.Persistence.Implementations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddCors(options =>
 {
@@ -25,10 +26,9 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add authentication and authorization
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
 builder.Services
-    .AddAuthentication("Bearer")
+    //.AddAuthentication("Bearer")
+    .AddAuthentication(options => options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         // TODO READ https://matteosonoio.it/aspnet-core-authentication-schemes/
@@ -38,12 +38,11 @@ builder.Services
         options.RequireHttpsMetadata = false; // make it true for poduction
         options.Authority = builder.Configuration["JWT:Issuer"];
         options.ClaimsIssuer = builder.Configuration["JWT:Issuer"];
-
-        // The target application for which the JWT is emitted
         options.Audience = builder.Configuration["JWT:Audience"];
+        options.SaveToken = true;
 
         var Key = Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!);
-        options.SaveToken = true;
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false, // on production make it true
@@ -56,16 +55,14 @@ builder.Services
             //ClockSkew = TimeSpan.Zero,
             ClockSkew = TimeSpan.FromMinutes(5),
         };
-
     });
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("IsAdming", "True"));
-    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Role", "Admin"));
+    //options.AddPolicy("AdminOnly", policy => policy.RequireRole("IsAdming", "True"));
+    //options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Role", "Admin"));
+    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Role", nameof(UserRoles.Admin)));
 });
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddApplication();
@@ -76,11 +73,7 @@ builder.Services.AddSwaggerGen();
 
 // Add services
 builder.Services.AddScoped<IAuthServices, AuthServices>();
-
-builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-
-//builder.Services.AddDbContext<DatabaseContext>(options =>
-//        options.UseNpgsql(builder.Configuration.GetConnectionString("LocalWebApiDatabase")));
+//builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 var connString = builder.Configuration.GetConnectionString("LocalWebApiDatabase");
 if (bool.TryParse(Environment.GetEnvironmentVariable("IS_DOCKER"), out bool isDocker) && isDocker)

@@ -1,14 +1,11 @@
-﻿using Application.DTO;
+﻿using Application.Contracts;
+using Application.DTO;
 using Application.Exceptions;
 using Domain.Contracts;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace Application.Handlers.Users.Query;
 
@@ -35,48 +32,29 @@ public class CreateUserTokenRequestValidator : AbstractValidator<CreateUserToken
 internal sealed class CreateUserTokenQueryHandler : IRequestHandler<CreateUserTokenRequest, LoginResponseDTO>
 {
     private readonly IRepository<User> _usersRepository;
-    private readonly string _privateKey = "todo-sacaralappconfigyasegurarmedequesealosuficientementesegura";
+    private readonly IAuthServices _authServices;
 
-    public CreateUserTokenQueryHandler(IRepository<User> usersRepository)
+    public CreateUserTokenQueryHandler(IRepository<User> usersRepository, IAuthServices authServices)
     {
         _usersRepository = usersRepository;
+        _authServices = authServices;
     }
 
     public async Task<LoginResponseDTO> Handle(CreateUserTokenRequest request, CancellationToken cancellationToken)
     {
         var user = await _usersRepository.Query
-            .FirstOrDefaultAsync(x => x.Email == request.Email && x.Password == request.Password, cancellationToken)
+            .Where(x => x.Email == request.Email && x.Password == request.Password)
+            .Select(x => new UserDTO
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Surname = x.Surname,
+                Email = x.Email,
+                Role = x.Role,
+            })
+            .FirstOrDefaultAsync(cancellationToken)
             ?? throw new EntityNotFoundException("User or password incorrect");
 
-        var privateKey = Encoding.UTF8.GetBytes(_privateKey);
-        var credentials = new SigningCredentials(new SymmetricSecurityKey(privateKey), SecurityAlgorithms.HmacSha256);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            SigningCredentials = credentials,
-            Expires = DateTime.UtcNow.AddHours(1),
-            Subject = GenerateClaims(user)
-        };
-
-        var handler = new JwtSecurityTokenHandler();
-        var token = handler.CreateToken(tokenDescriptor);
-        return new LoginResponseDTO(handler.WriteToken(token));
-    }
-
-    private static ClaimsIdentity GenerateClaims(User user)
-    {
-        var ci = new ClaimsIdentity();
-
-        ci.AddClaim(new Claim("id", user.Id.ToString()));
-        ci.AddClaim(new Claim(ClaimTypes.Name, user.Name));
-        ci.AddClaim(new Claim(ClaimTypes.GivenName, user.Name));
-        ci.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-
-        ci.AddClaim(new Claim(ClaimTypes.Role, nameof(user.Role)));
-
-        //foreach (var role in user.Roles)
-        //    ci.AddClaim(new Claim(ClaimTypes.Role, role));
-
-        return ci;
+        return new LoginResponseDTO(_authServices.GenerateJWT(user));
     }
 }

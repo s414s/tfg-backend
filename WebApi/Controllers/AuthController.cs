@@ -17,10 +17,8 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("me")]
-    public ActionResult Me()
-    {
-        return Ok();
-    }
+    public async Task<ActionResult<UserDTO>> GetActiveUserInfo([FromBody] GetUserInformationRequest request)
+        => await _mediator.Send(request);
 
     [HttpPost("login")]
     public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] CreateUserTokenRequest request)
