@@ -1,4 +1,5 @@
-﻿using Application.Handlers.Routes.Query;
+﻿using Application.DTO;
+using Application.Handlers.Routes.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,6 @@ public class CitiesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task GetAllCities()
+    public async Task<IEnumerable<CityDTO>> GetAllCities()
         => await _mediator.Send(new GetAllCitiesRequest());
 }
