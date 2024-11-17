@@ -24,12 +24,6 @@ public class AuthServices : IAuthServices
         _jwtSettings = jwtSettings.Value;
     }
 
-    public void SignUp(string email, string password, string passwordRepeat)
-    {
-        if (!password.Equals(passwordRepeat))
-            throw new Exception("passwords are not the same");
-    }
-
     public string GenerateJWT(UserDTO userInfo)
     {
         var privateKey = Encoding.UTF8.GetBytes(_jwtSettings.Key);
@@ -82,7 +76,7 @@ public class AuthServices : IAuthServices
         return claimsPrincipal;
     }
 
-    public UserDTO GetUserInfo()
+    public UserDTO GetActiveUserInfo()
     {
         ClaimsPrincipal? claimsPrincipal = _httpContext.HttpContext?.User;
 
