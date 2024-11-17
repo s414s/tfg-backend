@@ -15,7 +15,6 @@ namespace Application.Implementations;
 
 public class AuthServices : IAuthServices
 {
-    private readonly string _privateKey = "todo-sacaralappconfigyasegurarmedequesealosuficientementesegura";
     private readonly IHttpContextAccessor _httpContext;
     private readonly JwtSettings _jwtSettings;
 
@@ -33,10 +32,12 @@ public class AuthServices : IAuthServices
 
     public string GenerateJWT(UserDTO userInfo)
     {
-        //var privateKey = Encoding.UTF8.GetBytes(_privateKey);
         var privateKey = Encoding.UTF8.GetBytes(_jwtSettings.Key);
 
-        var credentials = new SigningCredentials(new SymmetricSecurityKey(privateKey), SecurityAlgorithms.HmacSha256);
+        var credentials = new SigningCredentials(
+            new SymmetricSecurityKey(privateKey),
+            SecurityAlgorithms.HmacSha256
+        );
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -81,31 +82,23 @@ public class AuthServices : IAuthServices
         return claimsPrincipal;
     }
 
-    //public static UserDTO GetUserInfo(string token)
-    //{
-    //    var claimsPrincipal = GetClaimsPrincipalFromToken(token);
-    //    return new UserDTO
-    //    {
-    //        Id = long.Parse(claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "id")?.Value),
-    //        Name = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? "",
-    //        Surname = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "surname")?.Value ?? "",
-    //        Email = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "email")?.Value ?? "",
-    //        Role = Enum.Parse<UserRoles>(claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "role")?.Value),
-    //    };
-    //}
-
     public UserDTO GetUserInfo()
     {
         ClaimsPrincipal? claimsPrincipal = _httpContext.HttpContext?.User;
 
+        var id = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
+        var name = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+        var surname = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname)?.Value;
+        var email = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+        var role = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+
         return new UserDTO
         {
-            Id = long.Parse(claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? "0"),
-            Name = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? "",
-            Surname = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "surname")?.Value ?? "",
-            Email = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "email")?.Value ?? "",
-            Role = Enum.Parse<UserRoles>(claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "role")?.Value ?? "0"),
+            Id = long.Parse(id ?? "0"),
+            Name = name ?? "",
+            Surname = surname ?? "",
+            Email = email ?? "",
+            Role = Enum.Parse<UserRoles>(role ?? "0"),
         };
     }
-
 }

@@ -1,6 +1,7 @@
 ﻿using Application.DTO;
 using Application.Handlers.Users.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -16,11 +17,20 @@ public class AuthController : ControllerBase
         _mediator = mediator;
     }
 
+    [Authorize]
     [HttpGet("me")]
-    public async Task<ActionResult<UserDTO>> GetActiveUserInfo([FromBody] GetUserInformationRequest request)
-        => await _mediator.Send(request);
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<UserDTO>> GetActiveUserInfo()
+        => await _mediator.Send(new GetUserInformationRequest());
 
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] CreateUserTokenRequest request)
         => await _mediator.Send(request);
 }

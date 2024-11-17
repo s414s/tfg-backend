@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Handlers.Users.Query;
 
-public sealed record GetUserInformationRequest() : IRequest<UserDTO> { }
+public sealed record GetUserInformationRequest : IRequest<UserDTO> { }
 
 internal sealed class GetUserInformationQueryHandler : IRequestHandler<GetUserInformationRequest, UserDTO>
 {
