@@ -17,6 +17,6 @@ internal sealed class GetUserInformationQueryHandler : IRequestHandler<GetUserIn
 
     public async Task<UserDTO> Handle(GetUserInformationRequest request, CancellationToken cancellationToken)
     {
-        return await Task.FromResult(_authServices.GetUserInfo());
+        return await Task.FromResult(_authServices.GetActiveUserInfo());
     }
 }

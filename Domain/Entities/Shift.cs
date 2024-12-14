@@ -18,8 +18,8 @@ public class Shift : EntityBase
 
     public virtual Truck? Truck { get; set; }
     public virtual Trailer? Trailer { get; set; }
-    public virtual ICollection<Pallet>? Pallets { get; set; }
-    public virtual ICollection<RouteShift>? RouteShifts { get; set; }
+    public virtual ICollection<Pallet> Pallets { get; set; } = [];
+    public virtual ICollection<RouteShift> RouteShifts { get; set; } = [];
 
 
     //public decimal GetTotalWeight() => Load?.Sum(x => x.DynamicLoad) ?? 0;

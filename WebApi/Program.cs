@@ -1,6 +1,4 @@
 using Application;
-using Application.Contracts;
-using Application.Implementations;
 using Domain.Enums;
 using Infrastructure;
 using Infrastructure.Persistence.Context;
@@ -19,7 +17,6 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"))
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("allOrigins", policyBuilder =>
@@ -88,17 +85,17 @@ builder.Services.AddSwaggerGen(c =>
             {
                 new OpenApiSecurityScheme
                 {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
                 },
-                new string[] {}
+                Array.Empty<string>()
             }
         });
     }
 );
-
-// Add services
-builder.Services.AddScoped<IAuthServices, AuthServices>();
-//builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 var connString = builder.Configuration.GetConnectionString("LocalWebApiDatabase");
 if (bool.TryParse(Environment.GetEnvironmentVariable("IS_DOCKER"), out bool isDocker) && isDocker)

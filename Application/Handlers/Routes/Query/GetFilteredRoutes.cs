@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Routes.Query;
 
-public record GetFilteredRoutesRequest : IRequest<IEnumerable<RouteDTO>>
+public sealed record GetFilteredRoutesRequest : IRequest<IEnumerable<RouteDTO>>
 {
     public string? Origin { get; init; }
     public string? Destination { get; init; }

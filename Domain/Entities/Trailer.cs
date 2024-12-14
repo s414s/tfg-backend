@@ -9,7 +9,7 @@ public class Trailer : EntityBase
     public decimal Width { get; set; }
     public decimal Height { get; set; }
 
-    public virtual Collection<Shift>? Shifts { get; set; }
+    public virtual Collection<Shift> Shifts { get; set; } = [];
     public void LoadPallet()
     {
         // TODO - check maxWeight

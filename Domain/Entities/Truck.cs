@@ -13,7 +13,7 @@ public class Truck : EntityBase
     public long DriverId { get; set; }
 
     public User Driver { get; set; }
-    public virtual ICollection<Shift>? Shifts { get; set; }
+    public virtual ICollection<Shift> Shifts { get; set; } = [];
 
     public TimeSpan Age { get => DateTime.Now - ManufacturingDate; }
 }

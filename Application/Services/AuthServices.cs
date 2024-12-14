@@ -78,21 +78,22 @@ public class AuthServices : IAuthServices
 
     public UserDTO GetActiveUserInfo()
     {
-        ClaimsPrincipal? claimsPrincipal = _httpContext.HttpContext?.User;
+        ClaimsPrincipal claimsPrincipal = _httpContext.HttpContext?.User
+            ?? throw new Exception();
 
-        var id = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
-        var name = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-        var surname = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname)?.Value;
-        var email = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-        var role = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+        var id = claimsPrincipal.Claims.First(x => x.Type == "id").Value;
+        var name = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Name).Value;
+        var surname = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Surname).Value;
+        var email = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Email).Value;
+        var role = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Role).Value;
 
         return new UserDTO
         {
-            Id = long.Parse(id ?? "0"),
-            Name = name ?? "",
-            Surname = surname ?? "",
-            Email = email ?? "",
-            Role = Enum.Parse<UserRoles>(role ?? "0"),
+            Id = long.Parse(id),
+            Name = name,
+            Surname = surname,
+            Email = email,
+            Role = Enum.Parse<UserRoles>(role),
         };
     }
 }

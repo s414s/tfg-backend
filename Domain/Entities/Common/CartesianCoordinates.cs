@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.Common;
 
-public readonly struct CartesianCoordinates
+public class CartesianCoordinates
 {
     public double X { get; init; }
     public double Y { get; init; }
