@@ -1,6 +1,8 @@
 ﻿using Application.Behaviours;
 using Application.Contracts;
 using Application.Implementations;
+using Application.Services;
+using Domain.Contracts;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +21,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(AssemblyReference.Assembly);
 
         services.AddScoped<IAuthServices, AuthServices>();
+        services.AddScoped<IUserInfo, UserInfoService>();
 
         return services;
     }

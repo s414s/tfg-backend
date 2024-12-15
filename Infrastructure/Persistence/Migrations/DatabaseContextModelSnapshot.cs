@@ -43,7 +43,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Pallet", b =>
@@ -70,7 +70,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ShiftId");
 
-                    b.ToTable("Pallets");
+                    b.ToTable("Pallets", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Route", b =>
@@ -103,7 +103,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OriginId");
 
-                    b.ToTable("Routes");
+                    b.ToTable("Routes", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.RouteShift", b =>
@@ -126,7 +126,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ShiftId");
 
-                    b.ToTable("RouteShifts");
+                    b.ToTable("RouteShifts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Shift", b =>
@@ -157,7 +157,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("TruckId");
 
-                    b.ToTable("Shifts");
+                    b.ToTable("Shifts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Trailer", b =>
@@ -179,7 +179,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Trailers");
+                    b.ToTable("Trailers", (string)null);
 
                     b.HasData(
                         new
@@ -226,7 +226,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("DriverId")
                         .IsUnique();
 
-                    b.ToTable("Trucks");
+                    b.ToTable("Trucks", (string)null);
 
                     b.HasData(
                         new
@@ -314,7 +314,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
@@ -375,7 +375,7 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.City", b =>
                 {
-                    b.OwnsOne("Domain.Entities.Common.GeographicCoordinates", "Location", b1 =>
+                    b.OwnsOne("Domain.Entities.City.Location#Domain.Entities.Common.GeographicCoordinates", "Location", b1 =>
                         {
                             b1.Property<long>("CityId")
                                 .HasColumnType("bigint");
@@ -388,7 +388,7 @@ namespace Infrastructure.Persistence.Migrations
 
                             b1.HasKey("CityId");
 
-                            b1.ToTable("Cities");
+                            b1.ToTable("Cities", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CityId");
