@@ -1,6 +1,6 @@
-﻿using Application.DTO;
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Domain.Enums;
+using Infrastructure.DTO;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
@@ -15,12 +15,12 @@ public class UserInfoService : IUserInfo
         _httpContext = httpContext;
     }
 
-    public T GetUserInfo<T>() where T : class, new()
+    public T Get<T>() where T : class, new()
     {
         ClaimsPrincipal claimsPrincipal = _httpContext.HttpContext?.User
             ?? throw new Exception();
 
-        if (typeof(T) != typeof(UserDTO))
+        if (typeof(T) != typeof(UserInfoDTO))
             throw new NotSupportedException($"User info mapping not supported for type {typeof(T)}");
 
         var id = claimsPrincipal.Claims.First(x => x.Type == "id").Value;
@@ -29,13 +29,11 @@ public class UserInfoService : IUserInfo
         var email = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Email).Value;
         var role = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Role).Value;
 
-        return (T)(object)new UserDTO
-        {
-            Id = long.Parse(id),
-            Name = name,
-            Surname = surname,
-            Email = email,
-            Role = Enum.Parse<UserRoles>(role),
-        };
+        return (T)(object)new UserInfoDTO(
+            Id: long.Parse(id),
+            Name: name,
+            Surname: surname,
+            Email: email,
+            Role: Enum.Parse<UserRoles>(role));
     }
 }

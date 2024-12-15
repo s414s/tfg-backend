@@ -2,5 +2,5 @@
 
 public interface IUserInfo
 {
-    T GetUserInfo<T>() where T : class, new();
+    T Get<T>() where T : class, new();
 }
