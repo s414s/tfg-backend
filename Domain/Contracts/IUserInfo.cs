@@ -1,6 +1,11 @@
-﻿namespace Domain.Contracts;
+﻿using Domain.Entities;
 
+namespace Domain.Contracts;
+
+//public interface IUserInfo<T> where T : class, new()
 public interface IUserInfo
 {
-    T Get<T>() where T : class, new();
+    ActiveUserInfo User { get; }
+    //T Get();
+    //T Get<T>() where T : class, new();
 }

@@ -1,5 +1,5 @@
 ﻿using Application.Contracts;
-using Application.DTO;
+using Domain.Entities;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,7 +23,7 @@ public class AuthServices : IAuthServices
         _jwtSettings = jwtSettings.Value;
     }
 
-    public string GenerateJWT(UserDTO userInfo)
+    public string GenerateJWT(ActiveUserInfo userInfo)
     {
         var privateKey = Encoding.UTF8.GetBytes(_jwtSettings.Key);
 
@@ -48,7 +48,7 @@ public class AuthServices : IAuthServices
         return handler.WriteToken(token);
     }
 
-    private static ClaimsIdentity GenerateClaims(UserDTO user)
+    private static ClaimsIdentity GenerateClaims(ActiveUserInfo user)
     {
         IReadOnlyList<Claim> claims = [
             new Claim("id", user.Id.ToString()),
@@ -64,7 +64,12 @@ public class AuthServices : IAuthServices
 
     public async Task<ClaimsPrincipal> GetClaimsPrincipalFromTokenAsync()
     {
-        var token = await _httpContext.HttpContext.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme, "Authentication");
+        var ctx = _httpContext.HttpContext
+            ?? throw new AuthenticationFailureException("Not Authenticated");
+
+        var token = await ctx.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme, "Authentication")
+            ?? throw new AuthenticationFailureException("Not Authenticated");
+
         var handler = new JwtSecurityTokenHandler();
         var claimsPrincipal = handler.ValidateToken(token, new TokenValidationParameters
         {

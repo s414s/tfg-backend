@@ -1,8 +1,8 @@
-﻿using Application.DTO;
+﻿using Domain.Entities;
 
 namespace Application.Contracts;
 
 public interface IAuthServices
 {
-    string GenerateJWT(UserDTO userInfo);
+    string GenerateJWT(ActiveUserInfo userInfo);
 }
