@@ -48,6 +48,7 @@ internal sealed class GetShiftByIdQueryHandler : IRequestHandler<GetShiftByIdReq
                     Id = x.Id,
                     Name = x.Truck.Driver.Name,
                     Surname = x.Truck.Driver.Surname,
+                    Email = $"{x.Truck.Driver.Surname}@gmail.com",
                     Role = x.Truck.Driver.Role,
                 }
             })

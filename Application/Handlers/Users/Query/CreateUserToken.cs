@@ -9,10 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Users.Query;
 
-public sealed record CreateUserTokenRequest(
-    string Email,
-    string Password
-    ) : IRequest<LoginResponseDTO>
+public sealed record CreateUserTokenRequest(string Email, string Password)
+    : IRequest<LoginResponseDTO>
 { }
 
 public class CreateUserTokenRequestValidator : AbstractValidator<CreateUserTokenRequest>
@@ -44,7 +42,7 @@ internal sealed class CreateUserTokenQueryHandler : IRequestHandler<CreateUserTo
     {
         var user = await _usersRepository.Query
             .Where(x => x.Email == request.Email && x.Password == request.Password)
-            .Select(x => new UserDTO
+            .Select(x => new ActiveUserInfo
             {
                 Id = x.Id,
                 Name = x.Name,

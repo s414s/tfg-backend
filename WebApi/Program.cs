@@ -1,4 +1,6 @@
 using Application;
+using Domain.Contracts;
+using Domain.Entities;
 using Domain.Enums;
 using Infrastructure;
 using Infrastructure.Persistence.Context;
@@ -7,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using WebApi.Helpers;
 using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -103,7 +106,9 @@ if (bool.TryParse(Environment.GetEnvironmentVariable("IS_DOCKER"), out bool isDo
     connString = builder.Configuration.GetConnectionString("WebApiDatabase");
 }
 
-builder.Services.AddInfrastructure(connString);
+builder.Services.AddScoped<IUserInfo, UserInfoHelper>();
+
+builder.Services.AddInfrastructure(connString ?? throw new NullReferenceException());
 
 var app = builder.Build();
 

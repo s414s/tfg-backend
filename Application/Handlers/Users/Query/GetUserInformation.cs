@@ -1,22 +1,22 @@
-﻿using Application.Contracts;
-using Application.DTO;
+﻿using Domain.Contracts;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Handlers.Users.Query;
 
-public sealed record GetUserInformationRequest : IRequest<UserDTO> { }
+public sealed record GetUserInformationRequest : IRequest<ActiveUserInfo> { }
 
-internal sealed class GetUserInformationQueryHandler : IRequestHandler<GetUserInformationRequest, UserDTO>
+internal sealed class GetUserInformationQueryHandler : IRequestHandler<GetUserInformationRequest, ActiveUserInfo>
 {
-    private readonly IAuthServices _authServices;
+    private readonly IUserInfo _user;
 
-    public GetUserInformationQueryHandler(IAuthServices authServices)
+    public GetUserInformationQueryHandler(IUserInfo user)
     {
-        _authServices = authServices;
+        _user = user;
     }
 
-    public async Task<UserDTO> Handle(GetUserInformationRequest request, CancellationToken cancellationToken)
+    public async Task<ActiveUserInfo> Handle(GetUserInformationRequest request, CancellationToken cancellationToken)
     {
-        return await Task.FromResult(_authServices.GetActiveUserInfo());
+        return await Task.FromResult(_user.User);
     }
 }

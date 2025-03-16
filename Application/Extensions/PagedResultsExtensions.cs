@@ -51,4 +51,16 @@ public static class PagedResultsExtensions
 
         return new PagedResults<TEntity>(items, PageSize, PageIndex, totalCount);
     }
+
+    public static PagedResults<TEntity> ToPagedResultsAsync<TEntity>(this IEnumerable<TEntity> data, int PageIndex, int PageSize)
+    {
+        int totalCount = data.Count();
+        List<TEntity> items = data
+            .Skip((PageIndex - 1) * PageSize)
+            .Take(PageSize)
+            .ToList();
+
+        return new PagedResults<TEntity>(items, PageSize, PageIndex, totalCount);
+    }
+
 }
