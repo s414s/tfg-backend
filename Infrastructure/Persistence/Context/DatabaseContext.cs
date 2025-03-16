@@ -16,6 +16,8 @@ public class DatabaseContext : DbContext
     public DbSet<City> Cities { get; set; }
     public DbSet<Shift> Shifts { get; set; }
     public DbSet<RouteShift> RouteShifts { get; set; }
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<MessageThread> MessageThreads { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,5 +29,6 @@ public class DatabaseContext : DbContext
         modelBuilder.ApplyConfiguration(new CityEntityConfigurator());
         modelBuilder.ApplyConfiguration(new ShiftEntityConfigurator());
         modelBuilder.ApplyConfiguration(new RouteShiftConfigurator());
+        modelBuilder.ApplyConfiguration(new MessageEntityConfiguration());
     }
 }

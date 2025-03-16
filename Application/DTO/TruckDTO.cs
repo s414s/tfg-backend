@@ -3,13 +3,13 @@
 public record TruckDTO
 {
     public long Id { get; init; }
-    public string Plate { get; init; } = "";
+    public required string Plate { get; init; }
     public decimal Mileage { get; init; }
     public decimal Consumption { get; init; }
-    public string DriverName { get; init; } = "";
+    public required string DriverName { get; init; }
     public long ManufacturingDateUnix { get; init; }
     public long LastMaintenanceDateUnix { get; init; }
-    public LocationDTO CurrentLocation { get; init; }
+    public required LocationDTO CurrentLocation { get; init; }
 };
 
 public record TruckWithTrailerDTO : TruckDTO

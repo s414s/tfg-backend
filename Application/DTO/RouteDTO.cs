@@ -5,14 +5,14 @@ namespace Application.DTO;
 public record RouteDTO
 {
     public long Id { get; init; }
-    public string Origin { get; init; }
-    public string Destination { get; init; }
+    public required string Origin { get; init; }
+    public required string Destination { get; init; }
     public double Distance { get; init; }
 };
 
 public record RouteWithPathDTO : RouteDTO
 {
-    public IReadOnlyList<GeographicCoordinates> Path { get; init; }
+    public IReadOnlyList<GeographicCoordinates> Path { get; init; } = [];
 }
 
 public record RouteWithScheduleDTO : RouteDTO

@@ -4,11 +4,11 @@ namespace Application.DTO;
 
 public record ShiftDTO
 {
-    public long Id { get; init; }
-    public ShiftStatus Status { get; init; }
-    public TruckDTO? Truck { get; init; }
-    public UserDTO? Driver { get; init; }
-    public string Route { get; init; } // MAD - VLC - SVL - MAD
+    public required long Id { get; init; }
+    public required ShiftStatus Status { get; init; }
+    public required TruckDTO? Truck { get; init; }
+    public required UserDTO? Driver { get; init; }
+    public required string Route { get; init; } // MAD - VLC - SVL - MAD
 };
 
 public record ShiftWithPalletsDTO : ShiftDTO

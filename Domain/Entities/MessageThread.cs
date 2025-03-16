@@ -10,4 +10,5 @@ public class MessageThread : AuditableEntityBase
     public string Teaser { get; set; } = "";
     public virtual bool IsRead { get; set; }
     public virtual User User { get; set; }
+    public virtual ICollection<Message> Messages { get; set; } = [];
 }

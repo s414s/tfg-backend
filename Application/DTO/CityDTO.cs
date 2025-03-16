@@ -2,9 +2,9 @@
 
 public record CityDTO
 {
-    public long Id { get; init; }
-    public double Lat { get; init; }
-    public double Lon { get; init; }
-    public string Name { get; set; } = "";
-    public string Code { get; set; } = "";
+    public required long Id { get; init; }
+    public required double Lat { get; init; }
+    public required double Lon { get; init; }
+    public required string Name { get; set; }
+    public required string Code { get; set; }
 }

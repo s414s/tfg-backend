@@ -10,11 +10,13 @@ public sealed record GetMessagesRequest : IRequest<PagedResults<MessageDTO>> { }
 
 internal sealed class GetMessagesQueryHandler : IRequestHandler<GetMessagesRequest, PagedResults<MessageDTO>>
 {
-    private readonly IRepository<Message> _messagesRepository;
+    private readonly IRepository<MessageThread> _threadsRepository;
+    private readonly IUserInfo _activeUserInfo;
 
-    public GetMessagesQueryHandler(IRepository<Message> messagesRepository)
+    public GetMessagesQueryHandler(IRepository<MessageThread> threadsRepository, IUserInfo activeUserInfo)
     {
-        _messagesRepository = messagesRepository;
+        _threadsRepository = threadsRepository;
+        _activeUserInfo = activeUserInfo;
     }
 
     public async Task<PagedResults<MessageDTO>> Handle(GetMessagesRequest request, CancellationToken cancellationToken)
@@ -64,11 +66,13 @@ internal sealed class GetMessagesQueryHandler : IRequestHandler<GetMessagesReque
 
         var pagR = messages.ToPagedResultsAsync(1, 10);
 
+        var query = _activeUserInfo.User.Role == Domain.Enums.UserRoles.Admin
+            ? _threadsRepository.Query.Where(x => x.DeletedDate != DateTime.MinValue)
+            : _threadsRepository.Query.Where(x => x.DeletedDate != DateTime.MinValue && x.User.Id == _activeUserInfo.User.Id);
+
         return pagR;
 
-        //return await _messagesRepository.Query
-        //    .Where(x => x.DeletedDate != DateTime.MinValue)
-        //    .Select(x => new MessageDTO
+        // return await query.Select(x => new MessageDTO
         //    {
         //        Id = x.Id,
         //        Name = x.User.Name,

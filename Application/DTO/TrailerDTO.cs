@@ -3,8 +3,8 @@
 public record TrailerDTO
 {
     public string Plate { get; init; }
-    public LocationDTO CurrentLocation { get; init; }
-    public DimensionsDTO Dimensions { get; init; }
+    public required LocationDTO CurrentLocation { get; init; }
+    public required DimensionsDTO Dimensions { get; init; }
 }
 
 public record DimensionsDTO
