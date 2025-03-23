@@ -66,7 +66,8 @@ internal sealed class GetFilteredTruckRequestHandler : IRequestHandler<GetFilter
         {
             filterQuery = filterQuery.And(x => !x.Shifts.Any(shift =>
                 // Check if shift overlaps with requested period
-                shift.StartDate <= request.EndDate && shift.ETA >= request.StartDate
+                //shift.StartDate <= request.EndDate && shift.ETA >= request.StartDate
+                true
             ));
         }
 

@@ -3,14 +3,14 @@ using Domain.Enums;
 
 namespace Domain.Entities;
 
+// TODO - borrar entidad
 public class Shift : EntityBase
 {
     public DateTime StartDate { get; set; }
-    public DateTime ETA
-    {
-        get => StartDate
-            .AddHours(RouteShifts?.Sum(x => x.Route.Duration.TotalHours) ?? 0);
-    }
+    //public DateTime ETA
+    //{
+    //    get => StartDate.AddHours(RouteShifts?.Sum(x => x.Route.Duration.TotalHours) ?? 0);
+    //}
 
     public ShiftStatus Status { get; set; }
     public long? TruckId { get; set; }
@@ -19,7 +19,6 @@ public class Shift : EntityBase
     public virtual Truck? Truck { get; set; }
     public virtual Trailer? Trailer { get; set; }
     public virtual ICollection<Pallet> Pallets { get; set; } = [];
-    public virtual ICollection<RouteShift> RouteShifts { get; set; } = [];
 
 
     //public decimal GetTotalWeight() => Load?.Sum(x => x.DynamicLoad) ?? 0;

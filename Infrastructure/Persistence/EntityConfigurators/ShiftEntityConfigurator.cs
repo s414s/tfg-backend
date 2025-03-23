@@ -32,10 +32,5 @@ public class ShiftEntityConfigurator : IEntityTypeConfiguration<Shift>
             .HasMany(s => s.Pallets)
             .WithOne(p => p.Shift)
             .HasForeignKey(p => p.ShiftId);
-
-        builder
-            .HasMany(s => s.RouteShifts)
-            .WithOne(p => p.Shift)
-            .HasForeignKey(p => p.ShiftId);
     }
 }

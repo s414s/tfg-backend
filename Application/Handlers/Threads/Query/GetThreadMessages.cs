@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.Exceptions;
 using Domain.Contracts;
 using Domain.Entities;
 using MediatR;
@@ -48,7 +49,7 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadM
                     }),
             })
             .FirstOrDefaultAsync(cancellationToken)
-            ?? throw new Exception("Thread not found"); // TODO - custom exception
+            ?? throw new EntityNotFoundException($"Thread with id {request.ThreadId} could not be found");
 
         var messages = new List<MessageDTO>
          {

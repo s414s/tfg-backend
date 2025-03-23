@@ -1,4 +1,5 @@
-﻿using Domain.Contracts;
+﻿using Application.Exceptions;
+using Domain.Contracts;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,7 @@ internal sealed class CreateThreadMessageCommandHandler : IRequestHandler<Create
         if (!await _messageThreadRepository.Query
             .AnyAsync(x => x.Id == request.ThreadId && (x.FromId == _activeUserInfo.User.Id || x.ToId == _activeUserInfo.User.Id)))
         {
-            throw new Exception("Thread not found"); // TODO - custom exception
+            throw new EntityNotFoundException($"Thread with id {request.ThreadId} could not be found");
         }
 
         var newMessage = new Message()
