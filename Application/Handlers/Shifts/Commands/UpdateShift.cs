@@ -28,18 +28,18 @@ public class UpdateShiftRequestValidator : AbstractValidator<UpdateShiftRequest>
 
 internal sealed class UpdateShiftCommandHandler : IRequestHandler<UpdateShiftRequest>
 {
-    private readonly IRepository<Shift> _shiftsRepository;
-    public UpdateShiftCommandHandler(IRepository<Shift> shiftsRepository)
+    private readonly IRepository<Freight> _freightsRepository;
+    public UpdateShiftCommandHandler(IRepository<Freight> freightsRepository)
     {
-        _shiftsRepository = shiftsRepository;
+        _freightsRepository = freightsRepository;
     }
 
     public async Task Handle(UpdateShiftRequest request, CancellationToken cancellationToken)
     {
-        var shift = await _shiftsRepository.Query
+        var shift = await _freightsRepository.Query
             .FirstOrDefaultAsync(x => x.Id == request.ShiftId, cancellationToken)
             ?? throw new EntityNotFoundException($"Shift with id {request.ShiftId} could not be found");
 
-        await _shiftsRepository.SaveChangesAsync(cancellationToken);
+        await _freightsRepository.SaveChangesAsync(cancellationToken);
     }
 }

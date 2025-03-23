@@ -37,7 +37,7 @@ public class DriverRestService
         return this;
     }
 
-    public TimeSpan GetExpectedRestTime(Shift shift)
+    public TimeSpan GetExpectedRestTime(Freight freight)
     {
         return TimeSpan.FromHours(0);
     }

@@ -33,19 +33,19 @@ public class CreatePalletCommandRequestValidator : AbstractValidator<CreatePalle
 internal sealed class CreatePalletCommandHandler : IRequestHandler<CreatePalletRequest>
 {
     private readonly IRepository<Pallet> _palletsRepository;
-    private readonly IRepository<Shift> _shiftsRepository;
+    private readonly IRepository<Freight> _freightsRepository;
 
     public CreatePalletCommandHandler(
         IRepository<Pallet> palletsRepository,
-        IRepository<Shift> shiftsRepository)
+        IRepository<Freight> freightsRepository)
     {
         _palletsRepository = palletsRepository;
-        _shiftsRepository = shiftsRepository;
+        _freightsRepository = freightsRepository;
     }
 
     public async Task Handle(CreatePalletRequest request, CancellationToken cancellationToken)
     {
-        if (!await _shiftsRepository.Query.AnyAsync(x => x.Id == request.ShiftId, cancellationToken))
+        if (!await _freightsRepository.Query.AnyAsync(x => x.Id == request.ShiftId, cancellationToken))
             throw new EntityNotFoundException($"Shift with id {request.ShiftId} could not be found");
 
         var newPallet = Pallet.New(request.Type, request.ShiftId);

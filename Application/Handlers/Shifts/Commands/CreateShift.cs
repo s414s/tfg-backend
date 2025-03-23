@@ -27,19 +27,19 @@ public class CreateShiftRequestValidator : AbstractValidator<CreateShiftRequest>
 
 internal sealed class CreateShiftCommandHandler : IRequestHandler<CreateShiftRequest>
 {
-    private readonly IRepository<Shift> _shiftsRepository;
+    private readonly IRepository<Freight> _freightsRepository;
 
-    public CreateShiftCommandHandler(IRepository<Shift> shiftsRepository)
+    public CreateShiftCommandHandler(IRepository<Freight> freightsRepository)
     {
-        _shiftsRepository = shiftsRepository;
+        _freightsRepository = freightsRepository;
     }
 
     public async Task Handle(CreateShiftRequest request, CancellationToken cancellationToken)
     {
-        await _shiftsRepository
-           .AddAndSaveChangesAsync(new Shift
+        await _freightsRepository
+           .AddAndSaveChangesAsync(new Freight
            {
-               StartDate = request.StartDate,
+               DueStart = request.StartDate,
                Status = request.Status,
            });
     }
