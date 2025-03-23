@@ -12,11 +12,6 @@ public class PalletEntityConfigurator : IEntityTypeConfiguration<Pallet>
 
         builder.Property(x => x.Height).IsRequired();
         builder.Property(x => x.Weight).IsRequired();
-
-        builder
-            .HasOne(p => p.Shift)
-            .WithMany(s => s.Pallets)
-            .HasForeignKey(p => p.ShiftId);
     }
 }
 

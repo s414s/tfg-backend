@@ -1,4 +1,5 @@
 using Domain.Entities.Base;
+using Domain.Enums;
 
 namespace Domain.Entities;
 
@@ -8,6 +9,7 @@ public class Freight : AuditableEntityBase
     public long DriverId { get; set; }
     public DateTime DueStart { get; set; }
     public DateTime DueEnd { get; set; }
+    public ShiftStatus Status { get; set; }
 
     public decimal TotalRevenue { get => Pallets.Sum(x => x.Price); }
     public decimal GetTotalWeight() => Pallets.Sum(x => x.Weight);

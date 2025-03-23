@@ -64,11 +64,11 @@ internal sealed class GetFilteredTruckRequestHandler : IRequestHandler<GetFilter
 
         if (request.IsAvailable is bool isA && isA)
         {
-            filterQuery = filterQuery.And(x => !x.Shifts.Any(shift =>
-                // Check if shift overlaps with requested period
-                //shift.StartDate <= request.EndDate && shift.ETA >= request.StartDate
-                true
-            ));
+            //filterQuery = filterQuery.And(x => !x.Shifts.Any(shift =>
+            // Check if shift overlaps with requested period
+            //shift.StartDate <= request.EndDate && shift.ETA >= request.StartDate
+            //true
+            //));
         }
 
         //if (request.IsAvailable is bool a)

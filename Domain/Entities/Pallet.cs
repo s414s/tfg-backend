@@ -13,7 +13,6 @@ public class Pallet : EntityBase
     public long ShiftId { get; set; }
     public long FreightId { get; set; }
 
-    public virtual Shift Shift { get; set; } = null!;
     public virtual Freight Freight { get; set; } = null!;
 
     public decimal Length { get => Type == PalletType.European ? 1200 : 1200; }

@@ -13,7 +13,6 @@ public class DatabaseContext : DbContext
     public DbSet<Route> Routes { get; set; }
     public DbSet<Pallet> Pallets { get; set; }
     public DbSet<City> Cities { get; set; }
-    public DbSet<Shift> Shifts { get; set; }
     public DbSet<Message> Messages { get; set; }
     public DbSet<MessageThread> MessageThreads { get; set; }
     public DbSet<Freight> Freights { get; set; }
@@ -26,7 +25,6 @@ public class DatabaseContext : DbContext
         modelBuilder.ApplyConfiguration(new RouteEntityConfigurator());
         modelBuilder.ApplyConfiguration(new PalletEntityConfigurator());
         modelBuilder.ApplyConfiguration(new CityEntityConfigurator());
-        modelBuilder.ApplyConfiguration(new ShiftEntityConfigurator());
         modelBuilder.ApplyConfiguration(new MessageEntityConfiguration());
         modelBuilder.ApplyConfiguration(new MessageThreadEntityConfigurator());
         modelBuilder.ApplyConfiguration(new FreightEntityConfiguration());

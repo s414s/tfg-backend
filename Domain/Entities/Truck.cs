@@ -24,6 +24,5 @@ public class Truck : EntityBase
         var totalVolume = area * Height;
     }
 
-    public virtual ICollection<Shift> Shifts { get; set; } = [];
     public virtual ICollection<Freight> Freights { get; set; } = [];
 }
