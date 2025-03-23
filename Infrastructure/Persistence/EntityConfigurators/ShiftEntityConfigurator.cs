@@ -19,16 +19,6 @@ public class ShiftEntityConfigurator : IEntityTypeConfiguration<Shift>
             .HasDefaultValue(ShiftStatus.Scheduled);
 
         builder
-            .HasOne(s => s.Truck)
-            .WithMany(t => t.Shifts)
-            .HasForeignKey(s => s.TruckId);
-
-        builder
-            .HasOne(s => s.Trailer)
-            .WithMany(t => t.Shifts)
-            .HasForeignKey(s => s.TrailerId);
-
-        builder
             .HasMany(s => s.Pallets)
             .WithOne(p => p.Shift)
             .HasForeignKey(p => p.ShiftId);

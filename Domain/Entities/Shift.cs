@@ -13,16 +13,9 @@ public class Shift : EntityBase
     //}
 
     public ShiftStatus Status { get; set; }
-    public long? TruckId { get; set; }
-    public long? TrailerId { get; set; }
-
-    public virtual Truck? Truck { get; set; }
-    public virtual Trailer? Trailer { get; set; }
     public virtual ICollection<Pallet> Pallets { get; set; } = [];
 
 
-    //public decimal GetTotalWeight() => Load?.Sum(x => x.DynamicLoad) ?? 0;
-    //public decimal GetTotalDistance() => Routes?.Sum(x => x.Distance) ?? 0;
     //public TimeSpan GetEstimatedDuration()
     //{
     //    var totalDuration = TimeSpan.Zero;

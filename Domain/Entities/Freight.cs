@@ -10,6 +10,8 @@ public class Freight : AuditableEntityBase
     public DateTime DueEnd { get; set; }
 
     public decimal TotalRevenue { get => Pallets.Sum(x => x.Price); }
+    public decimal GetTotalWeight() => Pallets.Sum(x => x.Weight);
+    public double GetTotalDistance() => FreightRoutes.Sum(x => x.Route.Distance);
 
     public virtual Truck Truck { get; set; } = null!;
     public virtual User Driver { get; set; } = null!;
