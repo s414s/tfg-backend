@@ -23,11 +23,6 @@ public class TruckEntityConfigurator : IEntityTypeConfiguration<Truck>
             .HasColumnType("timestamp without time zone")
             .IsRequired();
 
-        builder
-            .HasOne(t => t.Driver)
-            .WithOne(u => u.Truck)
-            .HasForeignKey<Truck>(t => t.DriverId);
-
         // Seeder
         builder.HasData([
             new Truck
@@ -40,7 +35,6 @@ public class TruckEntityConfigurator : IEntityTypeConfiguration<Truck>
                 //LastMaintenance = DateTime.SpecifyKind(new DateTime(2020, 5, 3), DateTimeKind.Utc),
                 ManufacturingDate = new DateTime(2020, 5, 3),
                 LastMaintenance = new DateTime(2020, 5, 3),
-                DriverId = 2,
             },
             new Truck
             {
@@ -50,7 +44,6 @@ public class TruckEntityConfigurator : IEntityTypeConfiguration<Truck>
                 Mileage = 75000,
                 ManufacturingDate = new DateTime(2019, 8, 15),
                 LastMaintenance = new DateTime(2023, 7, 25),
-                DriverId = 3,
             },
             new Truck
             {
@@ -60,7 +53,6 @@ public class TruckEntityConfigurator : IEntityTypeConfiguration<Truck>
                 Mileage = 120000,
                 ManufacturingDate = new DateTime(2018, 3, 10),
                 LastMaintenance = new DateTime(2023, 2, 15),
-                DriverId = 5,
             },
             new Truck
             {
@@ -70,7 +62,6 @@ public class TruckEntityConfigurator : IEntityTypeConfiguration<Truck>
                 Mileage = 95000,
                 ManufacturingDate = new DateTime(2021, 1, 21),
                 LastMaintenance = new DateTime(2024, 4, 5),
-                DriverId = 1,
             },
             new Truck
             {
@@ -80,7 +71,6 @@ public class TruckEntityConfigurator : IEntityTypeConfiguration<Truck>
                 Mileage = 80000,
                 ManufacturingDate = new DateTime(2019, 11, 30),
                 LastMaintenance = new DateTime(2023, 10, 10),
-                DriverId = 4,
             },
             ]);
     }

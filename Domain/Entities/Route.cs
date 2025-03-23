@@ -15,8 +15,8 @@ public class Route : EntityBase
     /// </summary>
     public JsonDocument Points { get; set; }
 
-    public virtual City Origin { get; set; }
-    public virtual City Destination { get; set; }
+    public virtual City Origin { get; set; } = null!;
+    public virtual City Destination { get; set; } = null!;
 
     public virtual ICollection<RouteShift> RouteShifts { get; set; } = [];
 }

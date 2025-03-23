@@ -9,8 +9,12 @@ public class Pallet : EntityBase
     public decimal Height { get; set; }
     public decimal Weight { get; set; }
     public PalletType Type { get; set; }
+    public decimal Price { get; set; }
     public long ShiftId { get; set; }
-    public virtual Shift Shift { get; set; }
+    public long FreightId { get; set; }
+
+    public virtual Shift Shift { get; set; } = null!;
+    public virtual Freight Freight { get; set; } = null!;
 
     public decimal Length { get => Type == PalletType.European ? 1200 : 1200; }
     public decimal Width { get => Type == PalletType.European ? 800 : 1000; }

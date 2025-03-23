@@ -23,36 +23,35 @@ public class GetShiftByIdRequestValidator : AbstractValidator<GetShiftByIdReques
 
 internal sealed class GetShiftByIdQueryHandler : IRequestHandler<GetShiftByIdRequest, ShiftDTO>
 {
-    private readonly IRepository<Shift> _shiftsRepository;
+    private readonly IRepository<Freight> _freightsRepository;
 
-    public GetShiftByIdQueryHandler(IRepository<Shift> shiftsRepository)
+    public GetShiftByIdQueryHandler(IRepository<Freight> freightsRepository)
     {
-        _shiftsRepository = shiftsRepository;
+        _freightsRepository = freightsRepository;
     }
 
     public async Task<ShiftDTO> Handle(GetShiftByIdRequest request, CancellationToken cancellationToken)
     {
-        return await _shiftsRepository.Query
+        return await _freightsRepository.Query
             .Where(x => x.Id == request.ShiftId)
             .Select(x => new ShiftDTO
             {
                 Id = x.Id,
-                Status = x.Status,
+                Status = Domain.Enums.ShiftStatus.Canceled, // TODO
                 Route = "TODO",
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,
                     Plate = x.Truck.Plate,
-                    DriverName = "TODO",
                     CurrentLocation = new LocationDTO { Lat = 1, Lon = 1 },
                 },
                 Driver = new UserDTO
                 {
                     Id = x.Id,
-                    Name = x.Truck.Driver.Name,
-                    Surname = x.Truck.Driver.Surname,
-                    Email = $"{x.Truck.Driver.Surname}@gmail.com",
-                    Role = x.Truck.Driver.Role,
+                    Name = x.Driver.Name,
+                    Surname = x.Driver.Surname,
+                    Email = $"{x.Driver.Surname}@gmail.com",
+                    Role = x.Driver.Role,
                 }
             })
             .FirstOrDefaultAsync(cancellationToken)

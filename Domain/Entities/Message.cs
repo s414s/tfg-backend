@@ -10,6 +10,6 @@ public class Message : EntityBase
     public bool IsRead { get; set; }
     public DateTime Date { get; set; } = DateTime.Now;
 
-    public virtual User User { get; set; }
-    public virtual MessageThread MessageThread { get; set; }
+    public virtual User User { get; set; } = null!;
+    public virtual MessageThread MessageThread { get; set; } = null!;
 }

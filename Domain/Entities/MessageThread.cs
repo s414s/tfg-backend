@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.Base;
-using System.Runtime.InteropServices;
 
 namespace Domain.Entities;
 
@@ -10,8 +9,8 @@ public class MessageThread : AuditableEntityBase
     public string Subject { get; set; } = "No Subject";
     public string Teaser { get; set; } = "";
 
-    public virtual User From { get; set; }
-    public virtual User To { get; set; }
+    public virtual User From { get; set; } = null!;
+    public virtual User To { get; set; } = null!;
     public virtual ICollection<Message> Messages { get; set; } = [];
 
     public static MessageThread Create(long author, long to, string subject, Message message)

@@ -39,7 +39,6 @@ internal sealed class GetTruckByIdRequestHandler : IRequestHandler<GetTruckByIdR
                 Plate = x.Plate,
                 Mileage = x.Mileage,
                 Consumption = x.Consumption,
-                DriverName = x.Driver.Name,
                 CurrentLocation = new LocationDTO { Lat = 1, Lon = 1 },
             })
             .FirstOrDefaultAsync(cancellationToken)

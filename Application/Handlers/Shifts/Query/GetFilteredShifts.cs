@@ -32,36 +32,36 @@ public class GetFilteredShiftsRequestValidator : AbstractValidator<GetFilteredSh
 
 internal sealed class GetFilteredShiftsQueryHandler : IRequestHandler<GetFilteredShiftsRequest, PagedResults<ShiftDTO>>
 {
-    private readonly IRepository<Shift> _shiftsRepository;
+    private readonly IRepository<Freight> _freightsRepository;
 
-    public GetFilteredShiftsQueryHandler(IRepository<Shift> shiftsRepository)
+    public GetFilteredShiftsQueryHandler(IRepository<Freight> freightsRepository)
     {
-        _shiftsRepository = shiftsRepository;
+        _freightsRepository = freightsRepository;
     }
 
     public async Task<PagedResults<ShiftDTO>> Handle(GetFilteredShiftsRequest request, CancellationToken cancellationToken)
     {
-        return await _shiftsRepository.Query
-            .Where(x => request.Status == null || x.Status == request.Status)
-            .OrderBy(x => x.StartDate)
+        return await _freightsRepository.Query
+            //.Where(x => request.Status == null || x.Status == request.Status)
+            .Where(x => request.Status == null)
+            //.OrderBy(x => x.StartDate)
             .Select(x => new ShiftDTO
             {
                 Id = x.Id,
-                Status = x.Status,
+                Status = ShiftStatus.Active, // TODO
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,
                     Plate = x.Truck.Plate,
-                    DriverName = "TODO",
                     CurrentLocation = new LocationDTO { Lat = 1, Lon = 2 },
                 },
                 Driver = new UserDTO
                 {
                     Id = x.Id,
-                    Name = x.Truck.Driver.Name,
-                    Surname = x.Truck.Driver.Surname,
-                    Email = $"{x.Truck.Driver.Surname}@gmail.com",
-                    Role = x.Truck.Driver.Role,
+                    Name = x.Driver.Name,
+                    Surname = x.Driver.Surname,
+                    Email = $"{x.Driver.Surname}@gmail.com",
+                    Role = x.Driver.Role,
                 },
                 Route = "TODO",
             })

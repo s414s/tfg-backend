@@ -12,7 +12,7 @@ public sealed record UpdateShiftRequest : IRequest
 {
     [JsonIgnore]
     public long ShiftId { get; init; }
-    public IEnumerable<long> RouteIds { get; init; }
+    public IEnumerable<long> RouteIds { get; init; } = [];
 }
 
 public class UpdateShiftRequestValidator : AbstractValidator<UpdateShiftRequest>

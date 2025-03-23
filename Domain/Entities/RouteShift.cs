@@ -7,6 +7,6 @@ public class RouteShift : EntityBase
     public long RouteId { get; set; }
     public long ShiftId { get; set; }
 
-    public virtual Route Route { get; set; }
-    public virtual Shift Shift { get; set; }
+    public virtual Route Route { get; set; } = null!;
+    public virtual Shift Shift { get; set; } = null!;
 }
