@@ -21,14 +21,9 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadM
 
     public async Task<ThreadDTO> Handle(GetThreadMessagesRequest request, CancellationToken cancellationToken)
     {
-        if (!await _threadsRepository.Query
-            .AnyAsync(x => x.Id == request.ThreadId && (x.FromId == _activeUserInfo.User.Id || x.ToId == _activeUserInfo.User.Id)))
-        {
-            throw new Exception("Thread not found"); // TODO - custom exception
-        }
-
         var messges = await _threadsRepository.Query
-            .Where(x => x.Id == request.ThreadId)
+            .AsNoTracking()
+            .Where(x => x.Id == request.ThreadId && (x.FromId == _activeUserInfo.User.Id || x.ToId == _activeUserInfo.User.Id))
             .Select(x => new ThreadDTO
             {
                 Id = x.Id,
@@ -39,18 +34,21 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadM
                 Surname = x.From.Surname,
                 Email = x.From.Email,
                 Date = x.Created.Date,
-                Messages = x.Messages.Select(y => new MessageDTO
-                {
-                    Id = y.Id,
-                    Name = y.User.Name,
-                    Surname = y.User.Surname,
-                    Email = y.User.Email,
-                    Text = y.Text,
-                    Date = y.Date,
-                    IsRead = _activeUserInfo.User.Id == y.UserId || y.IsRead,
-                }),
+                Messages = x.Messages
+                    .OrderByDescending(y => y.Date)
+                    .Select(y => new MessageDTO
+                    {
+                        Id = y.Id,
+                        Name = y.User.Name,
+                        Surname = y.User.Surname,
+                        Email = y.User.Email,
+                        Text = y.Text,
+                        Date = y.Date,
+                        IsRead = _activeUserInfo.User.Id == y.UserId || y.IsRead,
+                    }),
             })
-            .ToListAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw new Exception("Thread not found"); // TODO - custom exception
 
         var messages = new List<MessageDTO>
          {
