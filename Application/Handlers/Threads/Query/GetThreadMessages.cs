@@ -1,0 +1,107 @@
+﻿using Application.DTO;
+using Domain.Contracts;
+using Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace Application.Handlers.Messages.Query;
+
+public sealed record GetThreadMessagesRequest(long ThreadId) : IRequest<ThreadDTO> { }
+
+internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadMessagesRequest, ThreadDTO>
+{
+    private readonly IRepository<MessageThread> _threadsRepository;
+    private readonly IUserInfo _activeUserInfo;
+
+    public GetThreadMessagesQueryHandler(IRepository<MessageThread> threadsRepository, IUserInfo activeUserInfo)
+    {
+        _threadsRepository = threadsRepository;
+        _activeUserInfo = activeUserInfo;
+    }
+
+    public async Task<ThreadDTO> Handle(GetThreadMessagesRequest request, CancellationToken cancellationToken)
+    {
+        if (!await _threadsRepository.Query
+            .AnyAsync(x => x.Id == request.ThreadId && (x.FromId == _activeUserInfo.User.Id || x.ToId == _activeUserInfo.User.Id)))
+        {
+            throw new Exception("Thread not found"); // TODO - custom exception
+        }
+
+        var messges = await _threadsRepository.Query
+            .Where(x => x.Id == request.ThreadId)
+            .Select(x => new ThreadDTO
+            {
+                Id = x.Id,
+                Subject = x.Subject,
+                Teaser = x.Teaser,
+                IsRead = x.Messages.Any(m => !m.IsRead && m.UserId != _activeUserInfo.User.Id),
+                Name = x.From.Name,
+                Surname = x.From.Surname,
+                Email = x.From.Email,
+                Date = x.Created.Date,
+                Messages = x.Messages.Select(y => new MessageDTO
+                {
+                    Id = y.Id,
+                    Name = y.User.Name,
+                    Surname = y.User.Surname,
+                    Email = y.User.Email,
+                    Text = y.Text,
+                    Date = y.Date,
+                    IsRead = _activeUserInfo.User.Id == y.UserId || y.IsRead,
+                }),
+            })
+            .ToListAsync(cancellationToken);
+
+        var messages = new List<MessageDTO>
+         {
+            new() {
+                Id = 1,
+                Name = "John",
+                Surname = "Doe",
+                Email = "john.doe@example.com",
+                Text = "Hi John, we are excited to have you on board. Enjoy our service.",
+                Date = DateTime.Now.AddDays(-2),
+                IsRead = true
+            },
+            new() {
+                Id = 2,
+                Name = "Jane",
+                Surname = "Smith",
+                Email = "jane.smith@example.com",
+                Text = "Dear Jane, please review the recent changes made to your account settings.",
+                Date = DateTime.Now.AddDays(-1),
+                IsRead = false
+            },
+            new()
+            {
+                Id = 3,
+                Name = "Alice",
+                Surname = "Johnson",
+                Email = "alice.johnson@example.com",
+                Text = "Hello Alice, check out the top stories and updates in our monthly newsletter.",
+                Date = DateTime.Now,
+                IsRead = true
+            }
+         };
+
+        var thread = new ThreadDTO
+        {
+            Id = 1,
+            Name = "John",
+            Surname = "Doe",
+            Email = "john.doe@example.com",
+            Subject = "Welcome to our service",
+            Teaser = "Hello John, welcome!",
+            Date = DateTime.Now.AddDays(-2),
+            IsRead = true,
+            Messages = messages,
+        };
+
+        return thread;
+
+        //var query = _activeUserInfo.User.Role == Domain.Enums.UserRoles.Admin
+        //    ? _threadsRepository.Query.Where(x => x.DeletedDate != DateTime.MinValue)
+        //    : _threadsRepository.Query.Where(x => x.DeletedDate != DateTime.MinValue && x.User.Id == _activeUserInfo.User.Id);
+    }
+}
+

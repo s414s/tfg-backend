@@ -52,6 +52,8 @@ internal sealed class GetFilteredShiftsQueryHandler : IRequestHandler<GetFiltere
                 {
                     Id = x.Truck.Id,
                     Plate = x.Truck.Plate,
+                    DriverName = "TODO",
+                    CurrentLocation = new LocationDTO { Lat = 1, Lon = 2 },
                 },
                 Driver = new UserDTO
                 {
@@ -60,7 +62,8 @@ internal sealed class GetFilteredShiftsQueryHandler : IRequestHandler<GetFiltere
                     Surname = x.Truck.Driver.Surname,
                     Email = $"{x.Truck.Driver.Surname}@gmail.com",
                     Role = x.Truck.Driver.Role,
-                }
+                },
+                Route = "TODO",
             })
             .ToPagedResultsAsync(request.PageIndex, request.PageSize, cancellationToken);
     }

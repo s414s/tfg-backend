@@ -38,10 +38,13 @@ internal sealed class GetShiftByIdQueryHandler : IRequestHandler<GetShiftByIdReq
             {
                 Id = x.Id,
                 Status = x.Status,
+                Route = "TODO",
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,
                     Plate = x.Truck.Plate,
+                    DriverName = "TODO",
+                    CurrentLocation = new LocationDTO { Lat = 1, Lon = 1 },
                 },
                 Driver = new UserDTO
                 {

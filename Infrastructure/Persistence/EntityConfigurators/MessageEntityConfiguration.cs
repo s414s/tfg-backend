@@ -14,5 +14,10 @@ internal class MessageEntityConfiguration : IEntityTypeConfiguration<Message>
             .HasOne(c => c.MessageThread)
             .WithMany(x => x.Messages)
             .HasForeignKey(x => x.MessageThreadId);
+
+        builder
+            .HasOne(c => c.User)
+            .WithMany()
+            .HasForeignKey(x => x.UserId);
     }
 }

@@ -30,5 +30,6 @@ public class DatabaseContext : DbContext
         modelBuilder.ApplyConfiguration(new ShiftEntityConfigurator());
         modelBuilder.ApplyConfiguration(new RouteShiftConfigurator());
         modelBuilder.ApplyConfiguration(new MessageEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new MessageThreadEntityConfigurator());
     }
 }

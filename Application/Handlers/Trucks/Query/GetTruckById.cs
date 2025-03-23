@@ -40,6 +40,7 @@ internal sealed class GetTruckByIdRequestHandler : IRequestHandler<GetTruckByIdR
                 Mileage = x.Mileage,
                 Consumption = x.Consumption,
                 DriverName = x.Driver.Name,
+                CurrentLocation = new LocationDTO { Lat = 1, Lon = 1 },
             })
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw new EntityNotFoundException($"Truck with id {request.TruckId} could not be found");

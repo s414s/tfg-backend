@@ -54,6 +54,7 @@ internal sealed class GetFilteredTruckRequestHandler : IRequestHandler<GetFilter
                 Mileage = x.Mileage,
                 Consumption = x.Consumption,
                 DriverName = x.Driver.Name,
+                CurrentLocation = new LocationDTO { Lat = 1, Lon = 1 },
             })
             .ToPagedResultsAsync(request.PageIndex, request.PageSize, cancellationToken);
     }

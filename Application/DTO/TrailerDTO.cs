@@ -2,7 +2,7 @@
 
 public record TrailerDTO
 {
-    public string Plate { get; init; }
+    public required string Plate { get; init; }
     public required LocationDTO CurrentLocation { get; init; }
     public required DimensionsDTO Dimensions { get; init; }
 }
@@ -16,6 +16,6 @@ public record DimensionsDTO
 
 public record LocationDTO
 {
-    public float Lat { get; init; }
-    public float Lon { get; init; }
+    public required float Lat { get; init; }
+    public required float Lon { get; init; }
 }
