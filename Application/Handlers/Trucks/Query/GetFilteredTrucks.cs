@@ -53,7 +53,6 @@ internal sealed class GetFilteredTruckRequestHandler : IRequestHandler<GetFilter
                 Plate = x.Plate,
                 Mileage = x.Mileage,
                 Consumption = x.Consumption,
-                CurrentLocation = new LocationDTO { Lat = 1, Lon = 1 },
             })
             .ToPagedResultsAsync(request.PageIndex, request.PageSize, cancellationToken);
     }

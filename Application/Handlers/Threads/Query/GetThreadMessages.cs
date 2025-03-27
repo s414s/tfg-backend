@@ -51,6 +51,7 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadM
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw new EntityNotFoundException($"Thread with id {request.ThreadId} could not be found");
 
+
         var messages = new List<MessageDTO>
          {
             new() {

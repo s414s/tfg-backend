@@ -7,7 +7,7 @@ public class City : EntityBase
 {
     public string Name { get; set; } = "";
     public string Code { get; set; } = "";
-    public GeographicCoordinates Location { get; set; }
+    public GeographicCoordinates Location { get; set; } = null!;
 
     public virtual ICollection<Route> RouteOrigins { get; set; } = [];
     public virtual ICollection<Route> RouteDestinations { get; set; } = [];

@@ -11,7 +11,7 @@ public class DatabaseContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Truck> Trucks { get; set; }
     public DbSet<Route> Routes { get; set; }
-    public DbSet<Pallet> Pallets { get; set; }
+    public DbSet<Parcel> Pallets { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<Message> Messages { get; set; }
     public DbSet<MessageThread> MessageThreads { get; set; }

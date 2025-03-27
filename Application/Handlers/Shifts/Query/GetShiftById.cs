@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Shifts.Query;
 
-public sealed record GetShiftByIdRequest(long ShiftId) : IRequest<ShiftDTO> { }
+public sealed record GetFreightByIdRequest(long ShiftId) : IRequest<FreightDTO> { }
 
-public class GetShiftByIdRequestValidator : AbstractValidator<GetShiftByIdRequest>
+public class GetFreightByIdRequestValidator : AbstractValidator<GetFreightByIdRequest>
 {
-    public GetShiftByIdRequestValidator()
+    public GetFreightByIdRequestValidator()
     {
         RuleFor(x => x.ShiftId)
             .NotEmpty()
@@ -21,29 +21,30 @@ public class GetShiftByIdRequestValidator : AbstractValidator<GetShiftByIdReques
     }
 }
 
-internal sealed class GetShiftByIdQueryHandler : IRequestHandler<GetShiftByIdRequest, ShiftDTO>
+internal sealed class GetFreightByIdQueryHandler : IRequestHandler<GetFreightByIdRequest, FreightDTO>
 {
     private readonly IRepository<Freight> _freightsRepository;
 
-    public GetShiftByIdQueryHandler(IRepository<Freight> freightsRepository)
+    public GetFreightByIdQueryHandler(IRepository<Freight> freightsRepository)
     {
         _freightsRepository = freightsRepository;
     }
 
-    public async Task<ShiftDTO> Handle(GetShiftByIdRequest request, CancellationToken cancellationToken)
+    public async Task<FreightDTO> Handle(GetFreightByIdRequest request, CancellationToken cancellationToken)
     {
         return await _freightsRepository.Query
             .Where(x => x.Id == request.ShiftId)
-            .Select(x => new ShiftDTO
+            .Select(x => new FreightDTO
             {
                 Id = x.Id,
                 Status = Domain.Enums.ShiftStatus.Canceled, // TODO
-                Route = "TODO",
+                DueStart = x.DueStart,
+                //Routes = [], // TODO
+                //Parcels = [], // TODO
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,
                     Plate = x.Truck.Plate,
-                    CurrentLocation = new LocationDTO { Lat = 1, Lon = 1 },
                 },
                 Driver = new UserDTO
                 {

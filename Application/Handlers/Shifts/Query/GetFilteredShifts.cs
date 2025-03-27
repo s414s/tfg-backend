@@ -11,7 +11,7 @@ namespace Application.Handlers.Shifts.Query;
 
 public sealed record GetFilteredShiftsRequest(
     ShiftStatus? Status
-    ) : PagedRequest, IRequest<PagedResults<ShiftDTO>>
+    ) : PagedRequest, IRequest<PagedResults<FreightDTO>>
 { }
 
 public class GetFilteredShiftsRequestValidator : AbstractValidator<GetFilteredShiftsRequest>
@@ -30,7 +30,7 @@ public class GetFilteredShiftsRequestValidator : AbstractValidator<GetFilteredSh
     }
 }
 
-internal sealed class GetFilteredShiftsQueryHandler : IRequestHandler<GetFilteredShiftsRequest, PagedResults<ShiftDTO>>
+internal sealed class GetFilteredShiftsQueryHandler : IRequestHandler<GetFilteredShiftsRequest, PagedResults<FreightDTO>>
 {
     private readonly IRepository<Freight> _freightsRepository;
 
@@ -39,21 +39,21 @@ internal sealed class GetFilteredShiftsQueryHandler : IRequestHandler<GetFiltere
         _freightsRepository = freightsRepository;
     }
 
-    public async Task<PagedResults<ShiftDTO>> Handle(GetFilteredShiftsRequest request, CancellationToken cancellationToken)
+    public async Task<PagedResults<FreightDTO>> Handle(GetFilteredShiftsRequest request, CancellationToken cancellationToken)
     {
         return await _freightsRepository.Query
             //.Where(x => request.Status == null || x.Status == request.Status)
             .Where(x => request.Status == null)
-            //.OrderBy(x => x.StartDate)
-            .Select(x => new ShiftDTO
+            .OrderBy(x => x.DueStart)
+            .Select(x => new FreightDTO
             {
                 Id = x.Id,
+                DueStart = x.DueStart,
                 Status = ShiftStatus.Active, // TODO
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,
                     Plate = x.Truck.Plate,
-                    CurrentLocation = new LocationDTO { Lat = 1, Lon = 2 },
                 },
                 Driver = new UserDTO
                 {
@@ -63,7 +63,8 @@ internal sealed class GetFilteredShiftsQueryHandler : IRequestHandler<GetFiltere
                     Email = $"{x.Driver.Surname}@gmail.com",
                     Role = x.Driver.Role,
                 },
-                Route = "TODO",
+                //Routes = [], // TODO
+                //Parcels = [], // TODO
             })
             .ToPagedResultsAsync(request.PageIndex, request.PageSize, cancellationToken);
     }

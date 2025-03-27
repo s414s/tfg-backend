@@ -22,11 +22,11 @@ public class DeletePalletRequestValidator : AbstractValidator<DeletePalletReques
 
 internal sealed class DeletePalletCommandHandler : IRequestHandler<DeletePalletRequest>
 {
-    private readonly IRepository<Pallet> _palletsRepository;
+    private readonly IRepository<Parcel> _palletsRepository;
     private readonly IRepository<Freight> _freightsRepository;
 
     public DeletePalletCommandHandler(
-        IRepository<Pallet> palletsRepository,
+        IRepository<Parcel> palletsRepository,
         IRepository<Freight> freightsRepository)
     {
         _palletsRepository = palletsRepository;
@@ -40,8 +40,8 @@ internal sealed class DeletePalletCommandHandler : IRequestHandler<DeletePalletR
             ?? throw new EntityNotFoundException($"Pallet with id {request.PalletId} could not be found");
 
         var shift = await _freightsRepository.Query
-            .FirstOrDefaultAsync(x => x.Id == pallet.ShiftId, cancellationToken)
-            ?? throw new EntityNotFoundException($"Shift with id {pallet.ShiftId} could not be found");
+            .FirstOrDefaultAsync(x => x.Id == pallet.FreightId, cancellationToken)
+            ?? throw new EntityNotFoundException($"Shift with id {pallet.FreightId} could not be found");
 
         if (shift.Status != ShiftStatus.Scheduled)
             throw new ShiftStatusException($"A shift must be in status {nameof(ShiftStatus.Scheduled)}");

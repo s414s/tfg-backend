@@ -8,16 +8,16 @@ using System.Text.Json.Serialization;
 
 namespace Application.Handlers.Shifts.Commands;
 
-public sealed record UpdateShiftRequest : IRequest
+public sealed record UpdateFreightRequest : IRequest
 {
     [JsonIgnore]
     public long ShiftId { get; init; }
     public IEnumerable<long> RouteIds { get; init; } = [];
 }
 
-public class UpdateShiftRequestValidator : AbstractValidator<UpdateShiftRequest>
+public class UpdateFreightRequestValidator : AbstractValidator<UpdateFreightRequest>
 {
-    public UpdateShiftRequestValidator()
+    public UpdateFreightRequestValidator()
     {
         RuleFor(x => x.ShiftId)
             .NotEmpty()
@@ -26,15 +26,15 @@ public class UpdateShiftRequestValidator : AbstractValidator<UpdateShiftRequest>
     }
 }
 
-internal sealed class UpdateShiftCommandHandler : IRequestHandler<UpdateShiftRequest>
+internal sealed class UpdateFreightCommandHandler : IRequestHandler<UpdateFreightRequest>
 {
     private readonly IRepository<Freight> _freightsRepository;
-    public UpdateShiftCommandHandler(IRepository<Freight> freightsRepository)
+    public UpdateFreightCommandHandler(IRepository<Freight> freightsRepository)
     {
         _freightsRepository = freightsRepository;
     }
 
-    public async Task Handle(UpdateShiftRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateFreightRequest request, CancellationToken cancellationToken)
     {
         var shift = await _freightsRepository.Query
             .FirstOrDefaultAsync(x => x.Id == request.ShiftId, cancellationToken)

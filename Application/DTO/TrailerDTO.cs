@@ -1,12 +1,5 @@
 ﻿namespace Application.DTO;
 
-public record TrailerDTO
-{
-    public required string Plate { get; init; }
-    public required LocationDTO CurrentLocation { get; init; }
-    public required DimensionsDTO Dimensions { get; init; }
-}
-
 public record DimensionsDTO
 {
     public decimal Length { get; init; }

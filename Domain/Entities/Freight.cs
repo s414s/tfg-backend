@@ -7,17 +7,19 @@ public class Freight : AuditableEntityBase
 {
     public long TruckId { get; set; }
     public long DriverId { get; set; }
+    public long StartCityId { get; set; }
     public DateTime DueStart { get; set; }
-    public DateTime DueEnd { get; set; }
+    public DateTime DueEnd { get; set; } // TODO - computed
     public ShiftStatus Status { get; set; }
 
-    public decimal TotalRevenue { get => Pallets.Sum(x => x.Price); }
-    public decimal GetTotalWeight() => Pallets.Sum(x => x.Weight);
+    public decimal TotalRevenue { get => Parcels.Sum(x => x.Price); }
+    public decimal GetTotalWeight() => Parcels.Sum(x => x.Weight);
     public double GetTotalDistance() => FreightRoutes.Sum(x => x.Route.Distance);
 
     public virtual Truck Truck { get; set; } = null!;
     public virtual User Driver { get; set; } = null!;
-    public virtual ICollection<Pallet> Pallets { get; set; } = [];
+    public virtual City StartCity { get; set; } = null!;
+    public virtual ICollection<Parcel> Parcels { get; set; } = [];
     public virtual ICollection<FreightRoute> FreightRoutes { get; set; } = [];
 }
 
