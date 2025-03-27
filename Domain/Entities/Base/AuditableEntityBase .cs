@@ -4,7 +4,7 @@ public class AuditableEntityBase : EntityBase
 {
     public DateTimeOffset DeletedDate { get; set; }
     public long DeletedBy { get; set; }
-    public DateTimeOffset Created { get; set; }
+    public DateTimeOffset Created { get; set; } = DateTimeOffset.Now;
     public long CreatedBy { get; set; }
     public DateTimeOffset LastModified { get; set; }
     public long LastModifiedBy { get; set; }

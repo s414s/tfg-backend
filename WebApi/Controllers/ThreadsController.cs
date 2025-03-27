@@ -1,12 +1,16 @@
 ﻿using Application.DTO;
+using Application.Extensions;
 using Application.Handlers.Messages.Query;
 using Application.Handlers.Threads.Commands;
+using Application.Handlers.Threads.Query;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
+//[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ThreadsController : ControllerBase
@@ -18,16 +22,23 @@ public class ThreadsController : ControllerBase
         _mediator = mediator;
     }
 
-    //[Authorize]
-    [HttpGet("{threadId:long}")]
+    [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<ThreadDTO>> GetThreadMessages(long threadId)
+    public async Task<ActionResult<PagedResults<ThreadDTO>>> GetThreadMessages()
+         => await _mediator.Send(new GetThreadsRequest(1, 10));
+
+    [HttpGet("{threadId:long}/Messages")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<MessageDTO>>> GetThreadMessages(long threadId)
         => await _mediator.Send(new GetThreadMessagesRequest(threadId));
 
-    [HttpPost("/{threadId:long}/Message")]
+    [HttpPost("/{threadId:long}/Messages")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]

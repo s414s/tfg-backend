@@ -21,5 +21,5 @@ public sealed record ThreadDTO
     public required string Teaser { get; init; }
     public required DateTime Date { get; init; }
     public required bool IsRead { get; init; }
-    public required IEnumerable<MessageDTO> Messages { get; init; }
+    public IEnumerable<MessageDTO> Messages { get; init; } = [];
 }

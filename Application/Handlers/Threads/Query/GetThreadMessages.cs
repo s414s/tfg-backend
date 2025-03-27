@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Messages.Query;
 
-public sealed record GetThreadMessagesRequest(long ThreadId) : IRequest<ThreadDTO> { }
+public sealed record GetThreadMessagesRequest(long ThreadId) : IRequest<List<MessageDTO>> { }
 
-internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadMessagesRequest, ThreadDTO>
+internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadMessagesRequest, List<MessageDTO>>
 {
     private readonly IRepository<MessageThread> _threadsRepository;
     private readonly IUserInfo _activeUserInfo;
@@ -20,7 +20,7 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadM
         _activeUserInfo = activeUserInfo;
     }
 
-    public async Task<ThreadDTO> Handle(GetThreadMessagesRequest request, CancellationToken cancellationToken)
+    public async Task<List<MessageDTO>> Handle(GetThreadMessagesRequest request, CancellationToken cancellationToken)
     {
         var messges = await _threadsRepository.Query
             .AsNoTracking()
@@ -96,11 +96,7 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadM
             Messages = messages,
         };
 
-        return thread;
-
-        //var query = _activeUserInfo.User.Role == Domain.Enums.UserRoles.Admin
-        //    ? _threadsRepository.Query.Where(x => x.DeletedDate != DateTime.MinValue)
-        //    : _threadsRepository.Query.Where(x => x.DeletedDate != DateTime.MinValue && x.User.Id == _activeUserInfo.User.Id);
+        return messages;
     }
 }
 

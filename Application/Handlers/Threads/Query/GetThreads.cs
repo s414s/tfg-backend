@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Threads.Query;
 
-public sealed record GetThreadsRequest() : IRequest<PagedResults<ThreadDTO>> { }
+public sealed record GetThreadsRequest(int PageIndex, int PageSize) : IRequest<PagedResults<ThreadDTO>> { }
 
 internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadsRequest, PagedResults<ThreadDTO>>
 {
@@ -23,22 +23,22 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreads
     public async Task<PagedResults<ThreadDTO>> Handle(GetThreadsRequest request, CancellationToken cancellationToken)
     {
         var threads = await _threadsRepository.Query
-            .AsNoTracking()
+            //.Include(x => x.Messages)
+            .Include(x => x.Messages.Where(m => !m.IsRead && m.UserId != _activeUserInfo.User.Id))
             .Where(x => x.ToId == _activeUserInfo.User.Id || x.FromId == _activeUserInfo.User.Id)
-            .OrderByDescending(y => y.Messages.OrderByDescending(z => z.Date).First().Date)
+            //.OrderByDescending(y => y.Messages.OrderByDescending(z => z.Date).First().Date)
             .Select(x => new ThreadDTO
             {
                 Id = x.Id,
                 Subject = x.Subject,
                 Teaser = x.Teaser,
-                IsRead = x.Messages.Any(m => !m.IsRead && m.UserId != _activeUserInfo.User.Id),
+                IsRead = x.Messages.Count > 0,
                 Name = x.From.Name,
                 Surname = x.From.Surname,
                 Email = x.From.Email,
                 Date = x.Created.Date,
-                Messages = Enumerable.Empty<MessageDTO>(),
             })
-            .ToPagedResultsAsync(1, 1, cancellationToken); // TODO
+            .ToPagedResultsAsync(request.PageIndex, request.PageSize, cancellationToken);
 
         return threads;
 
