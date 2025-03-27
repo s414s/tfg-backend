@@ -6,7 +6,6 @@ public class Truck : EntityBase
 {
     public required string Plate { get; set; }
     public decimal Mileage { get; set; }
-    //public decimal MaxWeight { get; set; }
     public decimal Consumption { get; set; } // l/km
     public DateTime ManufacturingDate { get; set; }
     public DateTime LastMaintenance { get; set; }
@@ -19,7 +18,6 @@ public class Truck : EntityBase
 
     public void LoadPallet(Pallet pallet)
     {
-        // TODO - check maxWeight
         var area = Width * Length;
         var totalVolume = area * Height;
     }

@@ -6,9 +6,9 @@ namespace Application.Handlers.Threads.Commands;
 
 public sealed record CreateThreadRequest : IRequest<long>
 {
-    public long ToId { get; init; }
-    public string Text { get; init; } = "";
-    public string Subject { get; init; } = "";
+    public required long ToId { get; init; }
+    public required string Text { get; init; } = "";
+    public required string Subject { get; init; } = "";
 }
 
 internal sealed class CreateThreadCommandHandler : IRequestHandler<CreateThreadRequest, long>
