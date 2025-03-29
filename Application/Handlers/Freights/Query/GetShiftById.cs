@@ -6,7 +6,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Handlers.Shifts.Query;
+namespace Application.Handlers.Freights.Query;
 
 public sealed record GetFreightByIdRequest(long ShiftId) : IRequest<FreightDTO> { }
 

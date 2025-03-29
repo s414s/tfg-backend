@@ -7,7 +7,7 @@ using Domain.Enums;
 using FluentValidation;
 using MediatR;
 
-namespace Application.Handlers.Shifts.Query;
+namespace Application.Handlers.Freights.Query;
 
 public sealed record GetFilteredShiftsRequest(
     ShiftStatus? Status

@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace Application.Handlers.Shifts.Commands;
+namespace Application.Handlers.Freights.Commands;
 
 public sealed record UpdateFreightRequest : IRequest
 {

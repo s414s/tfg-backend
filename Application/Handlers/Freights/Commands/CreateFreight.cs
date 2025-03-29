@@ -5,7 +5,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Handlers.Shifts.Commands;
+namespace Application.Handlers.Freights.Commands;
 
 public sealed record CreateFreightRequest() : IRequest
 {

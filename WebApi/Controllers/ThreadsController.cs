@@ -13,14 +13,9 @@ namespace WebApi.Controllers;
 //[Authorize]
 [ApiController]
 [Route("[controller]")]
-public class ThreadsController : ControllerBase
+public class ThreadsController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public ThreadsController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
 
     [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]

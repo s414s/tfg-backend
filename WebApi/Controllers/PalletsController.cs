@@ -6,14 +6,9 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class PalletsController : ControllerBase
+public class PalletsController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public PalletsController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
 
     [HttpPost("{shiftId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

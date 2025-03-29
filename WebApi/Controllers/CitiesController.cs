@@ -7,14 +7,9 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CitiesController : ControllerBase
+public class CitiesController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public CitiesController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
 
     [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]

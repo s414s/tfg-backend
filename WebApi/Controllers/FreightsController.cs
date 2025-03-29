@@ -1,8 +1,8 @@
 ﻿using Application.DTO;
 using Application.Extensions;
+using Application.Handlers.Freights.Commands;
+using Application.Handlers.Freights.Query;
 using Application.Handlers.Routes.Query;
-using Application.Handlers.Shifts.Commands;
-using Application.Handlers.Shifts.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,14 +10,9 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class FreightsController : ControllerBase
+public class FreightsController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public FreightsController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly IMediator _mediator = mediator;
 
     [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
