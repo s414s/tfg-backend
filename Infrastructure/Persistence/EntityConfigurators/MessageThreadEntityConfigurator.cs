@@ -35,6 +35,8 @@ public class MessageThreadEntityConfigurator : IEntityTypeConfiguration<MessageT
                 Teaser = "Let's schedule a kickoff meeting for the new project.",
                 Created = DateTime.UtcNow,
                 CreatedBy = 1,
+                LastModified = DateTime.UtcNow.AddDays(-1),
+                LastModifiedBy = 1,
             },
             new MessageThread
             {
@@ -45,6 +47,8 @@ public class MessageThreadEntityConfigurator : IEntityTypeConfiguration<MessageT
                 Teaser = "Don't forget about our meeting tomorrow at 10 AM.",
                 Created = DateTime.UtcNow.AddHours(-2),
                 CreatedBy = 1,
+                LastModified = DateTime.UtcNow.AddDays(-1),
+                LastModifiedBy = 1,
             },
             new MessageThread
             {
@@ -54,6 +58,8 @@ public class MessageThreadEntityConfigurator : IEntityTypeConfiguration<MessageT
                 // This instance uses the default subject ("No Subject") and an empty teaser.
                 Created = DateTime.UtcNow.AddDays(-1),
                 CreatedBy = 1,
+                LastModified = DateTime.UtcNow.AddDays(-1),
+                LastModifiedBy = 1,
             },
             new MessageThread
             {
@@ -64,6 +70,8 @@ public class MessageThreadEntityConfigurator : IEntityTypeConfiguration<MessageT
                 Teaser = "Please review the attached proposal document.",
                 Created = DateTime.UtcNow.AddMinutes(-30),
                 CreatedBy = 1,
+                LastModified = DateTime.UtcNow.AddDays(-1),
+                LastModifiedBy = 1,
             }]);
     }
 }

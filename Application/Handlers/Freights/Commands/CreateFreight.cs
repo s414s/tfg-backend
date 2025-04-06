@@ -51,15 +51,14 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
         if (routes.Count() != request.RoutesIds.Count())
             throw new Exception("some routes do not exist"); // TODO - custom exception
 
-        await _freightsRepository
-           .AddAndSaveChangesAsync(new Freight
-           {
-               DueStart = request.StartDate,
-               Status = request.Status,
-               FreightRoutes = routes.Select(x => new FreightRoute
-               {
-                   RouteId = x.Id,
-               }).ToArray(),
-           });
+        await _freightsRepository.AddAndSaveChangesAsync(new Freight
+        {
+            DueStart = request.StartDate,
+            Status = request.Status,
+            FreightRoutes = routes.Select(x => new FreightRoute
+            {
+                RouteId = x.Id,
+            }).ToArray(),
+        });
     }
 }

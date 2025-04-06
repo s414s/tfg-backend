@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Freights.Query;
 
-public sealed record GetFreightByIdRequest(long ShiftId) : IRequest<FreightDTO> { }
+public sealed record GetFreightByIdRequest(long FreightId) : IRequest<FreightDTO> { }
 
 public class GetFreightByIdRequestValidator : AbstractValidator<GetFreightByIdRequest>
 {
     public GetFreightByIdRequestValidator()
     {
-        RuleFor(x => x.ShiftId)
+        RuleFor(x => x.FreightId)
             .NotEmpty()
             .GreaterThanOrEqualTo(1)
             .WithMessage("{PropertyName} must be greater than 0.");
@@ -33,7 +33,7 @@ internal sealed class GetFreightByIdQueryHandler : IRequestHandler<GetFreightByI
     public async Task<FreightDTO> Handle(GetFreightByIdRequest request, CancellationToken cancellationToken)
     {
         return await _freightsRepository.Query
-            .Where(x => x.Id == request.ShiftId)
+            .Where(x => x.Id == request.FreightId)
             .Select(x => new FreightDTO
             {
                 Id = x.Id,
@@ -56,6 +56,6 @@ internal sealed class GetFreightByIdQueryHandler : IRequestHandler<GetFreightByI
                 }
             })
             .FirstOrDefaultAsync(cancellationToken)
-            ?? throw new EntityNotFoundException($"Shift with id {request.ShiftId} could not be found");
+            ?? throw new EntityNotFoundException($"Shift with id {request.FreightId} could not be found");
     }
 }

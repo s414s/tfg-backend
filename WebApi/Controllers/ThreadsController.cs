@@ -5,7 +5,6 @@ using Application.Handlers.Threads.Commands;
 using Application.Handlers.Threads.Query;
 using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -40,6 +39,14 @@ public class ThreadsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<long>> CreateThreadMessage(long threadId, [FromBody] CreateThreadMessageRequest request)
         => await _mediator.Send(request with { ThreadId = threadId });
+
+    [HttpPut("/{threadId:long}/Messages")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<bool>> MarkThreadAsRead(long threadId)
+        => await _mediator.Send(new MarkThreadAsReadRequest(threadId));
 
     [HttpPost("")]
     [ProducesResponseType(StatusCodes.Status200OK)]

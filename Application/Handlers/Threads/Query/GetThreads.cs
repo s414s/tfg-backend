@@ -23,20 +23,19 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreads
     public async Task<PagedResults<ThreadDTO>> Handle(GetThreadsRequest request, CancellationToken cancellationToken)
     {
         var threads = await _threadsRepository.Query
-            //.Include(x => x.Messages)
             .Include(x => x.Messages.Where(m => !m.IsRead && m.UserId != _activeUserInfo.User.Id))
             .Where(x => x.ToId == _activeUserInfo.User.Id || x.FromId == _activeUserInfo.User.Id)
-            //.OrderByDescending(y => y.Messages.OrderByDescending(z => z.Date).First().Date)
+            .OrderByDescending(x => x.LastModified)
             .Select(x => new ThreadDTO
             {
                 Id = x.Id,
                 Subject = x.Subject,
                 Teaser = x.Teaser,
-                IsRead = x.Messages.Count > 0,
+                IsRead = x.Messages.Any(m => m.UserId != _activeUserInfo.User.Id && !m.IsRead),
                 Name = x.From.Name,
                 Surname = x.From.Surname,
                 Email = x.From.Email,
-                Date = x.Created.Date,
+                Date = x.LastModified.Date,
             })
             .ToPagedResultsAsync(request.PageIndex, request.PageSize, cancellationToken);
 
