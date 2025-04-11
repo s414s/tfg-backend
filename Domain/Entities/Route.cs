@@ -13,7 +13,7 @@ public class Route : EntityBase
     /// <summary>
     /// Collection of Geographic Coordinates
     /// </summary>
-    public JsonDocument Points { get; set; }
+    public JsonDocument? Points { get; set; }
 
     public virtual City Origin { get; set; } = null!;
     public virtual City Destination { get; set; } = null!;

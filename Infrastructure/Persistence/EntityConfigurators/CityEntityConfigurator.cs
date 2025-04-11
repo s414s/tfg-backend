@@ -21,18 +21,18 @@ public class CityEntityConfigurator : IEntityTypeConfiguration<City>
 
             // Seed data for the owned type.
             loc.HasData(
-                new { CityId = 1L, Latitude = 41.6488, Longitude = -0.8891 },
-                new { CityId = 2L, Latitude = 41.3851, Longitude = 2.1734 },
-                new { CityId = 3L, Latitude = 40.4168, Longitude = -3.7038 },
-                new { CityId = 4L, Latitude = 39.4699, Longitude = -0.3763 },
-                new { CityId = 5L, Latitude = 37.3891, Longitude = -5.9845 },
-                new { CityId = 6L, Latitude = 37.8882, Longitude = -4.7794 },
-                new { CityId = 7L, Latitude = 37.9922, Longitude = -1.1307 },
-                new { CityId = 8L, Latitude = 41.6176, Longitude = 0.6200 },
-                new { CityId = 9L, Latitude = 38.9943, Longitude = -1.8561 },
-                new { CityId = 10L, Latitude = 38.9861, Longitude = -3.9269 },
-                new { CityId = 11L, Latitude = 37.18817, Longitude = -3.60667 },
-                new { CityId = 12L, Latitude = 40.3453, Longitude = -1.1068 }
+                new { CityId = 1L, Lat = 41.6488, Lon = -0.8891 },
+                new { CityId = 2L, Lat = 41.3851, Lon = 2.1734 },
+                new { CityId = 3L, Lat = 40.4168, Lon = -3.7038 },
+                new { CityId = 4L, Lat = 39.4699, Lon = -0.3763 },
+                new { CityId = 5L, Lat = 37.3891, Lon = -5.9845 },
+                new { CityId = 6L, Lat = 37.8882, Lon = -4.7794 },
+                new { CityId = 7L, Lat = 37.9922, Lon = -1.1307 },
+                new { CityId = 8L, Lat = 41.6176, Lon = 0.6200 },
+                new { CityId = 9L, Lat = 38.9943, Lon = -1.8561 },
+                new { CityId = 10L, Lat = 38.9861, Lon = -3.9269 },
+                new { CityId = 11L, Lat = 37.18817, Lon = -3.60667 },
+                new { CityId = 12L, Lat = 40.3453, Lon = -1.1068 }
             );
         });
 
