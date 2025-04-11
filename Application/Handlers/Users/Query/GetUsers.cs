@@ -1,20 +1,21 @@
 ﻿using Application.DTO;
+using Application.DTO.Base;
+using Application.Extensions;
 using Domain.Contracts;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Users.Query;
 
-public sealed record GetUsersRequest : IRequest<IEnumerable<UserDTO>>
+public sealed record GetUsersRequest : PagedRequest, IRequest<PagedResults<UserDTO>>
 {
     public string? Email { get; set; }
     public string? Name { get; set; }
     public string? Surname { get; set; }
 }
 
-internal sealed class GetUsersRequestHandler : IRequestHandler<GetUsersRequest, IEnumerable<UserDTO>>
+internal sealed class GetUsersRequestHandler : IRequestHandler<GetUsersRequest, PagedResults<UserDTO>>
 {
     private readonly IRepository<User> _usersRepository;
 
@@ -23,7 +24,7 @@ internal sealed class GetUsersRequestHandler : IRequestHandler<GetUsersRequest, 
         _usersRepository = usersRepository;
     }
 
-    public async Task<IEnumerable<UserDTO>> Handle(GetUsersRequest request, CancellationToken cancellationToken)
+    public async Task<PagedResults<UserDTO>> Handle(GetUsersRequest request, CancellationToken cancellationToken)
     {
         return await _usersRepository.Query
             .Where(x => request.Email == null || x.Email.Contains(request.Email))
@@ -37,6 +38,6 @@ internal sealed class GetUsersRequestHandler : IRequestHandler<GetUsersRequest, 
                 Email = x.Email,
                 Role = x.Role,
             })
-            .ToListAsync(cancellationToken);
+            .ToPagedResultsAsync(request.PageIndex, request.PageSize, cancellationToken);
     }
 }

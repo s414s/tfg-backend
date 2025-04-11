@@ -1,27 +1,42 @@
 ﻿namespace Domain.Entities.Common;
 
-public class GeographicCoordinates
+public record GeographicCoordinates
 {
-    private readonly double[] LatRange = [-90, 90];
-    private readonly double[] LonRange = [-180, 180];
-
-    public double Lat { get; private set; }
-    public double Lon { get; private set; }
+    public double Lat { get; init; }
+    public double Lon { get; init; }
 
     private GeographicCoordinates() { }
 
-    public GeographicCoordinates(double lat, double lon)
+    //public GeographicCoordinates(double lat, double lon)
+    //{
+    //    if (!LatRange.Contains(lat))
+    //        throw new ArgumentOutOfRangeException(nameof(lat),
+    //            $"Latitude must be between {LatRange.First()} and {LatRange.Last()} degrees.");
+
+    //    if (!LonRange.Contains(lon))
+    //        throw new ArgumentOutOfRangeException(nameof(lon),
+    //            $"Longitude must be between {LonRange.First()} and {LonRange.Last()} degrees.");
+
+    //    Lat = lat;
+    //    Lon = lon;
+    //}
+
+    public static GeographicCoordinates Create(double lat, double lon)
     {
-        if (!LatRange.Contains(lat))
+        var minLat = -90;
+        var maxLat = -90;
+        var minLong = -180;
+        var maxLong = 180;
+
+        if (lat < minLat || lat > maxLat)
             throw new ArgumentOutOfRangeException(nameof(lat),
-                $"Latitude must be between {LatRange.First()} and {LatRange.Last()} degrees.");
+                $"Latitude must be between {minLat} and {maxLat} degrees.");
 
-        if (!LonRange.Contains(lon))
+        if (lon < minLong || lon > maxLong)
             throw new ArgumentOutOfRangeException(nameof(lon),
-                $"Longitude must be between {LonRange.First()} and {LonRange.Last()} degrees.");
+                $"Longitude must be between {minLong} and {maxLong} degrees.");
 
-        Lat = lat;
-        Lon = lon;
+        return new GeographicCoordinates { Lat = lat, Lon = lon };
     }
 
     public CartesianCoordinates ToCartesianCoordinates()
