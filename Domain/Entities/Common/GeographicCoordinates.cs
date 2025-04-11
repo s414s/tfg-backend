@@ -24,7 +24,7 @@ public record GeographicCoordinates
     public static GeographicCoordinates Create(double lat, double lon)
     {
         var minLat = -90;
-        var maxLat = -90;
+        var maxLat = 90;
         var minLong = -180;
         var maxLong = 180;
 
