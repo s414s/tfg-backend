@@ -64,6 +64,36 @@ public class CityEntityConfigurator : IEntityTypeConfiguration<City>
                 Id = 7,
                 Name = "Murcia",
                 Location = GeographicCoordinates.Create(37.9922, -1.1307)
+            },
+            new City
+            {
+                Id = 8,
+                Name = "Lerida",
+                Location = GeographicCoordinates.Create(41.6176, 0.6200)
+            },
+            new City
+            {
+                Id = 9,
+                Name = "Albacete",
+                Location = GeographicCoordinates.Create(38.9943, -1.8561)
+            },
+            new City
+            {
+                Id = 10,
+                Name = "Ciudad Real",
+                Location = GeographicCoordinates.Create(38.9861, -3.9269)
+            },
+            new City
+            {
+                Id = 11,
+                Name = "Granada",
+                Location = GeographicCoordinates.Create(37.18817, -3.60667)
+            },
+            new City
+            {
+                Id = 12,
+                Name = "Teruel",
+                Location = GeographicCoordinates.Create(40.3453, -1.1068)
             }
             ]);
     }
