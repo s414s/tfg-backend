@@ -21,9 +21,9 @@ public class FreightEntityConfiguration : IEntityTypeConfiguration<Freight>
             .HasForeignKey(x => x.TruckId);
 
         builder
-            .HasMany(c => c.FreightRoutes)
-            .WithOne(x => x.Freight)
-            .HasForeignKey(x => x.FreightId);
+            .HasOne(c => c.Route)
+            .WithMany()
+            .HasForeignKey(x => x.RouteId);
 
         builder
             .HasOne(c => c.StartCity)

@@ -43,8 +43,8 @@ internal sealed class DeletePalletCommandHandler : IRequestHandler<DeletePalletR
             .FirstOrDefaultAsync(x => x.Id == pallet.FreightId, cancellationToken)
             ?? throw new EntityNotFoundException($"Shift with id {pallet.FreightId} could not be found");
 
-        if (shift.Status != ShiftStatus.Scheduled)
-            throw new ShiftStatusException($"A shift must be in status {nameof(ShiftStatus.Scheduled)}");
+        if (shift.Status != FreightStatus.Scheduled)
+            throw new ShiftStatusException($"A shift must be in status {nameof(FreightStatus.Scheduled)}");
 
         await _palletsRepository.RemoveAsync(request.PalletId);
         await _palletsRepository.SaveChangesAsync(cancellationToken);

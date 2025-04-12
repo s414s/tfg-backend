@@ -1,6 +1,6 @@
 ﻿namespace Domain.Enums;
 
-public enum ShiftStatus
+public enum FreightStatus
 {
     Scheduled = 1,
     Active = 2,

@@ -14,7 +14,7 @@ public sealed record GetFilteredTrucksRequest(
     bool? IsAvailable,
     DateTime? StartDate,
     DateTime? EndDate,
-    ShiftStatus? Status
+    FreightStatus? Status
     ) : SortedRequest, IRequest<PagedResults<TruckDTO>>
 { }
 

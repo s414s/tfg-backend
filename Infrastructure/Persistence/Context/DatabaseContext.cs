@@ -16,7 +16,6 @@ public class DatabaseContext : DbContext
     public DbSet<Message> Messages { get; set; }
     public DbSet<MessageThread> MessageThreads { get; set; }
     public DbSet<Freight> Freights { get; set; }
-    public DbSet<FreightRoute> FreightRoutes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -15,7 +15,7 @@ public class Parcel : EntityBase
     public virtual City Origin { get; set; } = null!;
     public virtual City Destination { get; set; } = null!;
 
-    public static Parcel New(long shiftId)
+    public static Parcel Create(long shiftId)
     {
         return new Parcel { FreightId = shiftId };
     }

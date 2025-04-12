@@ -42,7 +42,7 @@ internal sealed class CreatePalletCommandHandler : IRequestHandler<CreatePalletR
         if (!await _freightsRepository.Query.AnyAsync(x => x.Id == request.ShiftId, cancellationToken))
             throw new EntityNotFoundException($"Shift with id {request.ShiftId} could not be found");
 
-        var newPallet = Parcel.New(request.ShiftId);
+        var newPallet = Parcel.Create(request.ShiftId);
         await _palletsRepository.AddAndSaveChangesAsync(newPallet, cancellationToken);
     }
 }

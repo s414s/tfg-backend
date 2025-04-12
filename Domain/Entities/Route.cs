@@ -17,5 +17,4 @@ public class Route : EntityBase
 
     public virtual City Origin { get; set; } = null!;
     public virtual City Destination { get; set; } = null!;
-    public virtual ICollection<FreightRoute> FreightRoutes { get; set; } = [];
 }

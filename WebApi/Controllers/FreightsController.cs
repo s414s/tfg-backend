@@ -19,7 +19,7 @@ public class FreightsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<PagedResults<FreightDTO>>> GetFilteredShifts([FromQuery] GetFilteredShiftsRequest queryParams)
+    public async Task<ActionResult<PagedResults<FreightDTO>>> GetFilteredShifts([FromQuery] GetFilteredFreightsRequest queryParams)
         => await _mediator.Send(queryParams);
 
     [HttpGet("{freightId}")]
@@ -43,8 +43,8 @@ public class FreightsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task AddParcelToFreight(long freightId, [FromBody] UpdateFreightRequest body)
-        => await _mediator.Send(body with { ShiftId = freightId });
+    public async Task AddParcelToFreight(long freightId, [FromBody] AddParcelToFreightCommand body)
+        => await _mediator.Send(body with { FreightId = freightId });
 
     [HttpPut("{freightId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -9,12 +9,14 @@ using MediatR;
 
 namespace Application.Handlers.Freights.Query;
 
-public sealed record GetFilteredShiftsRequest(
-    ShiftStatus? Status
+public sealed record GetFilteredFreightsRequest(
+    FreightStatus? Status,
+    long? OriginId,
+    long? DestinationId
     ) : PagedRequest, IRequest<PagedResults<FreightDTO>>
 { }
 
-public class GetFilteredShiftsRequestValidator : AbstractValidator<GetFilteredShiftsRequest>
+public class GetFilteredShiftsRequestValidator : AbstractValidator<GetFilteredFreightsRequest>
 {
     public GetFilteredShiftsRequestValidator()
     {
@@ -30,26 +32,26 @@ public class GetFilteredShiftsRequestValidator : AbstractValidator<GetFilteredSh
     }
 }
 
-internal sealed class GetFilteredShiftsQueryHandler : IRequestHandler<GetFilteredShiftsRequest, PagedResults<FreightDTO>>
+internal sealed class GetFilteredFreightsQueryHandler : IRequestHandler<GetFilteredFreightsRequest, PagedResults<FreightDTO>>
 {
     private readonly IRepository<Freight> _freightsRepository;
 
-    public GetFilteredShiftsQueryHandler(IRepository<Freight> freightsRepository)
+    public GetFilteredFreightsQueryHandler(IRepository<Freight> freightsRepository)
     {
         _freightsRepository = freightsRepository;
     }
 
-    public async Task<PagedResults<FreightDTO>> Handle(GetFilteredShiftsRequest request, CancellationToken cancellationToken)
+    public async Task<PagedResults<FreightDTO>> Handle(GetFilteredFreightsRequest request, CancellationToken cancellationToken)
     {
         return await _freightsRepository.Query
-            //.Where(x => request.Status == null || x.Status == request.Status)
-            .Where(x => request.Status == null)
-            .OrderBy(x => x.DueStart)
+            .Where(x => request.Status == null || x.Status == request.Status)
+            .Where(x => request.OriginId == null || x.StartCityId == request.OriginId)
+            .OrderByDescending(x => x.DueStart)
             .Select(x => new FreightDTO
             {
                 Id = x.Id,
                 DueStart = x.DueStart,
-                Status = ShiftStatus.Active, // TODO
+                Status = FreightStatus.Active, // TODO
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,

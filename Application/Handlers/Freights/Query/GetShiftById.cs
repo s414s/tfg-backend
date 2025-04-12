@@ -37,7 +37,7 @@ internal sealed class GetFreightByIdQueryHandler : IRequestHandler<GetFreightByI
             .Select(x => new FreightDTO
             {
                 Id = x.Id,
-                Status = Domain.Enums.ShiftStatus.Canceled, // TODO
+                Status = Domain.Enums.FreightStatus.Canceled, // TODO
                 DueStart = x.DueStart,
                 //Routes = [], // TODO
                 //Parcels = [], // TODO
