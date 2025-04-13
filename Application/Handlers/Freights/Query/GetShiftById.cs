@@ -37,10 +37,13 @@ internal sealed class GetFreightByIdQueryHandler : IRequestHandler<GetFreightByI
             .Select(x => new FreightDTO
             {
                 Id = x.Id,
-                Status = Domain.Enums.FreightStatus.Canceled, // TODO
+                Status = x.Status,
                 DueStart = x.DueStart,
                 Origin = x.StartCity.Name,
-                Destination = x.StartCity.Name, // TODO - do this
+                TotalDistance = x.Route.Distance * 2,
+                DurationMinutes = x.Route.Duration.TotalMinutes,
+                FinishTime = x.GetETA(),
+                Destination = x.Route.DestinationId == x.StartCityId ? x.Route.Origin.Name : x.Route.Destination.Name,
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,

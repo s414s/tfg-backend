@@ -47,14 +47,17 @@ internal sealed class GetFilteredFreightsQueryHandler : IRequestHandler<GetFilte
             .Where(x => request.Status == null || x.Status == request.Status)
             .Where(x => request.OriginId == null || x.StartCityId == request.OriginId)
             .Where(x => request.DestinationId == null || x.Route.DestinationId == request.DestinationId || x.Route.OriginId == request.DestinationId)
-            .OrderByDescending(x => x.DueStart)
+            .OrderBy(x => x.DueStart)
             .Select(x => new FreightDTO
             {
                 Id = x.Id,
                 DueStart = x.DueStart,
                 Status = x.Status,
                 Origin = x.StartCity.Name,
-                Destination = x.StartCity.Name, // TODO - change this 
+                TotalDistance = x.Route.Distance * 2,
+                DurationMinutes = x.Route.Duration.TotalMinutes,
+                FinishTime = x.GetETA(),
+                Destination = x.Route.DestinationId == x.StartCityId ? x.Route.Origin.Name : x.Route.Destination.Name,
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,

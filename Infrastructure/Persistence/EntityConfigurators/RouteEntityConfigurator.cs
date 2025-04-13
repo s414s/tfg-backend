@@ -27,7 +27,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 1,
-                Distance = 320.0,    // Zaragoza (1) -> Madrid (3)
+                Distance = 320.0,
                 AvgSpeed = 100.0,
                 OriginId = 1,
                 DestinationId = 3
@@ -35,7 +35,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 2,
-                Distance = 530.0,    // Madrid (3) -> Sevilla (5)
+                Distance = 530.0,
                 AvgSpeed = 95.0,
                 OriginId = 3,
                 DestinationId = 5
@@ -43,7 +43,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 3,
-                Distance = 400.0,    // Sevilla (5) -> Murcia (7)
+                Distance = 400.0,
                 AvgSpeed = 90.0,
                 OriginId = 5,
                 DestinationId = 7
@@ -51,7 +51,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 4,
-                Distance = 240.0,    // Murcia (7) -> Valencia (4)
+                Distance = 240.0,
                 AvgSpeed = 100.0,
                 OriginId = 7,
                 DestinationId = 4
@@ -59,7 +59,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 5,
-                Distance = 350.0,    // Valencia (4) -> Barcelona (2)
+                Distance = 350.0,
                 AvgSpeed = 100.0,
                 OriginId = 4,
                 DestinationId = 2
@@ -67,7 +67,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 6,
-                Distance = 150.0,    // Barcelona (2) -> Lerida (8)
+                Distance = 150.0,
                 AvgSpeed = 100.0,
                 OriginId = 2,
                 DestinationId = 8
@@ -75,7 +75,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 7,
-                Distance = 150.0,    // Lerida (8) -> Zaragoza (1)
+                Distance = 150.0,
                 AvgSpeed = 100.0,
                 OriginId = 8,
                 DestinationId = 1
@@ -83,7 +83,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 8,
-                Distance = 200.0,    // Zaragoza (1) -> Teruel (12)
+                Distance = 200.0,
                 AvgSpeed = 90.0,
                 OriginId = 1,
                 DestinationId = 12
@@ -91,7 +91,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 9,
-                Distance = 250.0,    // Teruel (12) -> Valencia (4)
+                Distance = 250.0,
                 AvgSpeed = 90.0,
                 OriginId = 12,
                 DestinationId = 4
@@ -99,7 +99,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 10,
-                Distance = 150.0,    // Murcia (7) -> Albacete (9)
+                Distance = 150.0,
                 AvgSpeed = 90.0,
                 OriginId = 7,
                 DestinationId = 9
@@ -107,7 +107,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 11,
-                Distance = 170.0,    // Albacete (9) -> Valencia (4)
+                Distance = 170.0,
                 AvgSpeed = 90.0,
                 OriginId = 9,
                 DestinationId = 4
@@ -115,7 +115,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 12,
-                Distance = 400.0,    // Albacete (9) -> Madrid (3)
+                Distance = 400.0,
                 AvgSpeed = 100.0,
                 OriginId = 9,
                 DestinationId = 3
@@ -123,7 +123,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 13,
-                Distance = 240.0,    // Duplicate: Murcia (7) -> Valencia (4) (if intended)
+                Distance = 240.0,
                 AvgSpeed = 100.0,
                 OriginId = 7,
                 DestinationId = 4
@@ -131,7 +131,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 14,
-                Distance = 130.0,    // Albacete (9) -> Ciudad Real (10)
+                Distance = 130.0,
                 AvgSpeed = 90.0,
                 OriginId = 9,
                 DestinationId = 10
@@ -139,7 +139,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 15,
-                Distance = 180.0,    // Cordoba (6) -> Ciudad Real (10)
+                Distance = 180.0,
                 AvgSpeed = 90.0,
                 OriginId = 6,
                 DestinationId = 10
@@ -147,7 +147,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 16,
-                Distance = 140.0,    // Cordoba (6) -> Sevilla (5)
+                Distance = 140.0,
                 AvgSpeed = 90.0,
                 OriginId = 6,
                 DestinationId = 5
@@ -155,7 +155,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 17,
-                Distance = 200.0,    // Cordoba (6) -> Granada (11)
+                Distance = 200.0,
                 AvgSpeed = 90.0,
                 OriginId = 6,
                 DestinationId = 11
@@ -163,7 +163,7 @@ public class RouteEntityConfigurator : IEntityTypeConfiguration<Route>
             new Route
             {
                 Id = 18,
-                Distance = 200.0,    // Ciudad Real (10) -> Madrid (3)
+                Distance = 200.0,
                 AvgSpeed = 90.0,
                 OriginId = 10,
                 DestinationId = 3

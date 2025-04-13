@@ -4,6 +4,7 @@ using System.Text.Json;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250413203219_ModifyFreightSeeders")]
+    partial class ModifyFreightSeeders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,7 +183,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 18, 45, 56, 224, DateTimeKind.Unspecified).AddTicks(5320), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 18, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(8715), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 0L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -189,14 +192,14 @@ namespace Infrastructure.Persistence.Migrations
                             LastModified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = 0L,
                             RouteId = 1L,
-                            StartCityId = 1L,
+                            StartCityId = 3L,
                             Status = 2,
                             TruckId = 1L
                         },
                         new
                         {
                             Id = 2L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 18, 45, 56, 224, DateTimeKind.Unspecified).AddTicks(5328), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 18, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(8723), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 0L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -212,7 +215,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 3L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 18, 45, 56, 224, DateTimeKind.Unspecified).AddTicks(5333), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 18, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(8727), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 0L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -228,7 +231,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 4L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 18, 45, 56, 224, DateTimeKind.Unspecified).AddTicks(5337), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 18, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(8733), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 0L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -279,7 +282,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1L,
-                            Date = new DateTime(2025, 4, 13, 20, 0, 56, 223, DateTimeKind.Utc).AddTicks(5883),
+                            Date = new DateTime(2025, 4, 13, 19, 47, 18, 492, DateTimeKind.Utc).AddTicks(7435),
                             IsRead = false,
                             MessageThreadId = 1L,
                             Text = "Hey, are you available for a call?",
@@ -288,7 +291,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 2L,
-                            Date = new DateTime(2025, 4, 13, 20, 15, 56, 223, DateTimeKind.Utc).AddTicks(5889),
+                            Date = new DateTime(2025, 4, 13, 20, 2, 18, 492, DateTimeKind.Utc).AddTicks(7442),
                             IsRead = true,
                             MessageThreadId = 1L,
                             Text = "Yes, I can join in 5 minutes.",
@@ -297,7 +300,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 3L,
-                            Date = new DateTime(2025, 4, 12, 20, 45, 56, 223, DateTimeKind.Utc).AddTicks(5892),
+                            Date = new DateTime(2025, 4, 12, 20, 32, 18, 492, DateTimeKind.Utc).AddTicks(7498),
                             IsRead = false,
                             MessageThreadId = 2L,
                             Text = "The meeting has been rescheduled to tomorrow.",
@@ -306,7 +309,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 4L,
-                            Date = new DateTime(2025, 4, 12, 20, 55, 56, 223, DateTimeKind.Utc).AddTicks(5896),
+                            Date = new DateTime(2025, 4, 12, 20, 42, 18, 492, DateTimeKind.Utc).AddTicks(7503),
                             IsRead = true,
                             MessageThreadId = 2L,
                             Text = "Thanks for the update!",
@@ -366,12 +369,12 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 20, 45, 56, 223, DateTimeKind.Unspecified).AddTicks(9065), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 20, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(764), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FromId = 1L,
-                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 12, 20, 45, 56, 223, DateTimeKind.Unspecified).AddTicks(9070), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 12, 20, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(769), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = 1L,
                             Subject = "Project Kickoff",
                             Teaser = "Let's schedule a kickoff meeting for the new project.",
@@ -380,12 +383,12 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 2L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 18, 45, 56, 223, DateTimeKind.Unspecified).AddTicks(9076), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 18, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(775), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FromId = 1L,
-                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 12, 20, 45, 56, 223, DateTimeKind.Unspecified).AddTicks(9077), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 12, 20, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(776), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = 1L,
                             Subject = "Meeting Reminder",
                             Teaser = "Don't forget about our meeting tomorrow at 10 AM.",
@@ -394,12 +397,12 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 3L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 12, 20, 45, 56, 223, DateTimeKind.Unspecified).AddTicks(9082), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 12, 20, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(781), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FromId = 1L,
-                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 12, 20, 45, 56, 223, DateTimeKind.Unspecified).AddTicks(9083), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 12, 20, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(782), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = 1L,
                             Subject = "No Subject",
                             Teaser = "",
@@ -408,12 +411,12 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 4L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 20, 15, 56, 223, DateTimeKind.Unspecified).AddTicks(9087), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 13, 20, 2, 18, 493, DateTimeKind.Unspecified).AddTicks(786), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FromId = 1L,
-                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 12, 20, 45, 56, 223, DateTimeKind.Unspecified).AddTicks(9088), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 12, 20, 32, 18, 493, DateTimeKind.Unspecified).AddTicks(788), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = 1L,
                             Subject = "Follow-up on Proposal",
                             Teaser = "Please review the attached proposal document.",
