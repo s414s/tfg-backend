@@ -38,6 +38,9 @@ internal sealed class AddParcelToFreightCommandHandler : IRequestHandler<AddParc
 
     public async Task Handle(AddParcelToFreightCommand request, CancellationToken cancellationToken)
     {
+        if (request.OriginId == request.DestinationId)
+            throw new Exception("Origin and destination cannot be the same location"); // TODO - custom exception
+
         if (!await _citiessRepository.Query.AnyAsync(x => x.Id == request.OriginId, cancellationToken))
             throw new Exception("Origin does not exist"); // TODO - custom exception
 

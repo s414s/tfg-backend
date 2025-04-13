@@ -46,27 +46,32 @@ internal sealed class GetFilteredFreightsQueryHandler : IRequestHandler<GetFilte
         return await _freightsRepository.Query
             .Where(x => request.Status == null || x.Status == request.Status)
             .Where(x => request.OriginId == null || x.StartCityId == request.OriginId)
+            .Where(x => request.DestinationId == null || x.Route.DestinationId == request.DestinationId || x.Route.OriginId == request.DestinationId)
             .OrderByDescending(x => x.DueStart)
             .Select(x => new FreightDTO
             {
                 Id = x.Id,
                 DueStart = x.DueStart,
-                Status = FreightStatus.Active, // TODO
+                Status = x.Status,
+                Origin = x.StartCity.Name,
+                Destination = x.StartCity.Name, // TODO - change this 
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,
                     Plate = x.Truck.Plate,
+                    Consumption = x.Truck.Consumption,
+                    ManufacturingDateUnix = x.Truck.ManufacturingDate.ToUnixTime(),
+                    Mileage = x.Truck.Mileage,
+                    LastMaintenanceDateUnix = x.Truck.LastMaintenance.ToUnixTime(),
                 },
                 Driver = new UserDTO
                 {
                     Id = x.Id,
                     Name = x.Driver.Name,
                     Surname = x.Driver.Surname,
-                    Email = $"{x.Driver.Surname}@gmail.com",
+                    Email = x.Driver.Email,
                     Role = x.Driver.Role,
                 },
-                //Routes = [], // TODO
-                //Parcels = [], // TODO
             })
             .ToPagedResultsAsync(request.PageIndex, request.PageSize, cancellationToken);
     }

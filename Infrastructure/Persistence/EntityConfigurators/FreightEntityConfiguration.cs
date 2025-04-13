@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,5 +30,48 @@ public class FreightEntityConfiguration : IEntityTypeConfiguration<Freight>
             .HasOne(c => c.StartCity)
             .WithMany()
             .HasForeignKey(x => x.StartCityId);
+
+        builder.HasData(
+            new Freight
+            {
+                Id = 1,
+                TruckId = 1,
+                DriverId = 1,
+                StartCityId = 3,
+                DueStart = new DateTime(2025, 05, 01, 08, 00, 00),
+                Status = FreightStatus.Active,
+                RouteId = 1
+            },
+            new Freight
+            {
+                Id = 2,
+                TruckId = 2,
+                DriverId = 2,
+                StartCityId = 2,
+                DueStart = new DateTime(2025, 05, 02, 09, 30, 00),
+                Status = FreightStatus.Active,
+                RouteId = 5
+            },
+            new Freight
+            {
+                Id = 3,
+                TruckId = 3,
+                DriverId = 3,
+                StartCityId = 5,
+                DueStart = new DateTime(2025, 05, 03, 07, 45, 00),
+                Status = FreightStatus.Completed,
+                RouteId = 2
+            },
+            new Freight
+            {
+                Id = 4,
+                TruckId = 1,
+                DriverId = 4,
+                StartCityId = 8,
+                DueStart = new DateTime(2025, 05, 04, 10, 00, 00),
+                Status = FreightStatus.Active,
+                RouteId = 6
+            }
+        );
     }
 }

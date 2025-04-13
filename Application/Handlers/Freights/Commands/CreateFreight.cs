@@ -51,7 +51,7 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
             )
             ?? throw new Exception("Freight not found"); // TODO - custom exception
 
-        // TODO - check driver
+        // TODO - check and assignd driver
         // TODO - make sure there is a driver assigned
 
         // TODO - assign truck from driver

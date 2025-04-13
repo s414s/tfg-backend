@@ -23,7 +23,6 @@ public class Freight : AuditableEntityBase
     public virtual User Driver { get; set; } = null!;
     public virtual City StartCity { get; set; } = null!;
     public virtual ICollection<Parcel> Parcels { get; set; } = [];
-    //public virtual ICollection<FreightRoute> FreightRoutes { get; set; } = [];
 
     public void AddParcel(Parcel parcel)
     {
@@ -39,13 +38,3 @@ public class Freight : AuditableEntityBase
         Parcels.Add(parcel);
     }
 }
-
-//public class FreightRoute : EntityBase
-//{
-//    public int Order { get; set; }
-//    public long FreightId { get; set; }
-//    public long RouteId { get; set; }
-
-//    public virtual Freight Freight { get; set; } = null!;
-//    public virtual Route Route { get; set; } = null!;
-//}
