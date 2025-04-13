@@ -38,9 +38,10 @@ public class FreightEntityConfiguration : IEntityTypeConfiguration<Freight>
                 TruckId = 1,
                 DriverId = 1,
                 StartCityId = 3,
-                DueStart = new DateTime(2025, 05, 01, 08, 00, 00),
+                DueStart = new DateTime(2025, 05, 01, 08, 00, 00, DateTimeKind.Utc),
                 Status = FreightStatus.Active,
-                RouteId = 1
+                RouteId = 1,
+                Created = DateTime.UtcNow.AddHours(-2),
             },
             new Freight
             {
@@ -48,9 +49,10 @@ public class FreightEntityConfiguration : IEntityTypeConfiguration<Freight>
                 TruckId = 2,
                 DriverId = 2,
                 StartCityId = 2,
-                DueStart = new DateTime(2025, 05, 02, 09, 30, 00),
+                DueStart = new DateTime(2025, 05, 02, 09, 30, 00, DateTimeKind.Utc),
                 Status = FreightStatus.Active,
-                RouteId = 5
+                RouteId = 5,
+                Created = DateTime.UtcNow.AddHours(-2),
             },
             new Freight
             {
@@ -58,9 +60,10 @@ public class FreightEntityConfiguration : IEntityTypeConfiguration<Freight>
                 TruckId = 3,
                 DriverId = 3,
                 StartCityId = 5,
-                DueStart = new DateTime(2025, 05, 03, 07, 45, 00),
+                DueStart = new DateTime(2025, 05, 03, 07, 45, 00, DateTimeKind.Utc),
                 Status = FreightStatus.Completed,
-                RouteId = 2
+                RouteId = 2,
+                Created = DateTime.UtcNow.AddHours(-2),
             },
             new Freight
             {
@@ -68,9 +71,10 @@ public class FreightEntityConfiguration : IEntityTypeConfiguration<Freight>
                 TruckId = 1,
                 DriverId = 4,
                 StartCityId = 8,
-                DueStart = new DateTime(2025, 05, 04, 10, 00, 00),
+                DueStart = new DateTime(2025, 05, 04, 10, 00, 00, DateTimeKind.Utc),
                 Status = FreightStatus.Active,
-                RouteId = 6
+                RouteId = 6,
+                Created = DateTime.UtcNow.AddHours(-2),
             }
         );
     }
