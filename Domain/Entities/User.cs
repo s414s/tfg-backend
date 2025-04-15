@@ -9,6 +9,7 @@ public class User : EntityBase
     public required string Surname { get; set; }
     public required string Email { get; set; }
     public required string Password { get; set; }
+    public required DateTime Birthday { get; set; }
     public UserRoles Role { get; set; }
 
     public virtual ICollection<Freight> Freights { get; set; } = [];

@@ -12,6 +12,7 @@ public sealed record CreateUserCommandRequest : IRequest<long>
     public string Name { get; init; } = string.Empty;
     public string Surname { get; init; } = string.Empty;
     public string Email { get; init; } = string.Empty;
+    public DateTime Birthday { get; init; }
 }
 
 public class CreateUserCommandRequestValidator : AbstractValidator<CreateUserCommandRequest>
@@ -21,6 +22,7 @@ public class CreateUserCommandRequestValidator : AbstractValidator<CreateUserCom
         RuleFor(x => x.Name).NotEmpty().WithMessage("{PropertyName} can not be empty");
         RuleFor(x => x.Surname).NotEmpty().WithMessage("{PropertyName} can not be empty");
         RuleFor(x => x.Email).NotEmpty().WithMessage("{PropertyName} can not be empty");
+        RuleFor(x => x.Birthday).NotEmpty().WithMessage("{PropertyName} can not be empty");
     }
 }
 
@@ -43,6 +45,7 @@ internal sealed class CreateUserCommandHandler : IRequestHandler<CreateUserComma
             Name = request.Name,
             Surname = request.Surname,
             Email = request.Email,
+            Birthday = request.Birthday,
             Password = "TODO", // TODO - password generator
             Role = UserRoles.Driver,
         };

@@ -1,5 +1,6 @@
 ﻿using Application.DTO;
 using Application.Exceptions;
+using Application.Extensions;
 using Domain.Contracts;
 using Domain.Entities;
 using FluentValidation;
@@ -48,6 +49,11 @@ internal sealed class GetFreightByIdQueryHandler : IRequestHandler<GetFreightByI
                 {
                     Id = x.Truck.Id,
                     Plate = x.Truck.Plate,
+                    Mark = x.Truck.Mark,
+                    Consumption = x.Truck.Consumption,
+                    Mileage = x.Truck.Mileage,
+                    ManufacturingDateUnix = x.Truck.ManufacturingDate.ToUnixTime(),
+                    LastMaintenanceDateUnix = x.Truck.LastMaintenance.ToUnixTime(),
                 },
                 Driver = new UserDTO
                 {

@@ -2,7 +2,6 @@
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
 
 namespace Infrastructure.Persistence.EntityConfigurators;
 
@@ -33,6 +32,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "salas",
                 Password = "root",
                 Email = "alberto@gmail.com",
+                Birthday = new DateTime(1989,9,16),
                 Role = UserRoles.Admin,
             },
             new User
@@ -42,6 +42,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "salas",
                 Password = "root",
                 Email = "ana@gmail.com",
+                Birthday = new DateTime(1989,9,16),
                 Role = UserRoles.Driver,
             },
             new User
@@ -51,6 +52,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "hernandez",
                 Password = "root",
                 Email = "maria@gmail.com",
+                Birthday = new DateTime(1989,9,16),
                 Role = UserRoles.Driver,
             },
             new User
@@ -60,6 +62,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "salas",
                 Password = "root",
                 Email = "violeta@gmail.com",
+                Birthday = new DateTime(1989,9,16),
                 Role = UserRoles.Driver,
             },
             new User
@@ -69,6 +72,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "salas",
                 Password = "root",
                 Email = "gimena@gmail.com",
+                Birthday = new DateTime(1989,9,16),
                 Role = UserRoles.Driver,
             },
             new User
@@ -78,6 +82,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "salas",
                 Password = "root",
                 Email = "sara@gmail.com",
+                Birthday = new DateTime(1989,9,16),
                 Role = UserRoles.Driver,
             },
             ]);

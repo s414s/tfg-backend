@@ -14,5 +14,4 @@ public record FreightDTO
     public required double TotalDistance { get; init; }
     public required double DurationMinutes { get; init; }
     public required DateTime FinishTime { get; init; }
-    //public IEnumerable<ParcelDTO> Parcels { get; init; } = [];
 };

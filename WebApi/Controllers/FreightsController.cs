@@ -38,7 +38,7 @@ public class FreightsController(IMediator mediator) : ControllerBase
     public async Task CreateShift([FromBody] CreateFreightRequest body)
         => await _mediator.Send(body);
 
-    [HttpPost("{freightId}/Parcel")]
+    [HttpPost("{freightId}/Parcels")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]

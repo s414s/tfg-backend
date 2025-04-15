@@ -11,7 +11,7 @@ namespace Application.Handlers.Freights.Commands;
 public sealed record AddParcelToFreightCommand() : IRequest
 {
     [JsonIgnore]
-    public required long FreightId { get; init; }
+    public long FreightId { get; init; }
     public required decimal ParcelWeight { get; init; }
     public required long OriginId { get; init; }
     public required long DestinationId { get; init; }

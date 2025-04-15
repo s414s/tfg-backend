@@ -1,11 +1,12 @@
 ﻿namespace Application.DTO;
 
-public record TruckDTO
+public sealed record TruckDTO
 {
-    public long Id { get; init; }
+    public required long Id { get; init; }
     public required string Plate { get; init; }
-    public decimal Mileage { get; init; }
-    public decimal Consumption { get; init; }
-    public long ManufacturingDateUnix { get; init; }
-    public long LastMaintenanceDateUnix { get; init; }
+    public required decimal Mileage { get; init; }
+    public required decimal Consumption { get; init; }
+    public required long ManufacturingDateUnix { get; init; }
+    public required long LastMaintenanceDateUnix { get; init; }
+    public required string Mark { get; init; }
 };
