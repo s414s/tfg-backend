@@ -32,7 +32,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "salas",
                 Password = "root",
                 Email = "alberto@gmail.com",
-                Birthday = new DateTime(1989,9,16),
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
                 Role = UserRoles.Admin,
             },
             new User
@@ -42,7 +42,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "salas",
                 Password = "root",
                 Email = "ana@gmail.com",
-                Birthday = new DateTime(1989,9,16),
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
                 Role = UserRoles.Driver,
             },
             new User
@@ -52,7 +52,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "hernandez",
                 Password = "root",
                 Email = "maria@gmail.com",
-                Birthday = new DateTime(1989,9,16),
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
                 Role = UserRoles.Driver,
             },
             new User
@@ -62,7 +62,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "salas",
                 Password = "root",
                 Email = "violeta@gmail.com",
-                Birthday = new DateTime(1989,9,16),
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
                 Role = UserRoles.Driver,
             },
             new User
@@ -72,7 +72,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "salas",
                 Password = "root",
                 Email = "gimena@gmail.com",
-                Birthday = new DateTime(1989,9,16),
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
                 Role = UserRoles.Driver,
             },
             new User
@@ -82,7 +82,7 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
                 Surname = "salas",
                 Password = "root",
                 Email = "sara@gmail.com",
-                Birthday = new DateTime(1989,9,16),
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
                 Role = UserRoles.Driver,
             },
             ]);
