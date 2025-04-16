@@ -1,7 +1,6 @@
 ﻿using Application.DTO;
 using Application.DTO.Base;
 using Application.Extensions;
-using Application.Handlers.Users.Commands;
 using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;

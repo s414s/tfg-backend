@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -37,13 +38,13 @@ internal sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePassw
     {
         var currentUser = await _usersRepository.Query
             .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken)
-            ?? throw new Exception(); // TODO
+            ?? throw new EntityNotFoundException(nameof(User));
 
         if (currentUser.Id != _userInfo.User.Id && _userInfo.User.Role != UserRoles.Admin)
-            throw new Exception(); // TODO 
+            throw new CustomException("Not authorized");
 
         if (currentUser.Password == request.NewPassword)
-            throw new Exception(); // TODO 
+            throw new CustomException("Incorrect credentials");
 
         await _usersRepository.SaveChangesAsync(cancellationToken);
 

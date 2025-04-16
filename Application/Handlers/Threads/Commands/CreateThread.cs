@@ -38,6 +38,7 @@ internal sealed class CreateThreadCommandHandler : IRequestHandler<CreateThreadR
             );
 
         await _messageThreadRepository.AddAsync(newThread, cancellationToken);
+        await _messageThreadRepository.SaveChangesAsync(cancellationToken);
 
         return newThread.Id;
     }

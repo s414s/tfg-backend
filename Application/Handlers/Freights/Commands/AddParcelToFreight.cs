@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -39,23 +40,23 @@ internal sealed class AddParcelToFreightCommandHandler : IRequestHandler<AddParc
     public async Task Handle(AddParcelToFreightCommand request, CancellationToken cancellationToken)
     {
         if (request.OriginId == request.DestinationId)
-            throw new Exception("Origin and destination cannot be the same location"); // TODO - custom exception
+            throw new CustomException("Origin and destination cannot be the same location");
 
         if (!await _citiessRepository.Query.AnyAsync(x => x.Id == request.OriginId, cancellationToken))
-            throw new Exception("Origin does not exist"); // TODO - custom exception
+            throw new CustomException("Origin does not exist");
 
         if (!await _citiessRepository.Query.AnyAsync(x => x.Id == request.DestinationId, cancellationToken))
-            throw new Exception("Destination does not exist"); // TODO - custom exception
+            throw new CustomException("Destination does not exist");
 
         var freight = await _freightsRepository.Query
             .Include(x => x.Parcels)
             .Include(x => x.Truck)
             .Include(x => x.Route)
             .FirstOrDefaultAsync(x => x.Id == request.FreightId, cancellationToken)
-            ?? throw new Exception("Freight not found"); // TODO - custom exception
+            ?? throw new EntityNotFoundException(nameof(Freight));
 
         if (freight.Status != FreightStatus.Scheduled)
-            throw new Exception("the freight is not available"); // TODO - custom exception
+            throw new CustomException("The freight is not available");
 
         // TODO - calculate price
         decimal priceRate = 0.15m;

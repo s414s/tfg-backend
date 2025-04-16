@@ -28,7 +28,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<long>> Login([FromBody] CreateUserCommandRequest request)
+    public async Task<ActionResult<CreateUserCommandResponse>> Login([FromBody] CreateUserCommandRequest request)
         => await _mediator.Send(request);
 
     [HttpGet("{userId:long}")]

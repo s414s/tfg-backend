@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -39,17 +40,17 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
     public async Task Handle(CreateFreightRequest request, CancellationToken cancellationToken)
     {
         if (DateTime.UtcNow.AddDays(1) - request.StartDate > TimeSpan.FromDays(1))
-            throw new Exception("You need to have at least one day notice to drivers"); // TODO - custom exception
+            throw new CustomException("You need to have at least one day notice to drivers");
 
         if (request.StartDate < DateTime.UtcNow)
-            throw new Exception("You can only plan future freights"); // TODO - custom exception
+            throw new CustomException("You can only plan future freights");
 
         var route = await _routesRepository.Query
             .FirstOrDefaultAsync(x =>
                 (x.OriginId == request.OriginId || x.OriginId == request.DestinationId)
                 && (x.DestinationId == request.OriginId || x.DestinationId == request.DestinationId)
             )
-            ?? throw new Exception("Freight not found"); // TODO - custom exception
+            ?? throw new EntityNotFoundException(nameof(Route));
 
         // TODO - check and assignd driver
         // TODO - make sure there is a driver assigned

@@ -4,15 +4,16 @@ using Domain.Enums;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace Application.Handlers.Users.Commands;
 
-public sealed record CreateUserCommandRequest : IRequest<long>
+public sealed record CreateUserCommandRequest : IRequest<CreateUserCommandResponse>
 {
     public string Name { get; init; } = string.Empty;
     public string Surname { get; init; } = string.Empty;
     public string Email { get; init; } = string.Empty;
-    public DateTime Birthday { get; init; }
+    public DateTime DateOfBirth { get; init; }
 }
 
 public class CreateUserCommandRequestValidator : AbstractValidator<CreateUserCommandRequest>
@@ -22,11 +23,17 @@ public class CreateUserCommandRequestValidator : AbstractValidator<CreateUserCom
         RuleFor(x => x.Name).NotEmpty().WithMessage("{PropertyName} can not be empty");
         RuleFor(x => x.Surname).NotEmpty().WithMessage("{PropertyName} can not be empty");
         RuleFor(x => x.Email).NotEmpty().WithMessage("{PropertyName} can not be empty");
-        RuleFor(x => x.Birthday).NotEmpty().WithMessage("{PropertyName} can not be empty");
+        RuleFor(x => x.DateOfBirth).NotEmpty().WithMessage("{PropertyName} can not be empty");
     }
 }
 
-internal sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommandRequest, long>
+public sealed record CreateUserCommandResponse
+{
+    public required long Id { get; init; }
+    public required string Password { get; init; }
+}
+
+internal sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommandRequest, CreateUserCommandResponse>
 {
     private readonly IRepository<User> _usersRepository;
 
@@ -35,9 +42,12 @@ internal sealed class CreateUserCommandHandler : IRequestHandler<CreateUserComma
         _usersRepository = usersRepository;
     }
 
-    public async Task<long> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
+    public async Task<CreateUserCommandResponse> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
     {
         if (await _usersRepository.Query.AnyAsync(x => x.Email == request.Email))
+            throw new Exception(); // TODO
+
+        if (DateTime.UtcNow - request.DateOfBirth < TimeSpan.FromDays(18 * 365))
             throw new Exception(); // TODO
 
         var newUser = new User
@@ -45,14 +55,36 @@ internal sealed class CreateUserCommandHandler : IRequestHandler<CreateUserComma
             Name = request.Name,
             Surname = request.Surname,
             Email = request.Email,
-            Birthday = request.Birthday,
-            Password = "TODO", // TODO - password generator
+            Birthday = request.DateOfBirth,
+            Password = GenerateRandomPassword(5),
             Role = UserRoles.Driver,
         };
 
         await _usersRepository.AddAsync(newUser, cancellationToken);
         await _usersRepository.SaveChangesAsync(cancellationToken);
 
-        return newUser.Id;
+        return new CreateUserCommandResponse { Id = newUser.Id, Password = newUser.Password };
+    }
+
+    private static string GenerateRandomPassword(int length)
+    {
+        const string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        char[] passwordChars = new char[length];
+
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            byte[] randomBytes = new byte[length];
+            // Fill the array with secure random bytes.
+            rng.GetBytes(randomBytes);
+
+            // Map each random byte to a character in allowedChars.
+            for (int i = 0; i < length; i++)
+            {
+                int index = randomBytes[i] % allowedChars.Length;
+                passwordChars[i] = allowedChars[index];
+            }
+        }
+
+        return new string(passwordChars);
     }
 }

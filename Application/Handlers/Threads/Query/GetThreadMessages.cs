@@ -1,7 +1,7 @@
 ﻿using Application.DTO;
-using Application.Exceptions;
 using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,7 +42,7 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadM
                     .ToList(),
             })
             .FirstOrDefaultAsync(cancellationToken)
-            ?? throw new EntityNotFoundException($"Thread with id {request.ThreadId} could not be found");
+            ?? throw new EntityNotFoundException(nameof(Message));
 
         return messages.Messages;
     }

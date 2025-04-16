@@ -1,6 +1,6 @@
-﻿using Application.Exceptions;
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -11,7 +11,7 @@ public sealed record CreateThreadMessageRequest : IRequest<long>
 {
     [JsonIgnore]
     public long ThreadId { get; init; }
-    public string Text { get; init; } = "";
+    public string Text { get; init; } = string.Empty;
 }
 
 internal sealed class CreateThreadMessageCommandHandler : IRequestHandler<CreateThreadMessageRequest, long>
@@ -32,7 +32,7 @@ internal sealed class CreateThreadMessageCommandHandler : IRequestHandler<Create
         if (!await _messageThreadRepository.Query
             .AnyAsync(x => x.Id == request.ThreadId && (x.FromId == _activeUserInfo.User.Id || x.ToId == _activeUserInfo.User.Id)))
         {
-            throw new EntityNotFoundException($"Thread with id {request.ThreadId} could not be found");
+            throw new EntityNotFoundException(nameof(MessageThread));
         }
 
         var newMessage = new Message()

@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,10 +25,10 @@ internal sealed class RemoveUserCommandHandler : IRequestHandler<RemoveUserComma
     {
         var user = await _usersRepository.Query
             .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken)
-            ?? throw new Exception(); // TODO
+            ?? throw new EntityNotFoundException(nameof(User));
 
         if (_userInfo.User.Role != UserRoles.Admin)
-            throw new Exception(); // TODO 
+            throw new CustomException("Not authorized");
 
         return await _usersRepository.RemoveAsync(user.Id, cancellationToken);
     }

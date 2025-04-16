@@ -1,8 +1,8 @@
 ﻿using Application.DTO;
-using Application.Exceptions;
 using Application.Extensions;
 using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +45,6 @@ internal sealed class GetTruckByIdRequestHandler : IRequestHandler<GetTruckByIdR
                 LastMaintenanceDateUnix = x.LastMaintenance.ToUnixTime(),
             })
             .FirstOrDefaultAsync(cancellationToken)
-            ?? throw new EntityNotFoundException($"Truck with id {request.TruckId} could not be found");
+            ?? throw new EntityNotFoundException(nameof(Truck));
     }
 }

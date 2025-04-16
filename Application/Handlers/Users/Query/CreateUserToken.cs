@@ -1,17 +1,15 @@
 ﻿using Application.Contracts;
 using Application.DTO;
-using Application.Exceptions;
 using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Users.Query;
 
-public sealed record CreateUserTokenRequest(string Email, string Password)
-    : IRequest<LoginResponseDTO>
-{ }
+public sealed record CreateUserTokenRequest(string Email, string Password) : IRequest<LoginResponseDTO> { }
 
 public class CreateUserTokenRequestValidator : AbstractValidator<CreateUserTokenRequest>
 {
@@ -51,7 +49,7 @@ internal sealed class CreateUserTokenQueryHandler : IRequestHandler<CreateUserTo
                 Role = x.Role,
             })
             .FirstOrDefaultAsync(cancellationToken)
-            ?? throw new EntityNotFoundException("User or password incorrect");
+            ?? throw new EntityNotFoundException(nameof(User));
 
         return new LoginResponseDTO(_authServices.GenerateJWT(user));
     }

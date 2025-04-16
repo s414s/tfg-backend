@@ -1,8 +1,8 @@
 ﻿using Application.DTO;
-using Application.Exceptions;
 using Application.Extensions;
 using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

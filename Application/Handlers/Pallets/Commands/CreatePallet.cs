@@ -1,6 +1,6 @@
-﻿using Application.Exceptions;
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

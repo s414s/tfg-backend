@@ -1,4 +1,4 @@
-﻿using Application.Exceptions;
+﻿using Domain.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -49,6 +49,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         return exception switch
         {
             EntityNotFoundException => (StatusCodes.Status400BadRequest, exception.Message),
+            CustomException => (StatusCodes.Status400BadRequest, exception.Message),
             NotImplementedException => (StatusCodes.Status400BadRequest, "Not Implemented"),
             FluentValidation.ValidationException => (StatusCodes.Status400BadRequest, "One or more validation errors occurred"),
             ArgumentOutOfRangeException => (StatusCodes.Status400BadRequest, exception.Message),

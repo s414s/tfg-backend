@@ -1,6 +1,6 @@
-﻿using Application.Exceptions;
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -36,9 +36,11 @@ internal sealed class UpdateFreightCommandHandler : IRequestHandler<UpdateFreigh
 
     public async Task Handle(UpdateFreightRequest request, CancellationToken cancellationToken)
     {
-        var shift = await _freightsRepository.Query
+        var freight = await _freightsRepository.Query
             .FirstOrDefaultAsync(x => x.Id == request.ShiftId, cancellationToken)
-            ?? throw new EntityNotFoundException($"Shift with id {request.ShiftId} could not be found");
+            ?? throw new EntityNotFoundException(nameof(Freight));
+
+        // TODO - update freight
 
         await _freightsRepository.SaveChangesAsync(cancellationToken);
     }

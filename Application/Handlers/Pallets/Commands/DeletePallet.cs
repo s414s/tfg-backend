@@ -1,7 +1,7 @@
-﻿using Application.Exceptions;
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -22,31 +22,29 @@ public class DeletePalletRequestValidator : AbstractValidator<DeletePalletReques
 
 internal sealed class DeletePalletCommandHandler : IRequestHandler<DeletePalletRequest>
 {
-    private readonly IRepository<Parcel> _palletsRepository;
+    private readonly IRepository<Parcel> _parcelsRepository;
     private readonly IRepository<Freight> _freightsRepository;
 
-    public DeletePalletCommandHandler(
-        IRepository<Parcel> palletsRepository,
-        IRepository<Freight> freightsRepository)
+    public DeletePalletCommandHandler(IRepository<Parcel> parcelsRepository, IRepository<Freight> freightsRepository)
     {
-        _palletsRepository = palletsRepository;
+        _parcelsRepository = parcelsRepository;
         _freightsRepository = freightsRepository;
     }
 
     public async Task Handle(DeletePalletRequest request, CancellationToken cancellationToken)
     {
-        var pallet = await _palletsRepository.Query
+        var parcel = await _parcelsRepository.Query
             .FirstOrDefaultAsync(x => x.Id == request.PalletId, cancellationToken)
-            ?? throw new EntityNotFoundException($"Pallet with id {request.PalletId} could not be found");
+            ?? throw new EntityNotFoundException(nameof(Parcel));
 
         var shift = await _freightsRepository.Query
-            .FirstOrDefaultAsync(x => x.Id == pallet.FreightId, cancellationToken)
-            ?? throw new EntityNotFoundException($"Shift with id {pallet.FreightId} could not be found");
+            .FirstOrDefaultAsync(x => x.Id == parcel.FreightId, cancellationToken)
+            ?? throw new EntityNotFoundException($"Shift with id {parcel.FreightId} could not be found");
 
         if (shift.Status != FreightStatus.Scheduled)
-            throw new ShiftStatusException($"A shift must be in status {nameof(FreightStatus.Scheduled)}");
+            throw new CustomException($"A shift must be in status {nameof(FreightStatus.Scheduled)}");
 
-        await _palletsRepository.RemoveAsync(request.PalletId);
-        await _palletsRepository.SaveChangesAsync(cancellationToken);
+        await _parcelsRepository.RemoveAsync(request.PalletId);
+        await _parcelsRepository.SaveChangesAsync(cancellationToken);
     }
 }
