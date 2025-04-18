@@ -2,6 +2,7 @@
 using Application.Extensions;
 using Application.Handlers.Freights.Commands;
 using Application.Handlers.Freights.Query;
+using Application.Handlers.Parcels.Query;
 using Application.Handlers.Routes.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,14 @@ public class FreightsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<FreightDTO>> GetShiftById(long freightId)
         => await _mediator.Send(new GetFreightByIdRequest(freightId));
+
+    [HttpGet("{freightId}/Parcels")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task GetFreightParcels(long freightId)
+        => await _mediator.Send(new GetParcelsByFreightRequest(freightId));
 
     [HttpPost("")]
     [ProducesResponseType(StatusCodes.Status200OK)]

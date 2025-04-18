@@ -16,6 +16,7 @@ public sealed record AddParcelToFreightCommand() : IRequest
     public required decimal ParcelWeight { get; init; }
     public required long OriginId { get; init; }
     public required long DestinationId { get; init; }
+    public required string ContactEmail { get; init; }
 }
 
 public class AddParcelToFreightCommandValidator : AbstractValidator<AddParcelToFreightCommand>
@@ -23,6 +24,7 @@ public class AddParcelToFreightCommandValidator : AbstractValidator<AddParcelToF
     public AddParcelToFreightCommandValidator()
     {
         RuleFor(x => x.ParcelWeight).GreaterThan(0);
+        RuleFor(x => x.ContactEmail).EmailAddress();
     }
 }
 
@@ -68,6 +70,7 @@ internal sealed class AddParcelToFreightCommandHandler : IRequestHandler<AddParc
             FreightId = freight.Id,
             OriginId = request.OriginId,
             DestinationId = request.DestinationId,
+            ContactEmail = request.ContactEmail,
         };
 
         // TODO - freight - add Parcel

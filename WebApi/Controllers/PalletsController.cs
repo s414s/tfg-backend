@@ -1,4 +1,4 @@
-﻿using Application.Handlers.Pallets.Commands;
+﻿using Application.Handlers.Parcels.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

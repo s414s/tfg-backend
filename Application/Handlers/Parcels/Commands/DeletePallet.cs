@@ -6,7 +6,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Handlers.Pallets.Commands;
+namespace Application.Handlers.Parcels.Commands;
 
 public sealed record DeletePalletRequest(long PalletId) : IRequest { }
 

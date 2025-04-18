@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,6 @@ public class CreateUserCommandRequestValidator : AbstractValidator<CreateUserCom
         RuleFor(x => x.Name).NotEmpty().WithMessage("{PropertyName} can not be empty");
         RuleFor(x => x.Surname).NotEmpty().WithMessage("{PropertyName} can not be empty");
         RuleFor(x => x.Email).NotEmpty().WithMessage("{PropertyName} can not be empty");
-        RuleFor(x => x.DateOfBirth).NotEmpty().WithMessage("{PropertyName} can not be empty");
     }
 }
 
@@ -45,10 +45,10 @@ internal sealed class CreateUserCommandHandler : IRequestHandler<CreateUserComma
     public async Task<CreateUserCommandResponse> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
     {
         if (await _usersRepository.Query.AnyAsync(x => x.Email == request.Email))
-            throw new Exception(); // TODO
+            throw new CustomException("Email already exists.");
 
         if (DateTime.UtcNow - request.DateOfBirth < TimeSpan.FromDays(18 * 365))
-            throw new Exception(); // TODO
+            throw new CustomException("User must be over 18 years old.");
 
         var newUser = new User
         {

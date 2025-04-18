@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace Application.Handlers.Pallets.Commands;
+namespace Application.Handlers.Parcels.Commands;
 
 public sealed record CreatePalletRequest : IRequest
 {

@@ -10,6 +10,8 @@ public class Parcel : EntityBase
     public long FreightId { get; set; }
     public long OriginId { get; set; }
     public long DestinationId { get; set; }
+    public string ContactEmail { get; set; } = "";
+    public Guid Guid { get; set; } = new Guid();
 
     public virtual Freight Freight { get; set; } = null!;
     public virtual City Origin { get; set; } = null!;
