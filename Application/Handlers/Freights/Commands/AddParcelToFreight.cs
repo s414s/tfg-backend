@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace Application.Handlers.Freights.Commands;
 
-public sealed record AddParcelToFreightCommand() : IRequest
+public sealed record AddParcelToFreightCommand() : IRequest<Unit>
 {
     [JsonIgnore]
     public long FreightId { get; init; }
@@ -28,7 +28,7 @@ public class AddParcelToFreightCommandValidator : AbstractValidator<AddParcelToF
     }
 }
 
-internal sealed class AddParcelToFreightCommandHandler : IRequestHandler<AddParcelToFreightCommand>
+internal sealed class AddParcelToFreightCommandHandler : IRequestHandler<AddParcelToFreightCommand, Unit>
 {
     private readonly IRepository<Freight> _freightsRepository;
     private readonly IRepository<City> _citiessRepository;
@@ -44,7 +44,7 @@ internal sealed class AddParcelToFreightCommandHandler : IRequestHandler<AddParc
         _settingsRepository = settingsRepository;
     }
 
-    public async Task Handle(AddParcelToFreightCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(AddParcelToFreightCommand request, CancellationToken cancellationToken)
     {
         if (request.OriginId == request.DestinationId)
             throw new CustomException("Origin and destination cannot be the same location");
@@ -73,10 +73,10 @@ internal sealed class AddParcelToFreightCommandHandler : IRequestHandler<AddParc
             OriginId = request.OriginId,
             DestinationId = request.DestinationId,
             ContactEmail = request.ContactEmail,
-            Guid = new Guid(),
         };
 
         freight.AddParcel(newParcel);
-        await _freightsRepository.SaveChangesAsync();
+        await _freightsRepository.SaveChangesAsync(cancellationToken);
+        return Unit.Value;
     }
 }

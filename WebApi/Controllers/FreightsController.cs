@@ -5,7 +5,6 @@ using Application.Handlers.Freights.Query;
 using Application.Handlers.Parcels.Query;
 using Application.Handlers.Routes.Query;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -38,15 +37,15 @@ public class FreightsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task GetFreightParcels(long freightId)
-        => await _mediator.Send(new GetParcelsByFreightRequest(freightId));
+    public async Task<ActionResult<IEnumerable<ParcelDTO>>> GetFreightParcels(long freightId)
+        => Ok(await _mediator.Send(new GetParcelsByFreightRequest(freightId)));
 
     [HttpPost("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task CreateShift([FromBody] CreateFreightRequest body)
+    public async Task<ActionResult<Unit>> CreateShift([FromBody] CreateFreightRequest body)
         => await _mediator.Send(body);
 
     [HttpPost("{freightId}/Parcels")]
@@ -54,7 +53,7 @@ public class FreightsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task AddParcelToFreight(long freightId, [FromBody] AddParcelToFreightCommand body)
+    public async Task<ActionResult<Unit>> AddParcelToFreight(long freightId, [FromBody] AddParcelToFreightCommand body)
         => await _mediator.Send(body with { FreightId = freightId });
 
     [HttpPut("{freightId}")]
@@ -62,7 +61,7 @@ public class FreightsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task UpdateFreight(long freightId, [FromBody] UpdateFreightRequest body)
+    public async Task<ActionResult<Unit>> UpdateFreight(long freightId, [FromBody] UpdateFreightRequest body)
         => await _mediator.Send(body with { ShiftId = freightId });
 
     [HttpGet("Routes")]

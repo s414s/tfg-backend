@@ -10,4 +10,5 @@ public record ParcelDTO
     public required DateTime ETA { get; init; }
     public required DateTime ETD { get; init; }
     public required Guid Guid { get; init; }
+    public required decimal Price { get; init; }
 }

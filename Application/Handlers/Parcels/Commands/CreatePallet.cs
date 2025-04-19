@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace Application.Handlers.Parcels.Commands;
 
-public sealed record CreatePalletRequest : IRequest
+public sealed record CreatePalletRequest : IRequest<Unit>
 {
     [JsonIgnore]
     public long ShiftId { get; init; }
@@ -24,7 +24,7 @@ public class CreatePalletCommandRequestValidator : AbstractValidator<CreatePalle
     }
 }
 
-internal sealed class CreatePalletCommandHandler : IRequestHandler<CreatePalletRequest>
+internal sealed class CreatePalletCommandHandler : IRequestHandler<CreatePalletRequest, Unit>
 {
     private readonly IRepository<Parcel> _palletsRepository;
     private readonly IRepository<Freight> _freightsRepository;
@@ -37,12 +37,13 @@ internal sealed class CreatePalletCommandHandler : IRequestHandler<CreatePalletR
         _freightsRepository = freightsRepository;
     }
 
-    public async Task Handle(CreatePalletRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreatePalletRequest request, CancellationToken cancellationToken)
     {
         if (!await _freightsRepository.Query.AnyAsync(x => x.Id == request.ShiftId, cancellationToken))
             throw new EntityNotFoundException($"Shift with id {request.ShiftId} could not be found");
 
         var newPallet = Parcel.Create(request.ShiftId);
         await _palletsRepository.AddAndSaveChangesAsync(newPallet, cancellationToken);
+        return Unit.Value;
     }
 }

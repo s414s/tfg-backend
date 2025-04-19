@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Parcels.Commands;
 
-public sealed record DeletePalletRequest(long PalletId) : IRequest { }
+public sealed record DeletePalletRequest(long PalletId) : IRequest<Unit> { }
 
 public class DeletePalletRequestValidator : AbstractValidator<DeletePalletRequest>
 {
@@ -20,7 +20,7 @@ public class DeletePalletRequestValidator : AbstractValidator<DeletePalletReques
     }
 }
 
-internal sealed class DeletePalletCommandHandler : IRequestHandler<DeletePalletRequest>
+internal sealed class DeletePalletCommandHandler : IRequestHandler<DeletePalletRequest, Unit>
 {
     private readonly IRepository<Parcel> _parcelsRepository;
     private readonly IRepository<Freight> _freightsRepository;
@@ -31,7 +31,7 @@ internal sealed class DeletePalletCommandHandler : IRequestHandler<DeletePalletR
         _freightsRepository = freightsRepository;
     }
 
-    public async Task Handle(DeletePalletRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeletePalletRequest request, CancellationToken cancellationToken)
     {
         var parcel = await _parcelsRepository.Query
             .FirstOrDefaultAsync(x => x.Id == request.PalletId, cancellationToken)
@@ -46,5 +46,6 @@ internal sealed class DeletePalletCommandHandler : IRequestHandler<DeletePalletR
 
         await _parcelsRepository.RemoveAsync(request.PalletId);
         await _parcelsRepository.SaveChangesAsync(cancellationToken);
+        return Unit.Value;
     }
 }

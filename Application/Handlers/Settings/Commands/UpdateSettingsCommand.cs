@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Settings.Commands;
 
-public sealed record UpdateSettingsCommandRequest(SettingsDTO NewValues) : IRequest<bool> { }
+public sealed record UpdateSettingsCommandRequest(SettingsDTO NewValues) : IRequest<Unit> { }
 
-internal sealed class UpdateSettingsCommandHandler : IRequestHandler<UpdateSettingsCommandRequest, bool>
+internal sealed class UpdateSettingsCommandHandler : IRequestHandler<UpdateSettingsCommandRequest, Unit>
 {
     private readonly IRepository<SettingsEntity> _settingsRepository;
 
@@ -17,7 +17,7 @@ internal sealed class UpdateSettingsCommandHandler : IRequestHandler<UpdateSetti
         _settingsRepository = settingsRepository;
     }
 
-    public async Task<bool> Handle(UpdateSettingsCommandRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UpdateSettingsCommandRequest request, CancellationToken cancellationToken)
     {
         var settings = await _settingsRepository.Query.FirstAsync(cancellationToken);
 
@@ -25,7 +25,8 @@ internal sealed class UpdateSettingsCommandHandler : IRequestHandler<UpdateSetti
         settings.PricePerKilogram = request.NewValues.PricePerKilogram;
         settings.PricePerHourDriver = request.NewValues.PricePerHourDriver;
 
-        return await _settingsRepository.SaveChangesAsync(cancellationToken);
+        await _settingsRepository.SaveChangesAsync(cancellationToken);
+        return Unit.Value;
     }
 }
 

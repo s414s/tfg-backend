@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace Application.Handlers.Freights.Commands;
 
-public sealed record UpdateFreightRequest : IRequest
+public sealed record UpdateFreightRequest : IRequest<Unit>
 {
     [JsonIgnore]
     public long ShiftId { get; init; }
@@ -26,7 +26,7 @@ public class UpdateFreightRequestValidator : AbstractValidator<UpdateFreightRequ
     }
 }
 
-internal sealed class UpdateFreightCommandHandler : IRequestHandler<UpdateFreightRequest>
+internal sealed class UpdateFreightCommandHandler : IRequestHandler<UpdateFreightRequest, Unit>
 {
     private readonly IRepository<Freight> _freightsRepository;
     public UpdateFreightCommandHandler(IRepository<Freight> freightsRepository)
@@ -34,7 +34,7 @@ internal sealed class UpdateFreightCommandHandler : IRequestHandler<UpdateFreigh
         _freightsRepository = freightsRepository;
     }
 
-    public async Task Handle(UpdateFreightRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UpdateFreightRequest request, CancellationToken cancellationToken)
     {
         var freight = await _freightsRepository.Query
             .FirstOrDefaultAsync(x => x.Id == request.ShiftId, cancellationToken)
@@ -43,5 +43,6 @@ internal sealed class UpdateFreightCommandHandler : IRequestHandler<UpdateFreigh
         // TODO - update freight
 
         await _freightsRepository.SaveChangesAsync(cancellationToken);
+        return Unit.Value;
     }
 }

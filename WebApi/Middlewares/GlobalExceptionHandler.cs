@@ -29,6 +29,13 @@ public class GlobalExceptionHandler : IExceptionHandler
             Extensions = MapExtensions(exception, traceId)
         };
 
+        _logger.LogError(
+             exception,
+                 "Exception on machine {MachineName}. TraceId: {TraceId}. Msg: {Ex}",
+                 Environment.MachineName,
+                 traceId,
+                 exception.Message);
+
         if (statusCode == StatusCodes.Status500InternalServerError)
         {
             _logger.LogError(

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Freights.Commands;
 
-public sealed record CreateFreightRequest() : IRequest
+public sealed record CreateFreightRequest() : IRequest<Unit>
 {
     public required long OriginId { get; init; }
     public required long DestinationId { get; init; }
@@ -26,7 +26,7 @@ public class CreateFreightRequestValidator : AbstractValidator<CreateFreightRequ
     }
 }
 
-internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreightRequest>
+internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreightRequest, Unit>
 {
     private readonly IRepository<Freight> _freightsRepository;
     private readonly IRepository<Route> _routesRepository;
@@ -45,7 +45,7 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
         _usersRepository = usersRepository;
     }
 
-    public async Task Handle(CreateFreightRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreateFreightRequest request, CancellationToken cancellationToken)
     {
         if (DateTime.UtcNow.AddDays(1) - request.StartDate > TimeSpan.FromDays(1))
             throw new CustomException("You need to have at least one day notice to drivers");
@@ -81,5 +81,6 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
         };
 
         await _freightsRepository.AddAndSaveChangesAsync(newFreight);
+        return Unit.Value;
     }
 }

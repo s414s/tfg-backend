@@ -24,6 +24,6 @@ public class SettingsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<bool>> CreatePallet([FromBody] UpdateSettingsCommandRequest command)
+    public async Task<ActionResult<Unit>> CreatePallet([FromBody] UpdateSettingsCommandRequest command)
         => await _mediator.Send(command);
 }

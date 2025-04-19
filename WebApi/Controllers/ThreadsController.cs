@@ -45,7 +45,7 @@ public class ThreadsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<bool>> MarkThreadAsRead(long threadId)
+    public async Task<ActionResult<Unit>> MarkThreadAsRead(long threadId)
         => await _mediator.Send(new MarkThreadAsReadRequest(threadId));
 
     [HttpPost("")]
