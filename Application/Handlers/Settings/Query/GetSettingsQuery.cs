@@ -1,4 +1,5 @@
-﻿using Domain.Contracts;
+﻿using Application.DTO;
+using Domain.Contracts;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -6,13 +7,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Handlers.Settings.Query;
 
 public sealed record GetSettingsRequest() : IRequest<SettingsDTO> { }
-
-public sealed record SettingsDTO
-{
-    public required decimal PricePerKilogram { get; init; }
-    public required decimal PricePerLiterFuel { get; init; }
-    public required decimal PricePerHourDriver { get; init; }
-}
 
 internal sealed class GetSettingsHandler : IRequestHandler<GetSettingsRequest, SettingsDTO>
 {

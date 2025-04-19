@@ -1,4 +1,4 @@
-﻿using Application.Handlers.Settings.Query;
+﻿using Application.DTO;
 using Domain.Contracts;
 using Domain.Entities;
 using MediatR;
@@ -29,4 +29,3 @@ internal sealed class UpdateSettingsCommandHandler : IRequestHandler<UpdateSetti
         return Unit.Value;
     }
 }
-

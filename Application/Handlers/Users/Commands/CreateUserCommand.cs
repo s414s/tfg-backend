@@ -74,10 +74,8 @@ internal sealed class CreateUserCommandHandler : IRequestHandler<CreateUserComma
         using (var rng = RandomNumberGenerator.Create())
         {
             byte[] randomBytes = new byte[length];
-            // Fill the array with secure random bytes.
             rng.GetBytes(randomBytes);
 
-            // Map each random byte to a character in allowedChars.
             for (int i = 0; i < length; i++)
             {
                 int index = randomBytes[i] % allowedChars.Length;

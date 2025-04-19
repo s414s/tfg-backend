@@ -73,7 +73,7 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
             DueStart = request.StartDate,
             StartCityId = request.OriginId,
             RouteId = route.Id,
-            Status = FreightStatus.Active,
+            Status = FreightStatus.Scheduled,
             DriverId = request.DriverId,
             TruckId = 1, // TODO
             PricePerDriverHour = (await _settingsRepository.Query.FirstAsync(cancellationToken)).PricePerHourDriver,

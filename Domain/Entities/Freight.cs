@@ -24,7 +24,7 @@ public class Freight : AuditableEntityBase
     public decimal TotalFuelCost { get => (decimal)TotalDistance * PricePerLiterFuel; }
     public decimal TotalDriverCost { get => (decimal)GetTotalDuration().TotalHours * PricePerDriverHour; }
     public decimal TotalCost { get => TotalDriverCost + TotalFuelCost; }
-    public TimeSpan GetTotalDuration() => TimeSpan.FromHours(Route.AvgSpeed / TotalDistance);
+    public TimeSpan GetTotalDuration() => TimeSpan.FromHours(TotalDistance / Route.AvgSpeed);
     public DateTime GetETA() => DueStart.Add(GetTotalDuration() / 2);
     public FreightStatus GetStatus()
     {
