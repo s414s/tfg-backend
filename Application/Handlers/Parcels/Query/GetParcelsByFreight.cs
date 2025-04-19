@@ -25,7 +25,7 @@ internal sealed class CreatePalletCommandHandler : IRequestHandler<GetParcelsByF
         if (!await _freightsRepository.Query.AnyAsync(x => x.Id == request.FreightId, cancellationToken))
             throw new EntityNotFoundException($"Freight with id {request.FreightId} could not be found");
 
-        return await _parcelsRepository.Query
+        var x = await _parcelsRepository.Query
             .Where(x => x.FreightId == request.FreightId)
             .Select(x => new ParcelDTO
             {
@@ -39,6 +39,8 @@ internal sealed class CreatePalletCommandHandler : IRequestHandler<GetParcelsByF
                 ContactEmail = x.ContactEmail,
             })
             .ToListAsync(cancellationToken);
+
+        return x;
     }
 }
 

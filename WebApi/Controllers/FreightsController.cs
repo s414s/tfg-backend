@@ -5,6 +5,7 @@ using Application.Handlers.Freights.Query;
 using Application.Handlers.Parcels.Query;
 using Application.Handlers.Routes.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -15,6 +16,7 @@ public class FreightsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
+    //[Authorize(Policy = "AdminOnly")]
     [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

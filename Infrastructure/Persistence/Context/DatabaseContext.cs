@@ -16,6 +16,7 @@ public class DatabaseContext : DbContext
     public DbSet<Message> Messages { get; set; }
     public DbSet<MessageThread> MessageThreads { get; set; }
     public DbSet<Freight> Freights { get; set; }
+    public DbSet<SettingsEntity> Settings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,5 +28,6 @@ public class DatabaseContext : DbContext
         modelBuilder.ApplyConfiguration(new MessageEntityConfiguration());
         modelBuilder.ApplyConfiguration(new MessageThreadEntityConfigurator());
         modelBuilder.ApplyConfiguration(new FreightEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new SettingsEntityConfigurator());
     }
 }

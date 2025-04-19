@@ -1,5 +1,6 @@
 using Domain.Entities.Base;
 using Domain.Enums;
+using Domain.Exceptions;
 
 namespace Domain.Entities;
 
@@ -11,13 +12,35 @@ public class Freight : AuditableEntityBase
     public DateTime DueStart { get; set; }
     public FreightStatus Status { get; set; }
     public long RouteId { get; set; }
+    public required decimal PricePerDriverHour { get; set; }
+    public required decimal PricePerLiterFuel { get; set; }
 
+    // Computed Properties
     public decimal TotalRevenue { get => Parcels.Sum(x => x.Price); }
-    public decimal GetTotalWeight() => Parcels.Sum(x => x.Weight);
-    public double GetTotalDistance() => 2 * Route.Distance;
-    public TimeSpan GetTotalDuration() => TimeSpan.FromHours(Route.AvgSpeed / GetTotalDistance());
+    public decimal TotalWeight { get => Parcels.Sum(x => x.Weight); }
+    //public decimal GetTotalWeight() => Parcels.Sum(x => x.Weight);
+    public double TotalDistance { get => 2 * Route.Distance; }
+    //public double GetTotalDistance() => 2 * Route.Distance;
+    public decimal TotalFuelCost { get => (decimal)TotalDistance * PricePerLiterFuel; }
+    public decimal TotalDriverCost { get => (decimal)GetTotalDuration().TotalHours * PricePerDriverHour; }
+    public decimal TotalCost { get => TotalDriverCost + TotalFuelCost; }
+    public TimeSpan GetTotalDuration() => TimeSpan.FromHours(Route.AvgSpeed / TotalDistance);
     public DateTime GetETA() => DueStart.Add(GetTotalDuration() / 2);
+    public FreightStatus GetStatus()
+    {
+        if (Status == FreightStatus.Canceled)
+            return FreightStatus.Canceled;
 
+        if (DateTime.UtcNow < DueStart)
+            return FreightStatus.Scheduled;
+
+        if (DateTime.UtcNow > GetETA())
+            return FreightStatus.Completed;
+
+        return FreightStatus.Active;
+    }
+
+    // Navigation Properties
     public virtual Truck Truck { get; set; } = null!;
     public virtual Route Route { get; set; } = null!;
     public virtual User Driver { get; set; } = null!;
@@ -26,14 +49,14 @@ public class Freight : AuditableEntityBase
 
     public void AddParcel(Parcel parcel)
     {
-        if (GetTotalWeight() + parcel.Weight > Truck.MaxWeight)
-            throw new Exception("there is not enough room"); // TODO - custom exception
+        if (TotalWeight + parcel.Weight > Truck.MaxWeight)
+            throw new CustomException("there is not enough room");
 
         if (StartCityId != parcel.OriginId)
-            throw new Exception("the freight origin does not match"); // TODO - custom exception
+            throw new CustomException("the freight origin does not match");
 
         if (Route.OriginId != parcel.OriginId && Route.DestinationId != parcel.DestinationId)
-            throw new Exception("the freight destination does not match"); // TODO - custom exception
+            throw new CustomException("the freight destination does not match");
 
         Parcels.Add(parcel);
     }

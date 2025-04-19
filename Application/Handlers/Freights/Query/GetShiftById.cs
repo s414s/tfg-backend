@@ -39,12 +39,15 @@ internal sealed class GetFreightByIdQueryHandler : IRequestHandler<GetFreightByI
             {
                 Id = x.Id,
                 Status = x.Status,
-                DueStart = x.DueStart,
+                Etd = x.DueStart,
                 Origin = x.StartCity.Name,
                 TotalDistance = x.Route.Distance * 2,
                 DurationMinutes = x.Route.Duration.TotalMinutes,
-                FinishTime = x.GetETA(),
+                Eta = x.GetETA(),
                 Destination = x.Route.DestinationId == x.StartCityId ? x.Route.Origin.Name : x.Route.Destination.Name,
+                FuelCost = x.TotalFuelCost,
+                DriverCost = x.TotalDriverCost,
+                TotalCost = x.TotalCost,
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,

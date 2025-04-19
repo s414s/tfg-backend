@@ -42,6 +42,8 @@ public class FreightEntityConfiguration : IEntityTypeConfiguration<Freight>
                 Status = FreightStatus.Active,
                 RouteId = 1,
                 Created = DateTime.UtcNow.AddHours(-2),
+                PricePerDriverHour = 20,
+                PricePerLiterFuel = 1.80m,
             },
             new Freight
             {
@@ -53,6 +55,8 @@ public class FreightEntityConfiguration : IEntityTypeConfiguration<Freight>
                 Status = FreightStatus.Active,
                 RouteId = 1,
                 Created = DateTime.UtcNow.AddHours(-2),
+                PricePerDriverHour = 20,
+                PricePerLiterFuel = 1.80m,
             },
             new Freight
             {
@@ -64,6 +68,8 @@ public class FreightEntityConfiguration : IEntityTypeConfiguration<Freight>
                 Status = FreightStatus.Completed,
                 RouteId = 1,
                 Created = DateTime.UtcNow.AddHours(-2),
+                PricePerDriverHour = 20,
+                PricePerLiterFuel = 1.80m,
             },
             new Freight
             {
@@ -75,6 +81,8 @@ public class FreightEntityConfiguration : IEntityTypeConfiguration<Freight>
                 Status = FreightStatus.Active,
                 RouteId = 1,
                 Created = DateTime.UtcNow.AddHours(-2),
+                PricePerDriverHour = 20,
+                PricePerLiterFuel = 1.80m,
             }
         );
     }

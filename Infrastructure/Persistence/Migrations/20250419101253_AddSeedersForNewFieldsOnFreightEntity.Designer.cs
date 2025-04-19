@@ -4,6 +4,7 @@ using System.Text.Json;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250419101253_AddSeedersForNewFieldsOnFreightEntity")]
+    partial class AddSeedersForNewFieldsOnFreightEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,7 +189,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 13, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(8588), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 8, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(9640), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 0L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -204,7 +207,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 2L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 13, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(8596), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 8, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(9649), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 0L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -222,7 +225,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 3L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 13, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(8669), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 8, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(9654), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 0L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -240,7 +243,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 4L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 13, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(8675), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 8, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(9659), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 0L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -293,7 +296,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1L,
-                            Date = new DateTime(2025, 4, 19, 14, 40, 3, 951, DateTimeKind.Utc).AddTicks(8457),
+                            Date = new DateTime(2025, 4, 19, 9, 27, 52, 410, DateTimeKind.Utc).AddTicks(472),
                             IsRead = false,
                             MessageThreadId = 1L,
                             Text = "Hey, are you available for a call?",
@@ -302,7 +305,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 2L,
-                            Date = new DateTime(2025, 4, 19, 14, 55, 3, 951, DateTimeKind.Utc).AddTicks(8463),
+                            Date = new DateTime(2025, 4, 19, 9, 42, 52, 410, DateTimeKind.Utc).AddTicks(478),
                             IsRead = true,
                             MessageThreadId = 1L,
                             Text = "Yes, I can join in 5 minutes.",
@@ -311,7 +314,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 3L,
-                            Date = new DateTime(2025, 4, 18, 15, 25, 3, 951, DateTimeKind.Utc).AddTicks(8466),
+                            Date = new DateTime(2025, 4, 18, 10, 12, 52, 410, DateTimeKind.Utc).AddTicks(482),
                             IsRead = false,
                             MessageThreadId = 2L,
                             Text = "The meeting has been rescheduled to tomorrow.",
@@ -320,7 +323,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 4L,
-                            Date = new DateTime(2025, 4, 18, 15, 35, 3, 951, DateTimeKind.Utc).AddTicks(8469),
+                            Date = new DateTime(2025, 4, 18, 10, 22, 52, 410, DateTimeKind.Utc).AddTicks(486),
                             IsRead = true,
                             MessageThreadId = 2L,
                             Text = "Thanks for the update!",
@@ -380,12 +383,12 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 15, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(2056), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 10, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(3415), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FromId = 1L,
-                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 18, 15, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(2060), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 18, 10, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(3420), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = 1L,
                             Subject = "Project Kickoff",
                             Teaser = "Let's schedule a kickoff meeting for the new project.",
@@ -394,12 +397,12 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 2L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 13, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(2065), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 8, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(3426), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FromId = 1L,
-                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 18, 15, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(2067), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 18, 10, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(3427), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = 1L,
                             Subject = "Meeting Reminder",
                             Teaser = "Don't forget about our meeting tomorrow at 10 AM.",
@@ -408,12 +411,12 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 3L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 18, 15, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(2070), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 18, 10, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(3431), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FromId = 1L,
-                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 18, 15, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(2071), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 18, 10, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(3432), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = 1L,
                             Subject = "No Subject",
                             Teaser = "",
@@ -422,12 +425,12 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 4L,
-                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 14, 55, 3, 952, DateTimeKind.Unspecified).AddTicks(2075), new TimeSpan(0, 0, 0, 0, 0)),
+                            Created = new DateTimeOffset(new DateTime(2025, 4, 19, 9, 42, 52, 410, DateTimeKind.Unspecified).AddTicks(3436), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             DeletedDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FromId = 1L,
-                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 18, 15, 25, 3, 952, DateTimeKind.Unspecified).AddTicks(2076), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastModified = new DateTimeOffset(new DateTime(2025, 4, 18, 10, 12, 52, 410, DateTimeKind.Unspecified).AddTicks(3437), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = 1L,
                             Subject = "Follow-up on Proposal",
                             Teaser = "Please review the attached proposal document.",
@@ -731,7 +734,7 @@ namespace Infrastructure.Persistence.Migrations
                             LastMaintenance = new DateTime(2020, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ManufacturingDate = new DateTime(2020, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Mark = "Scania",
-                            MaxWeight = 3000m,
+                            MaxWeight = 0m,
                             Mileage = 100000m,
                             Plate = "4566KLM"
                         },
@@ -742,7 +745,7 @@ namespace Infrastructure.Persistence.Migrations
                             LastMaintenance = new DateTime(2023, 7, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ManufacturingDate = new DateTime(2019, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Mark = "Scania",
-                            MaxWeight = 3000m,
+                            MaxWeight = 0m,
                             Mileage = 75000m,
                             Plate = "8923XYZ"
                         },
@@ -753,7 +756,7 @@ namespace Infrastructure.Persistence.Migrations
                             LastMaintenance = new DateTime(2023, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ManufacturingDate = new DateTime(2018, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Mark = "Scania",
-                            MaxWeight = 3000m,
+                            MaxWeight = 0m,
                             Mileage = 120000m,
                             Plate = "5634QWE"
                         },
@@ -764,7 +767,7 @@ namespace Infrastructure.Persistence.Migrations
                             LastMaintenance = new DateTime(2024, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ManufacturingDate = new DateTime(2021, 1, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Mark = "Scania",
-                            MaxWeight = 3000m,
+                            MaxWeight = 0m,
                             Mileage = 95000m,
                             Plate = "1122ABC"
                         },
@@ -775,7 +778,7 @@ namespace Infrastructure.Persistence.Migrations
                             LastMaintenance = new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ManufacturingDate = new DateTime(2019, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Mark = "Scania",
-                            MaxWeight = 3000m,
+                            MaxWeight = 0m,
                             Mileage = 80000m,
                             Plate = "7834LMN"
                         });

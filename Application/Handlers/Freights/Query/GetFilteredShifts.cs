@@ -51,13 +51,16 @@ internal sealed class GetFilteredFreightsQueryHandler : IRequestHandler<GetFilte
             .Select(x => new FreightDTO
             {
                 Id = x.Id,
-                DueStart = x.DueStart,
+                Etd = x.DueStart,
                 Status = x.Status,
                 Origin = x.StartCity.Name,
                 TotalDistance = x.Route.Distance * 2,
                 DurationMinutes = x.Route.Duration.TotalMinutes,
-                FinishTime = x.GetETA(),
+                Eta = x.GetETA(),
                 Destination = x.Route.DestinationId == x.StartCityId ? x.Route.Origin.Name : x.Route.Destination.Name,
+                FuelCost = x.TotalFuelCost,
+                DriverCost = x.TotalDriverCost,
+                TotalCost = x.TotalCost,
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,

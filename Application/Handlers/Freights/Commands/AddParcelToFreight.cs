@@ -32,11 +32,16 @@ internal sealed class AddParcelToFreightCommandHandler : IRequestHandler<AddParc
 {
     private readonly IRepository<Freight> _freightsRepository;
     private readonly IRepository<City> _citiessRepository;
+    private readonly IRepository<SettingsEntity> _settingsRepository;
 
-    public AddParcelToFreightCommandHandler(IRepository<Freight> freightsRepository, IRepository<City> citiesRepository)
+    public AddParcelToFreightCommandHandler(
+        IRepository<Freight> freightsRepository,
+        IRepository<City> citiesRepository,
+        IRepository<SettingsEntity> settingsRepository)
     {
         _freightsRepository = freightsRepository;
         _citiessRepository = citiesRepository;
+        _settingsRepository = settingsRepository;
     }
 
     public async Task Handle(AddParcelToFreightCommand request, CancellationToken cancellationToken)
@@ -57,25 +62,21 @@ internal sealed class AddParcelToFreightCommandHandler : IRequestHandler<AddParc
             .FirstOrDefaultAsync(x => x.Id == request.FreightId, cancellationToken)
             ?? throw new EntityNotFoundException(nameof(Freight));
 
-        if (freight.Status != FreightStatus.Scheduled)
+        if (freight.GetStatus() != FreightStatus.Scheduled)
             throw new CustomException("The freight is not available");
-
-        // TODO - calculate price
-        decimal priceRate = 0.15m;
 
         var newParcel = new Parcel
         {
-            Price = (decimal)freight.GetTotalDistance() * priceRate, // TODO - calculate price
+            Price = (await _settingsRepository.Query.FirstAsync(cancellationToken)).PricePerKilogram * request.ParcelWeight,
             Weight = request.ParcelWeight,
             FreightId = freight.Id,
             OriginId = request.OriginId,
             DestinationId = request.DestinationId,
             ContactEmail = request.ContactEmail,
+            Guid = new Guid(),
         };
 
-        // TODO - freight - add Parcel
         freight.AddParcel(newParcel);
-
         await _freightsRepository.SaveChangesAsync();
     }
 }

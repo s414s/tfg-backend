@@ -30,11 +30,19 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
 {
     private readonly IRepository<Freight> _freightsRepository;
     private readonly IRepository<Route> _routesRepository;
+    private readonly IRepository<SettingsEntity> _settingsRepository;
+    private readonly IRepository<User> _usersRepository;
 
-    public CreateFreightCommandHandler(IRepository<Freight> freightsRepository, IRepository<Route> routesRepository)
+    public CreateFreightCommandHandler(
+        IRepository<Freight> freightsRepository,
+        IRepository<Route> routesRepository,
+        IRepository<SettingsEntity> settingsRepository,
+        IRepository<User> usersRepository)
     {
         _freightsRepository = freightsRepository;
         _routesRepository = routesRepository;
+        _settingsRepository = settingsRepository;
+        _usersRepository = usersRepository;
     }
 
     public async Task Handle(CreateFreightRequest request, CancellationToken cancellationToken)
@@ -52,8 +60,11 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
             )
             ?? throw new EntityNotFoundException(nameof(Route));
 
-        // TODO - check and assignd driver
-        // TODO - make sure there is a driver assigned
+        if (DateTime.UtcNow.AddDays(1) - request.StartDate > TimeSpan.FromDays(1))
+            throw new CustomException("You need to have at least one day notice to drivers");
+
+        if (!await _usersRepository.Query.AnyAsync(x => x.Id == request.DriverId && x.Role == UserRoles.Driver, cancellationToken))
+            throw new EntityNotFoundException(nameof(User));
 
         // TODO - assign truck from driver
 
@@ -64,6 +75,9 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
             RouteId = route.Id,
             Status = FreightStatus.Active,
             DriverId = request.DriverId,
+            TruckId = 1, // TODO
+            PricePerDriverHour = (await _settingsRepository.Query.FirstAsync(cancellationToken)).PricePerHourDriver,
+            PricePerLiterFuel = (await _settingsRepository.Query.FirstAsync(cancellationToken)).PricePerLiterFuel,
         };
 
         await _freightsRepository.AddAndSaveChangesAsync(newFreight);

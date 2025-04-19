@@ -1,6 +1,5 @@
 using Application;
 using Domain.Contracts;
-using Domain.Entities;
 using Domain.Enums;
 using Infrastructure;
 using Infrastructure.Persistence.Context;
@@ -98,6 +97,10 @@ builder.Services.AddSwaggerGen(c =>
             }
         });
     }
+);
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("AdminOnly", p => p.RequireClaim("userRole", UserRoles.Admin.ToString()) // OR -> p.RequireRole(UserRole.Admin.ToString())
 );
 
 var connString = builder.Configuration.GetConnectionString("LocalWebApiDatabase");
