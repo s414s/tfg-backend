@@ -16,6 +16,6 @@ public class CitiesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<CityDTO>>> GetAllCities()
-        => Ok(await _mediator.Send(new GetAllCitiesRequest()));
+    public async Task<ActionResult<IEnumerable<CityDTO>>> GetAllCities([FromQuery] long? originId)
+        => Ok(await _mediator.Send(new GetAllCitiesRequest(originId)));
 }
