@@ -4,7 +4,7 @@ using Domain.Exceptions;
 
 namespace Domain.Entities;
 
-public class Freight : AuditableEntityBase
+public class Freight : EntityBase
 {
     public long TruckId { get; set; }
     public long DriverId { get; set; }

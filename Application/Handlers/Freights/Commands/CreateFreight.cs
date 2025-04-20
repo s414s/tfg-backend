@@ -14,7 +14,6 @@ public sealed record CreateFreightRequest() : IRequest<Unit>
 {
     public required long OriginId { get; init; }
     public required long DestinationId { get; init; }
-    //public required DateTimeOffset StartDate { get; init; }
     public required DateTime StartDate { get; init; }
 }
 
@@ -72,9 +71,7 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
         {
             Role = UserRoles.Driver,
             StartDate = request.StartDate,
-            //StartDate = request.StartDate.UtcDateTime,
             EndDate = request.StartDate.Add(route.Duration),
-            //EndDate = request.StartDate.UtcDateTime.Add(route.Duration),
         }, cancellationToken);
 
         if (!availableDrivers.Data.Any())
@@ -83,26 +80,15 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
         var availableTrucks = await _mediatr.Send(new GetFilteredTrucksRequest
         {
             StartDate = request.StartDate,
-            //StartDate = request.StartDate.UtcDateTime,
             EndDate = request.StartDate.Add(route.Duration),
-            //EndDate = request.StartDate.UtcDateTime.Add(route.Duration),
         }, cancellationToken);
 
         if (!availableTrucks.Data.Any())
             throw new CustomException("No trucks available");
 
-        // Treat the incoming DateTime as already UTC:
-        //var dueUtc = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc);
-        var dueUtcDto = new DateTimeOffset(request.StartDate, TimeSpan.Zero);
-        Console.WriteLine($"Saving DueStart = {dueUtcDto:O} (Offset = {dueUtcDto.Offset})");
-
         var newFreight = new Freight
         {
-            //DueStart = request.StartDate.ToUniversalTime(),
-            //DueStart = new DateTime(request.StartDate.Year, request.StartDate.Month, request.StartDate.Day),
-            //DueStart = new DateTime(request.StartDate.Year, request.StartDate.Month, request.StartDate.Day, 09, 30, 00, DateTimeKind.Utc),
-            //DueStart = request.StartDate,
-            DueStart = dueUtcDto.UtcDateTime,
+            DueStart = request.StartDate,
             StartCityId = request.OriginId,
             RouteId = route.Id,
             Status = FreightStatus.Scheduled,
