@@ -6,17 +6,18 @@ using Domain.Entities;
 using Domain.Enums;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Application.Handlers.Trucks.Query;
 
-public sealed record GetFilteredTrucksRequest(
-    bool? IsAvailable,
-    DateTime? StartDate,
-    DateTime? EndDate,
-    FreightStatus? Status
-    ) : SortedRequest, IRequest<PagedResults<TruckDTO>>
-{ }
+public sealed record GetFilteredTrucksRequest : SortedRequest, IRequest<PagedResults<TruckDTO>>
+{
+    public bool? IsAvailable { get; init; }
+    public DateTime? StartDate { get; init; }
+    public DateTime? EndDate { get; init; }
+    public FreightStatus? Status { get; init; }
+}
 
 public class GetFilteredTrucksRequestValidator : AbstractValidator<GetFilteredTrucksRequest>
 {
@@ -37,15 +38,34 @@ public class GetFilteredTrucksRequestValidator : AbstractValidator<GetFilteredTr
 internal sealed class GetFilteredTruckRequestHandler : IRequestHandler<GetFilteredTrucksRequest, PagedResults<TruckDTO>>
 {
     private readonly IRepository<Truck> _trucksRepository;
+    private readonly IRepository<Freight> _freightsRepository;
 
-    public GetFilteredTruckRequestHandler(IRepository<Truck> trucksRepository)
+    public GetFilteredTruckRequestHandler(IRepository<Truck> trucksRepository, IRepository<Freight> freightsRepository)
     {
         _trucksRepository = trucksRepository;
+        _freightsRepository = freightsRepository;
     }
 
     public async Task<PagedResults<TruckDTO>> Handle(GetFilteredTrucksRequest request, CancellationToken cancellationToken)
     {
+        List<long>? unavailableTrucksIds = null;
+
+        if (request.StartDate is DateTime start && request.EndDate is DateTime end)
+        {
+            var scheduledFreights = await _freightsRepository.Query
+               .Include(x => x.Route)
+               .Where(x => x.Status == FreightStatus.Scheduled)
+               .ToListAsync(cancellationToken);
+
+            unavailableTrucksIds = scheduledFreights
+                 .Where(x => (x.DueStart > start && x.GetETA() > start) || (x.DueStart > end && x.GetETA() > end))
+                 .Select(x => x.DriverId)
+                 .Distinct()
+                 .ToList();
+        }
+
         return await _trucksRepository.Query
+            .Where(x => unavailableTrucksIds == null || !unavailableTrucksIds.Contains(x.Id))
             .ApplyOrder(request.OrderBy, request.IsDescending)
             .Select(x => new TruckDTO
             {

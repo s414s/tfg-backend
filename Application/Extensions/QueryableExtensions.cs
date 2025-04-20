@@ -22,6 +22,7 @@ public static class QueryableExtensions
         // Create parameter for the lambda expression
         var lambdaParameter = Expression.Parameter(typeof(TEntity), "x");
         var propertyAccess = Expression.Property(lambdaParameter, propertyMatch);
+
         // Convert the property access to object type to handle any property type
         var conversion = Expression.Convert(propertyAccess, typeof(object));
         var lambda = Expression.Lambda<Func<TEntity, object>>(conversion, lambdaParameter);

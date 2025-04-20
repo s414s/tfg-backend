@@ -1,4 +1,6 @@
-﻿using Domain.Contracts;
+﻿using Application.Handlers.Trucks.Query;
+using Application.Handlers.Users.Query;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Exceptions;
@@ -12,8 +14,8 @@ public sealed record CreateFreightRequest() : IRequest<Unit>
 {
     public required long OriginId { get; init; }
     public required long DestinationId { get; init; }
+    //public required DateTimeOffset StartDate { get; init; }
     public required DateTime StartDate { get; init; }
-    public required long DriverId { get; init; }
 }
 
 public class CreateFreightRequestValidator : AbstractValidator<CreateFreightRequest>
@@ -32,17 +34,20 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
     private readonly IRepository<Route> _routesRepository;
     private readonly IRepository<SettingsEntity> _settingsRepository;
     private readonly IRepository<User> _usersRepository;
+    private readonly IMediator _mediatr;
 
     public CreateFreightCommandHandler(
         IRepository<Freight> freightsRepository,
         IRepository<Route> routesRepository,
         IRepository<SettingsEntity> settingsRepository,
-        IRepository<User> usersRepository)
+        IRepository<User> usersRepository,
+        IMediator mediatr)
     {
         _freightsRepository = freightsRepository;
         _routesRepository = routesRepository;
         _settingsRepository = settingsRepository;
         _usersRepository = usersRepository;
+        _mediatr = mediatr;
     }
 
     public async Task<Unit> Handle(CreateFreightRequest request, CancellationToken cancellationToken)
@@ -53,6 +58,9 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
         if (request.StartDate < DateTime.UtcNow)
             throw new CustomException("You can only plan future freights");
 
+        if (DateTime.UtcNow.AddDays(1) - request.StartDate > TimeSpan.FromDays(1))
+            throw new CustomException("You need to have at least one day notice to drivers");
+
         var route = await _routesRepository.Query
             .FirstOrDefaultAsync(x =>
                 (x.OriginId == request.OriginId || x.OriginId == request.DestinationId)
@@ -60,27 +68,52 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
             )
             ?? throw new EntityNotFoundException(nameof(Route));
 
-        if (DateTime.UtcNow.AddDays(1) - request.StartDate > TimeSpan.FromDays(1))
-            throw new CustomException("You need to have at least one day notice to drivers");
+        var availableDrivers = await _mediatr.Send(new GetUsersRequest
+        {
+            Role = UserRoles.Driver,
+            StartDate = request.StartDate,
+            //StartDate = request.StartDate.UtcDateTime,
+            EndDate = request.StartDate.Add(route.Duration),
+            //EndDate = request.StartDate.UtcDateTime.Add(route.Duration),
+        }, cancellationToken);
 
-        if (!await _usersRepository.Query.AnyAsync(x => x.Id == request.DriverId && x.Role == UserRoles.Driver, cancellationToken))
-            throw new EntityNotFoundException(nameof(User));
+        if (!availableDrivers.Data.Any())
+            throw new CustomException("No drivers available");
 
-        // TODO - assign truck from driver
+        var availableTrucks = await _mediatr.Send(new GetFilteredTrucksRequest
+        {
+            StartDate = request.StartDate,
+            //StartDate = request.StartDate.UtcDateTime,
+            EndDate = request.StartDate.Add(route.Duration),
+            //EndDate = request.StartDate.UtcDateTime.Add(route.Duration),
+        }, cancellationToken);
+
+        if (!availableTrucks.Data.Any())
+            throw new CustomException("No trucks available");
+
+        // Treat the incoming DateTime as already UTC:
+        //var dueUtc = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc);
+        var dueUtcDto = new DateTimeOffset(request.StartDate, TimeSpan.Zero);
+        Console.WriteLine($"Saving DueStart = {dueUtcDto:O} (Offset = {dueUtcDto.Offset})");
 
         var newFreight = new Freight
         {
-            DueStart = request.StartDate,
+            //DueStart = request.StartDate.ToUniversalTime(),
+            //DueStart = new DateTime(request.StartDate.Year, request.StartDate.Month, request.StartDate.Day),
+            //DueStart = new DateTime(request.StartDate.Year, request.StartDate.Month, request.StartDate.Day, 09, 30, 00, DateTimeKind.Utc),
+            //DueStart = request.StartDate,
+            DueStart = dueUtcDto.UtcDateTime,
             StartCityId = request.OriginId,
             RouteId = route.Id,
             Status = FreightStatus.Scheduled,
-            DriverId = request.DriverId,
-            TruckId = 1, // TODO
+            DriverId = availableDrivers.Data[0].Id,
+            TruckId = availableTrucks.Data[0].Id,
             PricePerDriverHour = (await _settingsRepository.Query.FirstAsync(cancellationToken)).PricePerHourDriver,
             PricePerLiterFuel = (await _settingsRepository.Query.FirstAsync(cancellationToken)).PricePerLiterFuel,
         };
 
-        await _freightsRepository.AddAndSaveChangesAsync(newFreight);
+        await _freightsRepository.AddAsync(newFreight, cancellationToken);
+        await _freightsRepository.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }
 }
