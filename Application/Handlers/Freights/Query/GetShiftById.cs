@@ -54,6 +54,7 @@ internal sealed class GetFreightByIdQueryHandler : IRequestHandler<GetFreightByI
                     Plate = x.Truck.Plate,
                     Mark = x.Truck.Mark,
                     Consumption = x.Truck.Consumption,
+                    MaxWeight = x.Truck.MaxWeight,
                     Mileage = x.Truck.Mileage,
                     ManufacturingDateUnix = x.Truck.ManufacturingDate.ToUnixTime(),
                     LastMaintenanceDateUnix = x.Truck.LastMaintenance.ToUnixTime(),

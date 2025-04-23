@@ -9,4 +9,5 @@ public sealed record TruckDTO
     public required long ManufacturingDateUnix { get; init; }
     public required long LastMaintenanceDateUnix { get; init; }
     public required string Mark { get; init; }
+    public required decimal MaxWeight { get; init; }
 };

@@ -40,6 +40,7 @@ internal sealed class GetTruckByIdRequestHandler : IRequestHandler<GetTruckByIdR
                 Plate = x.Plate,
                 Mileage = x.Mileage,
                 Consumption = x.Consumption,
+                MaxWeight = x.MaxWeight,
                 Mark = x.Mark,
                 ManufacturingDateUnix = x.ManufacturingDate.ToUnixTime(),
                 LastMaintenanceDateUnix = x.LastMaintenance.ToUnixTime(),

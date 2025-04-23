@@ -73,6 +73,7 @@ internal sealed class GetFilteredTruckRequestHandler : IRequestHandler<GetFilter
                 Plate = x.Plate,
                 Mileage = x.Mileage,
                 Consumption = x.Consumption,
+                MaxWeight = x.MaxWeight,
                 Mark = x.Mark,
                 LastMaintenanceDateUnix = x.LastMaintenance.ToUnixTime(),
                 ManufacturingDateUnix = x.ManufacturingDate.ToUnixTime(),

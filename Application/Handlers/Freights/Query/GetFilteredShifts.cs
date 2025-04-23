@@ -69,6 +69,7 @@ internal sealed class GetFilteredFreightsQueryHandler : IRequestHandler<GetFilte
                     ManufacturingDateUnix = x.Truck.ManufacturingDate.ToUnixTime(),
                     Mileage = x.Truck.Mileage,
                     Mark = x.Truck.Mark,
+                    MaxWeight = x.Truck.MaxWeight,
                     LastMaintenanceDateUnix = x.Truck.LastMaintenance.ToUnixTime(),
                 },
                 Driver = new UserDTO
