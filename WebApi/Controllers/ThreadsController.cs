@@ -32,7 +32,7 @@ public class ThreadsController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<List<MessageDTO>>> GetThreadMessages(long threadId)
         => await _mediator.Send(new GetThreadMessagesRequest(threadId));
 
-    [HttpPost("/{threadId:long}/Messages")]
+    [HttpPost("{threadId:long}/Messages")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]

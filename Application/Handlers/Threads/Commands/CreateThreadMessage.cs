@@ -11,7 +11,7 @@ public sealed record CreateThreadMessageRequest : IRequest<long>
 {
     [JsonIgnore]
     public long ThreadId { get; init; }
-    public string Text { get; init; } = string.Empty;
+    public required string Text { get; init; }
 }
 
 internal sealed class CreateThreadMessageCommandHandler : IRequestHandler<CreateThreadMessageRequest, long>
