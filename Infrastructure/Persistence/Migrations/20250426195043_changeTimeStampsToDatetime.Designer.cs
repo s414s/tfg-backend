@@ -4,6 +4,7 @@ using System.Text.Json;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250426195043_changeTimeStampsToDatetime")]
+    partial class changeTimeStampsToDatetime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,7 +135,7 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("DueStart")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("PricePerDriverHour")
                         .HasColumnType("numeric");
@@ -224,7 +227,7 @@ namespace Infrastructure.Persistence.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("boolean");
@@ -251,7 +254,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1L,
-                            Date = new DateTime(2025, 4, 26, 19, 19, 30, 851, DateTimeKind.Utc).AddTicks(5537),
+                            Date = new DateTime(2025, 4, 26, 19, 5, 42, 942, DateTimeKind.Utc).AddTicks(8121),
                             IsRead = false,
                             MessageThreadId = 1L,
                             Text = "Hey, are you available for a call?",
@@ -260,7 +263,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 2L,
-                            Date = new DateTime(2025, 4, 26, 19, 34, 30, 851, DateTimeKind.Utc).AddTicks(5543),
+                            Date = new DateTime(2025, 4, 26, 19, 20, 42, 942, DateTimeKind.Utc).AddTicks(8127),
                             IsRead = true,
                             MessageThreadId = 1L,
                             Text = "Yes, I can join in 5 minutes.",
@@ -269,7 +272,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 3L,
-                            Date = new DateTime(2025, 4, 25, 20, 4, 30, 851, DateTimeKind.Utc).AddTicks(5547),
+                            Date = new DateTime(2025, 4, 25, 19, 50, 42, 942, DateTimeKind.Utc).AddTicks(8130),
                             IsRead = false,
                             MessageThreadId = 2L,
                             Text = "The meeting has been rescheduled to tomorrow.",
@@ -278,7 +281,7 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 4L,
-                            Date = new DateTime(2025, 4, 25, 20, 14, 30, 851, DateTimeKind.Utc).AddTicks(5551),
+                            Date = new DateTime(2025, 4, 25, 20, 0, 42, 942, DateTimeKind.Utc).AddTicks(8134),
                             IsRead = true,
                             MessageThreadId = 2L,
                             Text = "Thanks for the update!",
@@ -295,7 +298,7 @@ namespace Infrastructure.Persistence.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("CreatedBy")
                         .HasColumnType("bigint");
@@ -304,13 +307,13 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("FromId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("LastModified")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("LastModifiedBy")
                         .HasColumnType("bigint");
@@ -338,11 +341,11 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1L,
-                            Created = new DateTime(2025, 4, 26, 20, 4, 30, 851, DateTimeKind.Utc).AddTicks(8648),
+                            Created = new DateTime(2025, 4, 26, 19, 50, 42, 943, DateTimeKind.Utc).AddTicks(1092),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             FromId = 1L,
-                            LastModified = new DateTime(2025, 4, 25, 20, 4, 30, 851, DateTimeKind.Utc).AddTicks(8649),
+                            LastModified = new DateTime(2025, 4, 25, 19, 50, 42, 943, DateTimeKind.Utc).AddTicks(1093),
                             LastModifiedBy = 1L,
                             Subject = "Project Kickoff",
                             Teaser = "Let's schedule a kickoff meeting for the new project.",
@@ -351,11 +354,11 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 2L,
-                            Created = new DateTime(2025, 4, 26, 18, 4, 30, 851, DateTimeKind.Utc).AddTicks(8654),
+                            Created = new DateTime(2025, 4, 26, 17, 50, 42, 943, DateTimeKind.Utc).AddTicks(1098),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             FromId = 1L,
-                            LastModified = new DateTime(2025, 4, 25, 20, 4, 30, 851, DateTimeKind.Utc).AddTicks(8655),
+                            LastModified = new DateTime(2025, 4, 25, 19, 50, 42, 943, DateTimeKind.Utc).AddTicks(1099),
                             LastModifiedBy = 1L,
                             Subject = "Meeting Reminder",
                             Teaser = "Don't forget about our meeting tomorrow at 10 AM.",
@@ -364,11 +367,11 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 3L,
-                            Created = new DateTime(2025, 4, 25, 20, 4, 30, 851, DateTimeKind.Utc).AddTicks(8657),
+                            Created = new DateTime(2025, 4, 25, 19, 50, 42, 943, DateTimeKind.Utc).AddTicks(1102),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             FromId = 1L,
-                            LastModified = new DateTime(2025, 4, 25, 20, 4, 30, 851, DateTimeKind.Utc).AddTicks(8658),
+                            LastModified = new DateTime(2025, 4, 25, 19, 50, 42, 943, DateTimeKind.Utc).AddTicks(1102),
                             LastModifiedBy = 1L,
                             Subject = "No Subject",
                             Teaser = "",
@@ -377,11 +380,11 @@ namespace Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 4L,
-                            Created = new DateTime(2025, 4, 26, 19, 34, 30, 851, DateTimeKind.Utc).AddTicks(8661),
+                            Created = new DateTime(2025, 4, 26, 19, 20, 42, 943, DateTimeKind.Utc).AddTicks(1105),
                             CreatedBy = 1L,
                             DeletedBy = 0L,
                             FromId = 1L,
-                            LastModified = new DateTime(2025, 4, 25, 20, 4, 30, 851, DateTimeKind.Utc).AddTicks(8662),
+                            LastModified = new DateTime(2025, 4, 25, 19, 50, 42, 943, DateTimeKind.Utc).AddTicks(1106),
                             LastModifiedBy = 1L,
                             Subject = "Follow-up on Proposal",
                             Teaser = "Please review the attached proposal document.",
@@ -744,7 +747,7 @@ namespace Infrastructure.Persistence.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Birthday")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Base;
+using Domain.Exceptions;
 
 namespace Domain.Entities;
 
@@ -17,7 +18,7 @@ public class MessageThread : AuditableEntityBase
     {
         if (author == to)
         {
-            throw new Exception("Can not be same user"); // TODO - custom exception
+            throw new CustomException("Can not be same user");
         }
 
         return new MessageThread()
