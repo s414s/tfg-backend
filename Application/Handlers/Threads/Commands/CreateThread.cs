@@ -35,8 +35,8 @@ internal sealed class CreateThreadCommandHandler : IRequestHandler<CreateThreadR
             .FirstOrDefaultAsync(x => x.Email == request.ToEmail.ToLower(), cancellationToken)
             ?? throw new EntityNotFoundException(nameof(User));
 
-        //if (_activeUserInfo.User.Id == toUser.Id)
-        //    throw new CustomException("You can not send a message to your self");
+        if (_activeUserInfo.User.Id == toUser.Id)
+            throw new CustomException("You can not send a message to your self");
 
         var newMessage = new Message
         {
