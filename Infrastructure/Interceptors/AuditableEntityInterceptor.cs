@@ -34,15 +34,7 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
         if (context == null)
             return;
 
-        //var utcNow = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
-        //var utcNow = DateTime.UtcNow;
         var utcNow = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
-
-        //var utcNow = DateTime.UtcNow;
-        //var utcNow = _dateTime.GetUtcNow().ToUniversalTime();
-        //var utcNow = DateTimeOffset.Now.ToUniversalTime();
-        //var utcNow = DateTimeOffset.UtcNow;
-        //var utcNow = DateTimeOffset.UtcNow.ToUniversalTime();
 
         foreach (var entry in context.ChangeTracker.Entries<AuditableEntityBase>())
         {

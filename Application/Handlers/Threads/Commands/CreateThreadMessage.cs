@@ -40,15 +40,12 @@ internal sealed class CreateThreadMessageCommandHandler : IRequestHandler<Create
             MessageThreadId = request.ThreadId,
             Text = request.Text,
             IsRead = false,
+            UserId = _activeUserInfo.User.Id,
         };
 
-        await _messagesRepository.AddAsync(newMessage);
-
+        await _messagesRepository.AddAsync(newMessage, cancellationToken);
+        await _messagesRepository.SaveChangesAsync(cancellationToken);
         return newMessage.Id;
-
-        //var query = _activeUserInfo.User.Role == Domain.Enums.UserRoles.Admin
-        //    ? _threadsRepository.Query.Where(x => x.DeletedDate != DateTime.MinValue)
-        //    : _threadsRepository.Query.Where(x => x.DeletedDate != DateTime.MinValue && x.User.Id == _activeUserInfo.User.Id);
     }
 }
 
