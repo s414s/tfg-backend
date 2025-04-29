@@ -6,7 +6,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class PalletsController(IMediator mediator) : ControllerBase
+public class ParcelsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 

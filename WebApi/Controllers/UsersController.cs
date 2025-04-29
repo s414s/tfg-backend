@@ -31,6 +31,14 @@ public class UsersController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<UserDTO>> GetUserInfo(long userId)
         => await _mediator.Send(new GetUserByIdRequest(userId));
 
+    [HttpGet("email")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<IEnumerable<string>>> GetUsersEmails()
+        => Ok(await _mediator.Send(new GetUsersEmailsRequest()));
+
     [HttpGet("email/{userEmail}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

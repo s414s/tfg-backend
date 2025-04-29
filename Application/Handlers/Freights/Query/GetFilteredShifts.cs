@@ -6,15 +6,17 @@ using Domain.Entities;
 using Domain.Enums;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Freights.Query;
 
-public sealed record GetFilteredFreightsRequest(
-    FreightStatus? Status,
-    long? OriginId,
-    long? DestinationId
-    ) : PagedRequest, IRequest<PagedResults<FreightDTO>>
-{ }
+public sealed record GetFilteredFreightsRequest : PagedRequest, IRequest<PagedResults<FreightDTO>>
+{
+    public FreightStatus Status { get; init; } = FreightStatus.Active;
+    public long? OriginId { get; init; }
+    public long? DestinationId { get; init; }
+    public long? DriverId { get; init; }
+}
 
 public class GetFilteredShiftsRequestValidator : AbstractValidator<GetFilteredFreightsRequest>
 {
@@ -43,16 +45,30 @@ internal sealed class GetFilteredFreightsQueryHandler : IRequestHandler<GetFilte
 
     public async Task<PagedResults<FreightDTO>> Handle(GetFilteredFreightsRequest request, CancellationToken cancellationToken)
     {
-        return await _freightsRepository.Query
-            .Where(x => request.Status == null || x.Status == request.Status)
+        var query = _freightsRepository.Query
             .Where(x => request.OriginId == null || x.StartCityId == request.OriginId)
             .Where(x => request.DestinationId == null || x.Route.DestinationId == request.DestinationId || x.Route.OriginId == request.DestinationId)
+            .Where(x => request.DriverId == null || x.DriverId == request.DriverId);
+
+        if (request.Status is FreightStatus.Scheduled)
+            query = query.Where(x => x.DueStart > DateTime.UtcNow && x.Status != FreightStatus.Canceled);
+
+        if (request.Status is FreightStatus.Completed)
+            query = query.Where(x => x.DueStart < DateTime.UtcNow && x.Status != FreightStatus.Canceled);
+
+        if (request.Status is FreightStatus.Canceled)
+            query = query.Where(x => x.Status == request.Status);
+
+        if (request.Status is FreightStatus.Active)
+            query = query.Where(x => x.DueStart < DateTime.UtcNow && x.Status != FreightStatus.Canceled);
+
+        return await query
             .OrderBy(x => x.DueStart)
             .Select(x => new FreightDTO
             {
                 Id = x.Id,
                 Etd = x.DueStart,
-                Status = x.Status,
+                Status = request.Status,
                 Origin = x.StartCity.Name,
                 TotalDistance = x.Route.Distance * 2,
                 DurationMinutes = x.Route.Duration.TotalMinutes,

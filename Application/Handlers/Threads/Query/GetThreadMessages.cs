@@ -45,7 +45,6 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadM
         //    ?? throw new EntityNotFoundException(nameof(Message));
         //return messages.Messages;
 
-        // Mark as read
         var thread = await _threadsRepository.Query
             .Where(x => x.Id == request.ThreadId && !x.DeletedDate.HasValue)
             .Where(x => x.FromId == _activeUserInfo.User.Id || x.ToId == _activeUserInfo.User.Id)
@@ -54,6 +53,7 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadM
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw new EntityNotFoundException(nameof(Message));
 
+        // Mark as read
         foreach (var message in thread.Messages.Where(x => x.UserId != _activeUserInfo.User.Id))
         {
             message.IsRead = true;

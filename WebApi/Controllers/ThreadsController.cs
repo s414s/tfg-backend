@@ -32,6 +32,14 @@ public class ThreadsController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<List<MessageDTO>>> GetThreadMessages(long threadId)
         => await _mediator.Send(new GetThreadMessagesRequest(threadId));
 
+    [HttpDelete("{threadId:long}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<bool>> DeleteThread(long threadId)
+        => await _mediator.Send(new DeleteThreadRequest(threadId));
+
     [HttpPost("{threadId:long}/Messages")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

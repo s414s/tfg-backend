@@ -31,11 +31,12 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreads
                 Id = x.Id,
                 Subject = x.Subject,
                 Teaser = x.Teaser,
-                IsRead = x.Messages.Any(m => m.UserId != _activeUserInfo.User.Id && !m.IsRead),
+                IsRead = !x.Messages.Any(m => m.UserId != _activeUserInfo.User.Id && !m.IsRead),
                 Name = x.From.Name,
                 Surname = x.From.Surname,
                 Email = x.From.Email,
                 Date = x.LastModified.Date,
+                AuthorId = x.CreatedBy,
             })
             .ToPagedResultsAsync(request.PageIndex, request.PageSize, cancellationToken);
 
