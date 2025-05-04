@@ -5,11 +5,12 @@ using Application.Handlers.Threads.Commands;
 using Application.Handlers.Threads.Query;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ThreadsController(IMediator mediator) : ControllerBase

@@ -20,6 +20,7 @@ internal sealed class GetUsersEmailsRequestHandler : IRequestHandler<GetUsersEma
     {
         return await _usersRepository.Query
             .Select(x => x.Email.ToLower())
+            .Distinct()
             .ToListAsync(cancellationToken);
     }
 }

@@ -3,10 +3,12 @@ using Application.Extensions;
 using Application.Handlers.Trucks.Commands;
 using Application.Handlers.Trucks.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class TrucksController(IMediator mediator) : ControllerBase

@@ -2,10 +2,12 @@
 using Application.Handlers.Settings.Commands;
 using Application.Handlers.Settings.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class SettingsController(IMediator mediator) : ControllerBase

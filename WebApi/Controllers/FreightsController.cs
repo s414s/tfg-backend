@@ -5,10 +5,12 @@ using Application.Handlers.Freights.Query;
 using Application.Handlers.Parcels.Query;
 using Application.Handlers.Routes.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class FreightsController(IMediator mediator) : ControllerBase

@@ -1,9 +1,11 @@
 ﻿using Application.Handlers.Parcels.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ParcelsController(IMediator mediator) : ControllerBase

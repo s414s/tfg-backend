@@ -1,10 +1,12 @@
 ﻿using Application.DTO;
 using Application.Handlers.Routes.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class CitiesController(IMediator mediator) : ControllerBase

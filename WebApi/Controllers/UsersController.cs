@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class UsersController(IMediator mediator) : ControllerBase
@@ -62,6 +62,14 @@ public class UsersController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<bool>> UpdateDriver([FromBody] UpdateUserInfoCommand request, long userId)
         => await _mediator.Send(request with { UserId = userId });
+
+    [HttpPut("me")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<bool>> UpdateUserProfile([FromBody] ChangeUserProfileCommand request)
+        => await _mediator.Send(request);
 
     [HttpDelete("{userId:long}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
