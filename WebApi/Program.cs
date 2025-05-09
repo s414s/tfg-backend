@@ -104,10 +104,10 @@ builder.Services.AddAuthorizationBuilder()
 );
 
 var connString = builder.Configuration.GetConnectionString("LocalWebApiDatabase");
-if (bool.TryParse(Environment.GetEnvironmentVariable("IS_DOCKER"), out bool isDocker) && isDocker)
-{
-    connString = builder.Configuration.GetConnectionString("WebApiDatabase");
-}
+//if (bool.TryParse(Environment.GetEnvironmentVariable("IS_DOCKER"), out bool isDocker) && isDocker)
+//{
+//    connString = builder.Configuration.GetConnectionString("WebApiDatabase");
+//}
 
 builder.Services.AddScoped<IUserInfo, UserInfoHelper>();
 
