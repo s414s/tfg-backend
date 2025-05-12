@@ -103,7 +103,7 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("AdminOnly", p => p.RequireClaim("userRole", UserRoles.Admin.ToString()) // OR -> p.RequireRole(UserRole.Admin.ToString())
 );
 
-var connString = builder.Configuration.GetConnectionString("LocalWebApiDatabase");
+var connString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("LocalWebApiDatabase");
 //if (bool.TryParse(Environment.GetEnvironmentVariable("IS_DOCKER"), out bool isDocker) && isDocker)
 //{
 //    connString = builder.Configuration.GetConnectionString("WebApiDatabase");

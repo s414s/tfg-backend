@@ -1,4 +1,6 @@
-﻿using Application.Handlers.Parcels.Commands;
+﻿using Application.DTO;
+using Application.Handlers.Parcels.Commands;
+using Application.Handlers.Parcels.Query;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +14,20 @@ public class ParcelsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
+    [HttpGet("{shiftId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<ParcelDTO>> GetParcelById(long parcelId)
+        => await _mediator.Send(new GetParcelByIdRequest(parcelId));
+
     [HttpPost("{shiftId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task CreatePallet(long shiftId, [FromBody] CreatePalletRequest body)
+    public async Task CreateParcel(long shiftId, [FromBody] CreatePalletRequest body)
         => await _mediator.Send(body with { ShiftId = shiftId });
 
     [HttpDelete("{shiftId}")]
@@ -25,6 +35,6 @@ public class ParcelsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task UpdatePallet(long shiftId)
+    public async Task UpdateParcel(long shiftId)
         => await _mediator.Send(new DeletePalletRequest(shiftId));
 }
