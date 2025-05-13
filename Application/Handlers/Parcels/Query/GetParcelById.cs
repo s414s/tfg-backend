@@ -22,6 +22,8 @@ internal sealed class GetParcelByIdQueryHandler : IRequestHandler<GetParcelByIdR
     {
         return await _parcelsRepository.Query
             .Where(x => x.Id == request.ParcelId)
+            .Include(x => x.Freight)
+            .ThenInclude(x => x.Route)
             .Select(x => new ParcelDTO
             {
                 Id = x.Id,

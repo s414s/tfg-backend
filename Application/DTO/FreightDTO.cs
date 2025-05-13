@@ -17,4 +17,5 @@ public record FreightDTO
     public required decimal DriverCost { get; init; }
     public required decimal FuelCost { get; init; }
     public required decimal TotalCost { get; init; }
+    public required decimal MoneyGenerated { get; init; }
 };

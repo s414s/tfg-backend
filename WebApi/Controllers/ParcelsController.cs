@@ -14,7 +14,7 @@ public class ParcelsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
-    [HttpGet("{shiftId}")]
+    [HttpGet("{parcelId:long}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
@@ -22,7 +22,7 @@ public class ParcelsController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<ParcelDTO>> GetParcelById(long parcelId)
         => await _mediator.Send(new GetParcelByIdRequest(parcelId));
 
-    [HttpPost("{shiftId}")]
+    [HttpPost("{shiftId:long}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
@@ -30,7 +30,7 @@ public class ParcelsController(IMediator mediator) : ControllerBase
     public async Task CreateParcel(long shiftId, [FromBody] CreatePalletRequest body)
         => await _mediator.Send(body with { ShiftId = shiftId });
 
-    [HttpDelete("{shiftId}")]
+    [HttpDelete("{shiftId:long}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]

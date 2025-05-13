@@ -77,6 +77,7 @@ internal sealed class GetFilteredFreightsQueryHandler : IRequestHandler<GetFilte
                 FuelCost = x.TotalFuelCost,
                 DriverCost = x.TotalDriverCost,
                 TotalCost = x.TotalCost,
+                MoneyGenerated = x.Parcels.Sum(x => x.Price),
                 Truck = new TruckDTO
                 {
                     Id = x.Truck.Id,
