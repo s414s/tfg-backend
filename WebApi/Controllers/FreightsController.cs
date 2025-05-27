@@ -66,6 +66,14 @@ public class FreightsController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<Unit>> UpdateFreight(long freightId, [FromBody] UpdateFreightRequest body)
         => await _mediator.Send(body with { ShiftId = freightId });
 
+    [HttpDelete("{freightId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<Unit>> DeleteFreight(long freightId)
+        => await _mediator.Send(new CancelFreightRequest { FreightId = freightId });
+
     [HttpGet("Routes")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

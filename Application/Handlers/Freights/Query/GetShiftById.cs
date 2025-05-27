@@ -2,6 +2,7 @@
 using Application.Extensions;
 using Domain.Contracts;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Exceptions;
 using FluentValidation;
 using MediatR;
@@ -34,7 +35,7 @@ internal sealed class GetFreightByIdQueryHandler : IRequestHandler<GetFreightByI
     public async Task<FreightDTO> Handle(GetFreightByIdRequest request, CancellationToken cancellationToken)
     {
         return await _freightsRepository.Query
-            .Where(x => x.Id == request.FreightId)
+            .Where(x => x.Id == request.FreightId && x.Status != FreightStatus.Canceled)
             .Select(x => new FreightDTO
             {
                 Id = x.Id,
