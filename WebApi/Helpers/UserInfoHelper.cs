@@ -1,0 +1,63 @@
+﻿using Domain.Contracts;
+using Domain.Entities;
+using Domain.Enums;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+
+namespace WebApi.Helpers;
+
+public class UserInfoHelper : IUserInfo
+{
+    private readonly IHttpContextAccessor _httpContext;
+
+    public UserInfoHelper(IHttpContextAccessor httpContext)
+    {
+        _httpContext = httpContext;
+    }
+
+    public ActiveUserInfo User => GetActiveUserInfo();
+
+    //public T Get<T>() where T : class, new()
+    //{
+    //    ClaimsPrincipal claimsPrincipal = _httpContext.HttpContext?.User
+    //        ?? throw new Exception();
+
+    //    if (typeof(T) != typeof(UserInfoDTO))
+    //        throw new NotSupportedException($"User info mapping not supported for type {typeof(T)}");
+
+    //    var id = claimsPrincipal.Claims.First(x => x.Type == "id").Value;
+    //    var name = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Name).Value;
+    //    var surname = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Surname).Value;
+    //    var email = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Email).Value;
+    //    var role = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Role).Value;
+
+    //    return (T)(object)new UserInfoDTO(
+    //        Id: long.Parse(id),
+    //        Name: name,
+    //        Surname: surname,
+    //        Email: email,
+    //        Role: Enum.Parse<UserRoles>(role));
+    //}
+
+    private ActiveUserInfo GetActiveUserInfo()
+    {
+        ClaimsPrincipal claimsPrincipal = _httpContext.HttpContext?.User
+            ?? throw new AuthenticationFailureException("user not authenticated");
+
+        var id = claimsPrincipal.FindFirstValue("id") ?? throw new NullReferenceException("id");
+        //var name = claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.Name).Value;
+        var name = claimsPrincipal.FindFirstValue(ClaimTypes.Name);
+        var surname = claimsPrincipal.FindFirstValue(ClaimTypes.Surname);
+        var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email);
+        var role = claimsPrincipal.FindFirstValue(ClaimTypes.Role);
+
+        return new ActiveUserInfo
+        {
+            Id = long.Parse(id),
+            Name = name ?? throw new NullReferenceException(nameof(name)),
+            Surname = surname ?? throw new NullReferenceException(nameof(surname)),
+            Email = email ?? throw new NullReferenceException(nameof(email)),
+            Role = Enum.Parse<UserRoles>(role ?? throw new NullReferenceException(nameof(name))),
+        };
+    }
+}

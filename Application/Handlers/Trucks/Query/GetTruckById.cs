@@ -1,0 +1,51 @@
+﻿using Application.DTO;
+using Application.Extensions;
+using Domain.Contracts;
+using Domain.Entities;
+using Domain.Exceptions;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace Application.Handlers.Trucks.Query;
+
+public sealed record GetTruckByIdRequest(long TruckId) : IRequest<TruckDTO> { }
+
+public class GetTruckByIdRequestValidator : AbstractValidator<GetTruckByIdRequest>
+{
+    public GetTruckByIdRequestValidator()
+    {
+        RuleFor(x => x.TruckId)
+            .GreaterThanOrEqualTo(1)
+            .WithMessage("{PropertyName} must be greater than 1.");
+    }
+}
+
+internal sealed class GetTruckByIdRequestHandler : IRequestHandler<GetTruckByIdRequest, TruckDTO>
+{
+    private readonly IRepository<Truck> _trucksRepository;
+
+    public GetTruckByIdRequestHandler(IRepository<Truck> trucksRepository)
+    {
+        _trucksRepository = trucksRepository;
+    }
+
+    public async Task<TruckDTO> Handle(GetTruckByIdRequest request, CancellationToken cancellationToken)
+    {
+        return await _trucksRepository.Query
+            .Where(x => x.Id == request.TruckId)
+            .Select(x => new TruckDTO
+            {
+                Id = x.Id,
+                Plate = x.Plate,
+                Mileage = x.Mileage,
+                Consumption = x.Consumption,
+                MaxWeight = x.MaxWeight,
+                Mark = x.Mark,
+                ManufacturingDateUnix = x.ManufacturingDate.ToUnixTime(),
+                LastMaintenanceDateUnix = x.LastMaintenance.ToUnixTime(),
+            })
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw new EntityNotFoundException(nameof(Truck));
+    }
+}
