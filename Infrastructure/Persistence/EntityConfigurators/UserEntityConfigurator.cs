@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.EntityConfigurators;
 
@@ -18,8 +19,72 @@ public class UserEntityConfigurator : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(50);
 
-        //builder.Property(u => u.Role)
-        //    .IsRequired()
-        //    .HasConversion<string>();
+        builder.Property(u => u.Role)
+            .IsRequired()
+            .HasDefaultValue(UserRoles.Driver);
+
+        // TODO hashear contraseñas
+        builder.HasData([
+            new User
+            {
+                Id = 1,
+                Name = "alberto",
+                Surname = "salas",
+                Password = "root",
+                Email = "alberto@gmail.com",
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
+                Role = UserRoles.Admin,
+            },
+            new User
+            {
+                Id = 2,
+                Name = "ana",
+                Surname = "salas",
+                Password = "root",
+                Email = "ana@gmail.com",
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
+                Role = UserRoles.Driver,
+            },
+            new User
+            {
+                Id = 3,
+                Name = "maria",
+                Surname = "hernandez",
+                Password = "root",
+                Email = "maria@gmail.com",
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
+                Role = UserRoles.Driver,
+            },
+            new User
+            {
+                Id = 4,
+                Name = "violeta",
+                Surname = "salas",
+                Password = "root",
+                Email = "violeta@gmail.com",
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
+                Role = UserRoles.Driver,
+            },
+            new User
+            {
+                Id = 5,
+                Name = "gimena",
+                Surname = "salas",
+                Password = "root",
+                Email = "gimena@gmail.com",
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
+                Role = UserRoles.Driver,
+            },
+            new User
+            {
+                Id = 6,
+                Name = "sara",
+                Surname = "salas",
+                Password = "root",
+                Email = "sara@gmail.com",
+                Birthday = new DateTime(1989, 09, 16, 00, 00, 00, DateTimeKind.Utc),
+                Role = UserRoles.Driver,
+            },
+            ]);
     }
 }

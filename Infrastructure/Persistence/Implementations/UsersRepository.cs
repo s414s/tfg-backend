@@ -1,5 +1,4 @@
-﻿
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Domain.Entities;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -39,15 +38,20 @@ public class UsersRepository : IUsersRepository
         return await _context.Users.ToListAsync();
     }
 
-    public async Task<User?> GetByCredentials(string username, string password)
+    public async Task<User?> GetByCredentials(string email, string password)
     {
         return await _context.Users
-            .SingleOrDefaultAsync(x => x.Name + x.Username == username && x.Password == password);
+            .SingleOrDefaultAsync(x => x.Email == email && x.Password == password);
     }
 
     public async Task<User> GetByID(long entityId)
     {
         return await _context.Users.SingleAsync(x => x.Id == entityId);
+    }
+
+    public Task<User?> GetUserByEmail(string email)
+    {
+        throw new NotImplementedException();
     }
 
     public User? GetUserByUsername(string username)

@@ -1,11 +1,16 @@
 ﻿using Domain.Entities.Base;
+using Domain.Enums;
 
 namespace Domain.Entities;
 
 public class User : EntityBase
 {
-    public string Username { get; set; }
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
+    public required string Name { get; set; }
+    public required string Surname { get; set; }
+    public required string Email { get; set; }
+    public required string Password { get; set; }
+    public required DateTime Birthday { get; set; }
+    public UserRoles Role { get; set; }
+
+    public virtual ICollection<Freight> Freights { get; set; } = [];
 }
