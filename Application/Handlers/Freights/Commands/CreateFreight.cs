@@ -51,10 +51,12 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
 
     public async Task<Unit> Handle(CreateFreightRequest request, CancellationToken cancellationToken)
     {
-        if (DateTime.UtcNow.AddDays(1) - request.StartDate > TimeSpan.FromDays(1))
+        var startDateTime = request.StartDate.Date.AddDays(1).AddHours(9);
+
+        if (DateTime.UtcNow.AddDays(1) - startDateTime > TimeSpan.FromDays(1))
             throw new CustomException("You need to have at least one day notice to drivers");
 
-        if (request.StartDate < DateTime.UtcNow)
+        if (startDateTime < DateTime.UtcNow.Date.AddHours(9))
             throw new CustomException("You can only plan future freights");
 
         if (DateTime.UtcNow.AddDays(1) - request.StartDate > TimeSpan.FromDays(1))
@@ -88,7 +90,7 @@ internal sealed class CreateFreightCommandHandler : IRequestHandler<CreateFreigh
 
         var newFreight = new Freight
         {
-            DueStart = request.StartDate,
+            DueStart = startDateTime,
             StartCityId = request.OriginId,
             RouteId = route.Id,
             Status = FreightStatus.Scheduled,
