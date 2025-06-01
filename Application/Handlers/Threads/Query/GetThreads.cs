@@ -26,7 +26,6 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreads
         var threads = await _threadsRepository.Query
             .Include(x => x.Messages.Where(m => !m.IsRead && m.UserId != _activeUserInfo.User.Id))
             .Where(x => x.ToId == _activeUserInfo.User.Id || x.FromId == _activeUserInfo.User.Id)
-            .OrderByDescending(x => x.LastModified)
             .Select(x => new ThreadDTO
             {
                 Id = x.Id,
@@ -35,10 +34,13 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreads
                 IsRead = !x.Messages.Any(m => m.UserId != _activeUserInfo.User.Id && !m.IsRead),
                 Name = x.FromId == _activeUserInfo.User.Id ? x.To.Name : x.From.Name,
                 Surname = x.FromId == _activeUserInfo.User.Id ? x.To.Surname : x.From.Surname,
-                Email = x.From.Email,
-                Date = x.LastModified.Date,
+                Email = x.FromId == _activeUserInfo.User.Id ? x.To.Email : x.From.Email,
+                //Date = x.LastModified.Date,
+                Date = x.LastModified,
                 AuthorId = x.CreatedBy,
             })
+            .OrderBy(x => x.IsRead)
+            .ThenByDescending(x => x.Date)
             .ToPagedResultsAsync(request.PageIndex, request.PageSize, cancellationToken);
 
         return threads;
