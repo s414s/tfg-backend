@@ -24,12 +24,8 @@ internal sealed class GetFilteredRoutesQueryHandler : IRequestHandler<GetFiltere
     public async Task<IEnumerable<RouteDTO>> Handle(GetFilteredRoutesRequest request, CancellationToken cancellationToken)
     {
         return await _routesRepository.Query
-            .Where(x => request.Origin == null
-                || x.Origin.Name == request.Origin
-                || x.Destination.Name == request.Origin)
-            .Where(x => request.Destination == null
-                || x.Destination.Name == request.Destination
-                || x.Origin.Name == request.Destination)
+            .Where(x => request.Origin == null || x.Origin.Name == request.Origin || x.Destination.Name == request.Origin)
+            .Where(x => request.Destination == null || x.Destination.Name == request.Destination || x.Origin.Name == request.Destination)
             .Select(x => new RouteDTO
             {
                 Id = x.Id,

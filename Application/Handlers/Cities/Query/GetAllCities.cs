@@ -22,12 +22,12 @@ internal sealed class GetAllCitiesQueryHandler : IRequestHandler<GetAllCitiesReq
     public async Task<IEnumerable<CityDTO>> Handle(GetAllCitiesRequest request, CancellationToken cancellationToken)
     {
         List<long>? reacheableCitiesIds = null;
+
         if (request.OriginId is long cityId)
         {
             reacheableCitiesIds = await _routesRepository.Query
                 .Where(x => x.OriginId == cityId || x.DestinationId == cityId)
                 .Select(x => x.OriginId == cityId ? x.DestinationId : x.OriginId)
-                .Where(x => x != cityId)
                 .Distinct()
                 .ToListAsync(cancellationToken);
         }
