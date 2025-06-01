@@ -23,7 +23,7 @@ public class ThreadsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PagedResults<ThreadDTO>>> GetThreadMessages()
-         => await _mediator.Send(new GetThreadsRequest(1, 10));
+         => await _mediator.Send(new GetThreadsRequest());
 
     [HttpGet("{threadId:long}/Messages")]
     [ProducesResponseType(StatusCodes.Status200OK)]

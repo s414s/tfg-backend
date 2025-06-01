@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.DTO.Base;
 using Application.Extensions;
 using Domain.Contracts;
 using Domain.Entities;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.Threads.Query;
 
-public sealed record GetThreadsRequest(int PageIndex, int PageSize) : IRequest<PagedResults<ThreadDTO>> { }
+public sealed record GetThreadsRequest() : PagedRequest, IRequest<PagedResults<ThreadDTO>> { }
 
 internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreadsRequest, PagedResults<ThreadDTO>>
 {
@@ -32,8 +33,8 @@ internal sealed class GetThreadMessagesQueryHandler : IRequestHandler<GetThreads
                 Subject = x.Subject,
                 Teaser = x.Teaser,
                 IsRead = !x.Messages.Any(m => m.UserId != _activeUserInfo.User.Id && !m.IsRead),
-                Name = x.From.Name,
-                Surname = x.From.Surname,
+                Name = x.FromId == _activeUserInfo.User.Id ? x.To.Name : x.From.Name,
+                Surname = x.FromId == _activeUserInfo.User.Id ? x.To.Surname : x.From.Surname,
                 Email = x.From.Email,
                 Date = x.LastModified.Date,
                 AuthorId = x.CreatedBy,

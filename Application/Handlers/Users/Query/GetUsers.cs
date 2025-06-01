@@ -66,6 +66,7 @@ internal sealed class GetUsersRequestHandler : IRequestHandler<GetUsersRequest, 
             .Where(x => request.Surname == null || x.Surname.Contains(request.Surname))
             .Where(x => request.Role == null || x.Role == request.Role)
             .Where(x => unavailableDriversIds == null || !unavailableDriversIds.Contains(x.Id))
+            .OrderBy(x => x.Id)
             .Select(x => new UserDTO
             {
                 Id = x.Id,
